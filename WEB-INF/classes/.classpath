@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="H:/COMMUN/DUT 2ème année/Apprentissage/AppWebJava/tp 2 tomcat/javax.jar"/>
-	<classpathentry kind="lib" path="H:/COMMUN/DUT 2ème année/Apprentissage/AppWebJava/tp 1 JDBC/ojdbc6.jar"/>
+	<classpathentry kind="lib" path="Z:/apache-tomcat-7.0.35/webapps/ChessPasCoder/javax.jar"/>
+	<classpathentry kind="lib" path="Z:/apache-tomcat-7.0.35/webapps/ChessPasCoder/ojdbc6.jar"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

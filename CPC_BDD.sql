@@ -19,19 +19,24 @@ CREATE TABLE USERS (
 	Password VARCHAR2(40) NOT NULL,
 	Email VARCHAR2(100),
 	Elo INTEGER,
-	CONSTRAINT PK_PROPRIETAIRES PRIMARY KEY (Login)
+	CONSTRAINT PK_USERS PRIMARY KEY (Login)
 );
 
 CREATE TABLE GAMES (	
 	Id INTEGER, NOT NULL
 	NbMove INTEGER,
-	Victory SMALLINT,
-	CONSTRAINT PK_PROPRIETAIRES PRIMARY KEY (Login)
+	LoginWin VARCHAR2(40),
+	LoginLoss VARCHAR2(40),
+	CONSTRAINT PK_GAMES PRIMARY KEY (Id),
+	CONSTRAINT FK_WIN FOREIGN KEY (LoginWin) REFERENCES USERS(Login),
+	CONSTRAINT FK_LOSS FOREIGN KEY (LoginLoss) REFERENCES USERS(Login)
 );
 
 PROMPT  ->  Tables creees
 
-INSERT INTO USERS VALUES ('Admin', 'admin','admin','alex.bournadet@etu.parisdescartes.fr');
+INSERT INTO USERS VALUES ('Admin', 'admin','admin','alex.bournadet@etu.parisdescartes.fr', '0');
+INSERT INTO USERS VALUES ('Loser', 'loser','loser','alex.bournadet@etu.parisdescartes.fr', '0');
+INSERT INTO GAMES VALUES ('1', '14', 'admin', 'loser');
 
 
 COMMIT;

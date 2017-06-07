@@ -8,19 +8,16 @@
     </head>
     <body>
 		<header>
-		<%String parent = (String) request.getAttribute("parent");
-		if(parent.equals("accueil")){%>
-			<a href="<%=request.getContextPath()+"/connexion"%>">Se connecter</a>
-			<a href="<%=request.getContextPath()+"/enregistrement"%>">S'enregister</a>
-			<a href="#">Panier</a>
-		<%}else{
-			Proprietaire prop = (Proprietaire) session.getAttribute("sessionUtilisateur");
+		<%User user = (User) session.getAttribute("user");
+		if(prop == null){
+			%><a href="<%=request.getContextPath()+"/connexion"%>">Se connecter</a>
+			<a href="<%=request.getContextPath()+"/enregistrement"%>">S'enregister</a><%
+		}else{
 			%>
-			<a href="<%=request.getContextPath()+"/creerAppart"%>">Mettre en vente</a>
 			<a href="<%=request.getContextPath()+"/deconnexion"%>">Se deconnecter</a>
-			<a href="#">Panier</a></br>
-			<h1>Bienvenue <%=prop.getNom()%> !</h1>
-		<%}%>
+			<h1>Bienvenue <%=user.getName()%> !</h1><%
+		}
+		%>
 			
 		</header>
 		<div id="Cadre">

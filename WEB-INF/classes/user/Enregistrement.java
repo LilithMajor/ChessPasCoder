@@ -1,4 +1,4 @@
-
+package user;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.User;
 
 import database.Database;
 
@@ -29,17 +31,16 @@ public class Enregistrement extends HttpServlet {
 
     public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
         
-        /* Préparation de l'objet formulaire */
-    	// Database db = Database.getDatabase();
+  
+    	Database db = Database.getDatabase();
         HttpSession session = request.getSession(true);
         Boolean erreur = false;
-        String parent = "enregistrement";
+        String parent = "register";
       //  Proprietaire prop = new Proprietaire();
         /* Traitement de la requête et récupération du bean en résultant */
+        User user = new User();
 		try {
-			prop = db.enregistrerUtilisateur( request );
-		} catch (ClassNotFoundException e) {
-			System.out.println("ClassNotFound");
+			user = db.registerUser( request );
 		} catch (SQLException e) {
 			System.out.println("SQLException");
 		} catch (NullPointerException e){
@@ -56,8 +57,7 @@ public class Enregistrement extends HttpServlet {
          * Utilisateur à la session, sinon suppression du bean de la session.
          */
 		if(!erreur){
-			session.setAttribute( ATT_SESSION_USER, prop );
-			request.setAttribute("apparts", apparts);
+			session.setAttribute( ATT_SESSION_USER, user );
 			request.setAttribute("erreur", erreur);
 			request.setAttribute("parent", parent);
 	    //    this.getServletContext().getRequestDispatcher("/index.jsp").forward( request, response );

@@ -18,6 +18,8 @@ public class User {
 		this.elo = elo;
 		this.setGames(games);
 	}
+	public User(){
+	}
 	
 	public String getName() {
 		return name;

@@ -25,5 +25,13 @@ public class Database {
 	public ArrayList<User> getAllUsers() {
 		return db.getAllUsers();
 	}
+
+	public User connectUser(HttpServletRequest request) throws SQLException {
+		return db.connectUser(request);
+	}
+
+	public User registerUser(HttpServletRequest request) throws SQLException {
+		return db.registerUser(request);
+	}
 	
 }

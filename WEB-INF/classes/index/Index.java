@@ -22,7 +22,6 @@ public class Index extends HttpServlet {
 
 	public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
 		Database db = Database.getDatabase();
-		@SuppressWarnings("unused")
 		ArrayList<User> users = new ArrayList<User>();
 		users = db.getAllUsers();
 		request.setAttribute("users", users);
