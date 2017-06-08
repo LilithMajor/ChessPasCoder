@@ -14,7 +14,7 @@ import com.User;
 
 import database.Database;
 
-public class Enregistrement extends HttpServlet {
+public class Register extends HttpServlet {
     /**
 	 * 
 	 */
@@ -23,7 +23,7 @@ public class Enregistrement extends HttpServlet {
     
     public void doGet( HttpServletRequest request, HttpServletResponse response ){
     	try {
-			this.getServletContext().getRequestDispatcher("/WEB-INF/enregistrement.jsp").forward( request, response );
+			this.getServletContext().getRequestDispatcher("/WEB-INF/register.jsp").forward( request, response );
 		} catch (ServletException | IOException e) {
 			e.printStackTrace();
 		}
@@ -46,7 +46,7 @@ public class Enregistrement extends HttpServlet {
 		} catch (NullPointerException e){
 			erreur = true;
 			request.setAttribute("erreur", erreur);
-			this.getServletContext().getRequestDispatcher("/WEB-INF/enregistrement.jsp").forward( request, response );
+			this.getServletContext().getRequestDispatcher("/WEB-INF/register.jsp").forward( request, response );
 		}
 
         /* Récupération de la session depuis la requête */
@@ -58,9 +58,7 @@ public class Enregistrement extends HttpServlet {
          */
 		if(!erreur){
 			session.setAttribute( ATT_SESSION_USER, user );
-			request.setAttribute("erreur", erreur);
-			request.setAttribute("parent", parent);
-	    //    this.getServletContext().getRequestDispatcher("/index.jsp").forward( request, response );
+			response.sendRedirect(request.getContextPath() + "/index");
 		}
     }
 }

@@ -10,10 +10,10 @@ import com.User;
 
 public class Database {
 	private static Database INSTANCE = null;
-	private RequetesBDD db;
+	private DTBRequest db;
 	
 	public Database(){
-		this.db = new RequetesBDD();
+		this.db = new DTBRequest();
 	}
 	
 	public static synchronized Database getDatabase(){

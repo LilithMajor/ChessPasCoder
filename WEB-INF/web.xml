@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<web-app> 
+
+	<welcome-file-list>
+		<welcome-file>index</welcome-file>
+	</welcome-file-list>
+
+	<servlet>
+		<servlet-name>index</servlet-name>
+		<servlet-class>index.Index</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>index</servlet-name>
+		<url-pattern>/index</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>connection</servlet-name>
+		<servlet-class>user.Connection</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>connection</servlet-name>
+		<url-pattern>/connection</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>register</servlet-name>
+		<servlet-class>user.Register</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>register</servlet-name>
+		<url-pattern>/register</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>disconnection</servlet-name>
+		<servlet-class>user.Disconnection</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>disconnection</servlet-name>
+		<url-pattern>/disconnection</url-pattern>
+	</servlet-mapping>
+	
+</web-app>

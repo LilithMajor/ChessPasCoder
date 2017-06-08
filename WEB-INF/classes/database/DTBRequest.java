@@ -18,14 +18,14 @@ import com.User;
 
 
 
-public final class RequetesBDD {
+public final class DTBRequest {
     private static final String CHAMP_LOGIN  = "login";
-    private static final String CHAMP_PASS   = "motdepasse";
-    private static final String CHAMP_NAME   = "nom";
+    private static final String CHAMP_PASS   = "password";
+    private static final String CHAMP_NAME   = "name";
     private static final String CHAMP_EMAIL   = "email";
     private Connection connect;
     
-    public RequetesBDD(){
+    public DTBRequest(){
     	try {
 			Class.forName("oracle.jdbc.OracleDriver");
 			this.connect = DriverManager.getConnection("jdbc:oracle:thin:@vs-oracle2:1521:ORCL", "GRAMMONTG", "GRAMMONTG");
@@ -38,13 +38,27 @@ public final class RequetesBDD {
 		}
     }
 
+	@SuppressWarnings("unchecked")
 	public ArrayList<User> getAllUsers() {
 		ArrayList<User> users = new ArrayList<User>();
 		try {
 			Statement statement = connect.createStatement();
+			Statement stategames = connect.createStatement();
 			ResultSet result = statement.executeQuery("SELECT * FROM USERS");
 			while(result.next()) {
-				users.add(new User(result.getString(1),result.getString(2),result.getString(3),result.getString(4),result.getInt(5),(ArrayList<Game>) result.getObject(7)));
+				ArrayList<Game> games = new ArrayList<Game>();
+				ResultSet res = stategames.executeQuery("SELECT * FROM GAMES WHERE LoginWin='"+result.getString("Login")+"' OR LoginLoss='"+result.getString("Login")+"'");
+		    	while(res.next()) {
+		    		games.add(new Game(res.getInt(1),res.getInt(2),res.getString(3),res.getString(4)));
+		    	}
+				User u = new User();
+				u.setName(result.getString(1));
+				u.setLogin(result.getString(2));
+				u.setPassword(result.getString(3));
+				u.setEmail(result.getString(4));
+				u.setElo(result.getInt(5));
+				u.setGames(games);
+				users.add(u);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -55,24 +69,25 @@ public final class RequetesBDD {
 
 	public User connectUser(HttpServletRequest request) throws SQLException {
         String login = getValeurChamp( request, "login" );
-        String motDePasse = getValeurChamp( request, "password" );
+        String password = getValeurChamp( request, "password" );
         ArrayList<Game> games = new ArrayList<Game>();
         User u = new User();
         Statement statement = connect.createStatement();
-    	ResultSet result = statement.executeQuery("SELECT * FROM PROPRIETAIRES WHERE login='"+login+"' AND Mdp='"+motDePasse+"'");
+        Statement stategames = connect.createStatement();
+    	ResultSet result = statement.executeQuery("SELECT * FROM USERS WHERE login='"+login+"' AND password='"+password+"'");
     	if(!result.next()){
     		throw new NullPointerException();
     	}
     	else{
-			u.setName(result.getString("Nom"));
-			u.setLogin(result.getString("Login"));
-			u.setPassword(result.getString("Mdp"));
-			u.setEmail(result.getString("Email"));
-			u.setElo(result.getInt("Elo"));
+			u.setName(result.getString(1));
+			u.setLogin(result.getString(2));
+			u.setPassword(result.getString(3));
+			u.setEmail(result.getString(4));
+			u.setElo(result.getInt(5));
 		}       
-    	ResultSet res = statement.executeQuery("SELECT * FROM GAMES WHERE LoginWin='"+result.getString("Login")+"' OR LoginLoss='"+result.getString("Login")+"'");
+    	ResultSet res = stategames.executeQuery("SELECT * FROM GAMES WHERE LoginWin='"+result.getString("Login")+"' OR LoginLoss='"+result.getString("Login")+"'");
     	while(res.next()) {
-    		games.add(new Game(result.getInt(1),result.getInt(2),result.getString(3),result.getString(4)));
+    		games.add(new Game(res.getInt(1),res.getInt(2),res.getString(3),res.getString(4)));
     	}
     	u.setGames(games);
         return u;

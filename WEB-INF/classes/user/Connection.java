@@ -14,7 +14,7 @@ import com.User;
 import database.Database;
 
 
-public class Connexion extends HttpServlet {
+public class Connection extends HttpServlet {
     /**
 	 * 
 	 */
@@ -23,7 +23,7 @@ public class Connexion extends HttpServlet {
     
     public void doGet( HttpServletRequest request, HttpServletResponse response ){
     	try {
-			this.getServletContext().getRequestDispatcher("/WEB-INF/connexion.jsp").forward( request, response );
+			this.getServletContext().getRequestDispatcher("/WEB-INF/connection.jsp").forward( request, response );
 		} catch (ServletException | IOException e) {
 			e.printStackTrace();
 		}
@@ -35,16 +35,17 @@ public class Connexion extends HttpServlet {
         Database db = Database.getDatabase();
         HttpSession session = request.getSession(true);
         Boolean erreur = false;
-        String parent = "connection";
        User user = new User();
 		try {
 			user = db.connectUser( request );
 		} catch (SQLException e) {
 			System.out.println("SQLException");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		} catch (NullPointerException e){
 			erreur = true;
 			request.setAttribute("erreur", erreur);
-			this.getServletContext().getRequestDispatcher("/WEB-INF/connexion.jsp").forward( request, response );
+			this.getServletContext().getRequestDispatcher("/WEB-INF/connection.jsp").forward( request, response );
 		}
 
         /* Récupération de la session depuis la requête */
@@ -56,8 +57,7 @@ public class Connexion extends HttpServlet {
          */
 		if(!erreur){
 			session.setAttribute( ATT_SESSION_USER, user);
-			request.setAttribute("parent", parent);
-	       // this.getServletContext().getRequestDispatcher("/index.jsp").forward( request, response );
+			response.sendRedirect(request.getContextPath() + "/index");
 		}
     }
 }

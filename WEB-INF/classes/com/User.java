@@ -10,13 +10,12 @@ public class User {
 	private int elo;
 	private ArrayList<Game> games;
 	
-	public User(String name, String login, String password, String email, int elo, ArrayList<Game> games) {
+	public User(String name, String login, String password, String email, int elo) {
 		this.name = name;
 		this.login = login;
 		this.password = password;
 		this.email = email;
 		this.elo = elo;
-		this.setGames(games);
 	}
 	public User(){
 	}
@@ -58,5 +57,23 @@ public class User {
 
 	public void setGames(ArrayList<Game> games) {
 		this.games = games;
+	}
+	public int getNumberOfWonGames(){
+		int nbr = 0;
+		for(Game g : games){
+			if(g.getLoginWin().equals(login)){
+				nbr++;
+			}
+		}
+		return nbr;
+	}
+	public int getNumberOfLossGames(){
+		int nbr = 0;
+		for(Game g : games){
+			if(g.getLoginLoss().equals(login)){
+				nbr++;
+			}
+		}
+		return nbr;
 	}
 }
