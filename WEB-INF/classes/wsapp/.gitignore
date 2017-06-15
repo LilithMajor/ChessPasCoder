@@ -1,3 +1,5 @@
 /wsChatServlet.class
 /wsChatServlet$MyMessageInbound.class
 /ServerEndpoint.class
+/WebSocketTest.class
+/WsServer.class

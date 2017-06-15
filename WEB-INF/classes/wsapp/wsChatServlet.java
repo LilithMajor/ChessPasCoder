@@ -1,61 +1,34 @@
 package wsapp;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.util.ArrayList;
+import javax.websocket.OnClose;
+import javax.websocket.OnError;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.server.ServerEndpoint;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.catalina.websocket.*;
-
-public class wsChatServlet extends WebSocketServlet{
-
-	private static final long serialVersionUID = 1L;
-    private static ArrayList<MyMessageInbound> mmiList = new ArrayList<MyMessageInbound>();
-
-	protected StreamInbound createWebSocketInbound(String protocol) {
-		 return new MyMessageInbound();
-	}
-
-    private class MyMessageInbound extends MessageInbound{
-        WsOutbound myoutbound;
-
-        @Override
-        public void onOpen(WsOutbound outbound){
-            try {
-                System.out.println("Open Client.");
-                this.myoutbound = outbound;
-                mmiList.add(this);
-                outbound.writeTextMessage(CharBuffer.wrap("Hello!"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        @Override
-        public void onClose(int status){
-            System.out.println("Close Client.");
-            mmiList.remove(this);
-        }
-        @Override
-        public void onTextMessage(CharBuffer cb) throws IOException{
-            System.out.println("Accept Message : "+ cb);
-            for(MyMessageInbound mmib: mmiList){
-                CharBuffer buffer = CharBuffer.wrap(cb);
-                mmib.myoutbound.writeTextMessage(buffer);
-                mmib.myoutbound.flush();
-            }
-        }
-        @Override
-        public void onBinaryMessage(ByteBuffer bb) throws IOException{
-        }
-    }
-
-	@Override
-	protected StreamInbound createWebSocketInbound(String arg0, HttpServletRequest arg1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+@ServerEndpoint("/websocketendpoint")
+public class wsChatServlet {
 	
+	@OnOpen
+	public void onOpen(){
+		System.out.println("Open Connection ...");
+	}
+	
+	@OnClose
+	public void onClose(){
+		System.out.println("Close Connection ...");
+	}
+	
+	@OnMessage
+	public String onMessage(String message){
+		System.out.println("Message from the client: " + message);
+		String echoMsg = "Echo from the server : " + message;
+		return echoMsg;
+	}
+
+	@OnError
+	public void onError(Throwable e){
+		e.printStackTrace();
+	}
+
 }
