@@ -45,4 +45,24 @@
 		<url-pattern>/disconnection</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>game</servlet-name>
+		<servlet-class>game.GameServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>game</servlet-name>
+		<url-pattern>/game</url-pattern>
+	</servlet-mapping>
+	
+	 <servlet>
+        <servlet-name>WsChatServlet</servlet-name>
+        <servlet-class>wsapp.WsChatServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>WsChatServlet</servlet-name>
+        <url-pattern>/WsChatServlet</url-pattern>
+    </servlet-mapping>
+	
 </web-app>

@@ -4,5 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="Z:/apache-tomcat-7.0.35/webapps/ChessPasCoder/javax.jar"/>
 	<classpathentry kind="lib" path="Z:/apache-tomcat-7.0.35/webapps/ChessPasCoder/ojdbc6.jar"/>
+	<classpathentry kind="lib" path="Z:/apache-tomcat-7.0.35/lib/catalina.jar"/>
+	<classpathentry kind="lib" path="Z:/apache-tomcat-7.0.35/lib/tomcat-coyote.jar"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

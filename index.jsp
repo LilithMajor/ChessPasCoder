@@ -13,6 +13,7 @@
 			<a href="<%=request.getContextPath()+"/register"%>">Register</a><%
 		}else{
 			%>
+			<a href="<%=request.getContextPath()+"/game"%>">Game</a>
 			<a href="<%=request.getContextPath()+"/disconnection"%>">Disconnect</a>
 			<h1>Welcome <%=user.getName()%> !</h1><%
 		}
@@ -52,9 +53,26 @@
 						</tr>		
 				<%}%>
 			<table>
+			<textarea id="chatlog" readonly></textarea><br/>
+			<input id="msg" type="text" />
+			<button type="submit" id="sendButton" onClick="postToServer()">Send!</button>
+			<button type="submit" id="closeButton" onClick="closeConnect()">End</button>
 		</div>
-		<!--<script type="text/javascript">
-			var eraseInput = (function() {
+		<script type="text/javascript">
+			var ws = new WebSocket("ws://localhost:8080/ChessPasCoder/WsChatServlet");
+            ws.onopen = function(){
+            };
+            ws.onmessage = function(message){
+                document.getElementById("chatlog").textContent += message.data + "\n";
+            };
+            function postToServer(){
+                ws.send(document.getElementById("msg").value);
+                document.getElementById("msg").value = "";
+            }
+            function closeConnect(){
+                ws.close();
+            }
+			/*var eraseInput = (function() {
 				var erased = false;
 				return function(input) {
 					input.value = !erased ? '' : input.value;
@@ -103,9 +121,9 @@
 							}
 						}
 					}						
-			});
+			});*/
 			
-		</script>-->
+		</script>
 	</body>
 </html>
 			
