@@ -1,64 +1,42 @@
 package wsapp;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 import java.util.ArrayList;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.websocket.OnClose;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
 
-import org.apache.catalina.websocket.MessageInbound;
-import org.apache.catalina.websocket.StreamInbound;
-import org.apache.catalina.websocket.WebSocketServlet;
-import org.apache.catalina.websocket.WsOutbound;
-
-public class WsChatServlet extends WebSocketServlet{
-    private static final long serialVersionUID = 1L;
-    private static ArrayList<MyMessageInbound> mmiList = new ArrayList<MyMessageInbound>();
-
-    public StreamInbound createWebSocketInbound(String protocol){
-        return new MyMessageInbound();
+@ServerEndpoint(value = "/wschat")
+public class WsChatServlet{
+    //notice:not thread-safe
+    private static ArrayList<Session> sessionList = new ArrayList<Session>();
+    
+    @OnOpen
+    public void onOpen(Session session){
+            sessionList.add(session);
+            try {
+				session.getBasicRemote().sendText("Hello!");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     }
     
-    @Override
-	protected StreamInbound createWebSocketInbound(String arg0, HttpServletRequest arg1) {
-		// TODO Auto-generated method stub
-		return new MyMessageInbound();
-	}
-
-    private class MyMessageInbound extends MessageInbound{
-        WsOutbound myoutbound;
-
-        @Override
-        public void onOpen(WsOutbound outbound){
-            try {
-                System.out.println("Open Client.");
-                this.myoutbound = outbound;
-                mmiList.add(this);
-                outbound.writeTextMessage(CharBuffer.wrap("Hello!"));
-            } catch (IOException e) {
-                e.printStackTrace();
+    @OnClose
+    public void onClose(Session session){
+        sessionList.remove(session);
+    }
+    
+    @OnMessage
+    public void onMessage(String msg){
+        try{
+            for(Session session : sessionList){
+                //asynchronous communication
+                session.getBasicRemote().sendText(msg);
             }
-        }
-
-        @Override
-        public void onClose(int status){
-            System.out.println("Close Client.");
-            mmiList.remove(this);
-        }
-
-        @Override
-        public void onTextMessage(CharBuffer cb) throws IOException{
-            System.out.println("Accept Message : "+ cb);
-            for(MyMessageInbound mmib: mmiList){
-                CharBuffer buffer = CharBuffer.wrap(cb);
-                mmib.myoutbound.writeTextMessage(buffer);
-                mmib.myoutbound.flush();
-            }
-        }
-
-        @Override
-        public void onBinaryMessage(ByteBuffer bb) throws IOException{
-        }
+        }catch(IOException e){}
     }
 }

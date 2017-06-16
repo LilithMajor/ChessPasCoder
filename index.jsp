@@ -59,7 +59,7 @@
 			<button type="submit" id="sendButton" onClick="closeConnect()">End</button>
 		</div>
 		<script type="text/javascript">
-		  var ws = new WebSocket("ws://172.19.35.85:8080/ChessPasCoder/wschat/WsChatServlet");
+		  var ws = new WebSocket("ws://172.19.35.85:8080/ChessPasCoder/wschat");
             ws.onopen = function(){
             };
             ws.onmessage = function(message){

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="WEB-INF/classes"/>
+	<classpathentry kind="lib" path="javax.jar"/>
+	<classpathentry kind="lib" path="ojdbc6.jar"/>
+	<classpathentry kind="lib" path="Z:/apache-tomcat-8.5.15/lib/javax.websocket-api-1.0-rc4.jar"/>
+	<classpathentry kind="lib" path="Z:/apache-tomcat-8.5.15/lib/tomcat-coyote.jar"/>
+	<classpathentry kind="lib" path="Z:/apache-tomcat-8.5.15/lib/tomcat-websocket.jar"/>
+	<classpathentry kind="lib" path="Z:/apache-tomcat-8.5.15/lib/websocket-api.jar"/>
+	<classpathentry kind="lib" path="Z:/apache-tomcat-8.5.15/lib/catalina.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
