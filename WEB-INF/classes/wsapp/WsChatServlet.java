@@ -17,6 +17,7 @@ public class WsChatServlet{
     @OnOpen
     public void onOpen(Session session){
             sessionList.add(session);
+            System.out.println("Session chat added");
             try {
 				session.getBasicRemote().sendText("Hello!");
 			} catch (IOException e) {
@@ -32,6 +33,7 @@ public class WsChatServlet{
     
     @OnMessage
     public void onMessage(String msg){
+    	System.out.println("Session chat received : "  + msg);
         try{
             for(Session session : sessionList){
                 //asynchronous communication

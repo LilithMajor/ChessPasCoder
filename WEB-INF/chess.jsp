@@ -28,13 +28,13 @@
 		}
 		var handleMove = function(source, target) {
 			var move = game.move({from: source, to: target});
-			ws.send(move);
+			ws.send(JSON.stringify(move));
 		}
 		initGame();		
 		ws.onopen = function(){
 		};
 		ws.onmessage = function(message){
-		   game.move(message);
+		  game.move(JSON.parse(message.data));
 		   board.position(game.fen());
 		};
 		function closeConnect(){

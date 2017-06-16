@@ -2,10 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="Z:/apache-tomcat-7.0.35/webapps/ChessPasCoder/javax.jar"/>
-	<classpathentry kind="lib" path="Z:/apache-tomcat-7.0.35/webapps/ChessPasCoder/ojdbc6.jar"/>
-	<classpathentry kind="lib" path="Z:/apache-tomcat-7.0.35/lib/catalina.jar"/>
-	<classpathentry kind="lib" path="Z:/apache-tomcat-7.0.35/lib/tomcat-coyote.jar"/>
-	<classpathentry kind="lib" path="Z:/apache-tomcat-7.0.35/lib/javax.websocket-api-1.0-rc4.jar"/>
+	<classpathentry kind="lib" path="Z:/apache-tomcat-8.5.15/lib/ojdbc6.jar"/>
+	<classpathentry kind="lib" path="Z:/apache-tomcat-8.5.15/webapps/ChessPasCoder/javax.jar"/>
+	<classpathentry kind="lib" path="Z:/apache-tomcat-8.5.15/webapps/ChessPasCoder/ojdbc6.jar"/>
+	<classpathentry kind="lib" path="Z:/apache-tomcat-8.5.15/lib/javax.websocket-api-1.0-rc4.jar"/>
+	<classpathentry kind="lib" path="Z:/apache-tomcat-8.5.15/webapps/ChessPasCoder/java-json.jar"/>
 	<classpathentry kind="output" path=""/>
 </classpath>
