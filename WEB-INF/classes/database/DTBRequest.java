@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 
 import com.Game;
+import com.Response;
+import com.Topic;
 import com.User;
 
 
@@ -23,6 +25,10 @@ public final class DTBRequest {
     private static final String CHAMP_PASS   = "password";
     private static final String CHAMP_NAME   = "name";
     private static final String CHAMP_EMAIL   = "email";
+    private static final String CHAMP_CREATOR = "creator";
+    private static final String CHAMP_TEXT = "text";
+    private static final int CHAMP_IDTOPIC = "idTopic";
+    
     private Connection connect;
     
     public DTBRequest(){
@@ -120,5 +126,46 @@ public final class DTBRequest {
 		u.setElo(0);
 		u.setGames(new ArrayList<Game>());
 		return u;
+	}
+	
+	public Topic createTopic(HttpServletRequest request) throws SQLException {
+		Statement statement = connect.createStatement();
+		String name = getValeurChamp (request, CHAMP_NAME);
+		String creator = getValeurChamp (request, CHAMP_CREATOR);
+		Topic t = new Topic(name, creator);
+		String sql = "INSERT INTO TOPIC VALUES('"+String.valueOf(t.getId())+"','"+name+"','"+creator+"','"+String.valueOf(t.getDateCreation())+"','"+null+"')";
+		statement.executeUpdate(sql);
+		createResponse(request);
+		return t;
+	}
+	
+	public Response createResponse(HttpServletRequest request) throws SQLException {
+		Statement statement = connect.createStatement();
+		String text = getValeurChamp(request, CHAMP_TEXT);
+		String creator = getValeurChamp(request, CHAMP_CREATOR);
+		int idTopic = getValeurChamp(request, CHAMP_IDTOPIC);
+		Response r = new Response(text, creator, idTopic);
+		String sql = "INSERT INTO RESPONSE VALUES('"+String.valueOf(r.getId())+"','"+text+"','"+creator+"','"+String.valueOf(r.getDatePost())+"','"+String.valueOf(r.getIdTopic())+",)";
+		statement.executeUpdate(sql);
+		return r;
+	}
+	
+	public ArrayList<Response> getAllResponseByTopic (HttpServletRequest request) throws SQLException {
+		ArrayList<Response> allResponses = new ArrayList<Response>();
+		Statement statement = connect.createStatement();
+		int idTopic = getValeurChamp(request, CHAMP_IDTOPIC);
+		ResultSet result = statement.executeQuery("SELECT * FROM RESPONSES");
+		while (result.next()) {
+			if (result.getInt(5) == idTopic){
+				Response r = new Response();
+				r.setId(result.getInt(1));
+				r.setText(result.getString(2));
+				r.setCreator(result.getString(3));
+				r.setDatePost(result.getDate(4));
+				r.setIdTopic(result.getInt(5));
+				allResponses.add(r);
+			}
+		}
+		return allResponses;
 	}
 }
