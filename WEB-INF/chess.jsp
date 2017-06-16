@@ -16,6 +16,7 @@
 	</body>
 	<script>
 	$(document).ready(function(){
+		 var ws = new WebSocket("ws://172.19.35.85:8080/ChessPasCoder/wsgame");
 		var initGame = function () {
 			var cfg = {
 				draggable: true,
@@ -27,8 +28,18 @@
 		}
 		var handleMove = function(source, target) {
 			var move = game.move({from: source, to: target});
+			ws.send(move);
 		}
 		initGame();		
+		ws.onopen = function(){
+		};
+		ws.onmessage = function(message){
+		   game.move(message);
+		   board.position(game.fen());
+		};
+		function closeConnect(){
+			ws.close();
+		}
 	});
 	
 	</script>

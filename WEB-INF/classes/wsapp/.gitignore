@@ -3,3 +3,9 @@
 /ServerEndpoint.class
 /WebSocketTest.class
 /WsServer.class
+/WsChatServlet$MyMessageInbound.class
+/WsChatServlet.class
+/WsGameServlet.class
+/WsGameServlet$MyMessageInbound.class
+/WsGameServlet$MyGameInbound.class
+/WsChat.class
