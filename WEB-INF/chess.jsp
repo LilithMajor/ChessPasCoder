@@ -16,7 +16,7 @@
 	</body>
 	<script>
 	$(document).ready(function(){
-		 var ws = new WebSocket("ws://172.19.35.85:8080/ChessPasCoder/wsgame");
+		 var ws = new WebSocket("ws://172.19.35.150:8080/ChessPasCoder/wsgame/"+<%=request.getParameter("idGame")%>);
 		var initGame = function () {
 			var cfg = {
 				draggable: true,

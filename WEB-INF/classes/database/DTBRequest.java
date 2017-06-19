@@ -2,14 +2,10 @@ package database;
 
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 
@@ -27,7 +23,7 @@ public final class DTBRequest {
     private static final String CHAMP_EMAIL   = "email";
     private static final String CHAMP_CREATOR = "creator";
     private static final String CHAMP_TEXT = "text";
-    private static final int CHAMP_IDTOPIC = "idTopic";
+    private static final String CHAMP_IDTOPIC = "idTopic";
     
     private Connection connect;
     
@@ -55,7 +51,7 @@ public final class DTBRequest {
 				ArrayList<Game> games = new ArrayList<Game>();
 				ResultSet res = stategames.executeQuery("SELECT * FROM GAMES WHERE LoginWin='"+result.getString("Login")+"' OR LoginLoss='"+result.getString("Login")+"'");
 		    	while(res.next()) {
-		    		games.add(new Game(res.getInt(1),res.getInt(2),res.getString(3),res.getString(4)));
+		    		games.add(new Game(res.getInt(1),res.getInt(2),res.getString(3),res.getString(4),res.getInt(5)));
 		    	}
 				User u = new User();
 				u.setName(result.getString(1));
@@ -93,16 +89,12 @@ public final class DTBRequest {
 		}       
     	ResultSet res = stategames.executeQuery("SELECT * FROM GAMES WHERE LoginWin='"+result.getString("Login")+"' OR LoginLoss='"+result.getString("Login")+"'");
     	while(res.next()) {
-    		games.add(new Game(res.getInt(1),res.getInt(2),res.getString(3),res.getString(4)));
+    		games.add(new Game(res.getInt(1),res.getInt(2),res.getString(3),res.getString(4),res.getInt(5)));
     	}
     	u.setGames(games);
         return u;
     }
 
-	private String getValeurChamp(HttpServletRequest request, String nomChamp) {
-		 String valeur = request.getParameter( nomChamp );
-         return valeur;
-	}
 
 	public User registerUser(HttpServletRequest request) throws SQLException {
 		Statement statement = connect.createStatement();
@@ -143,7 +135,7 @@ public final class DTBRequest {
 		Statement statement = connect.createStatement();
 		String text = getValeurChamp(request, CHAMP_TEXT);
 		String creator = getValeurChamp(request, CHAMP_CREATOR);
-		int idTopic = getValeurChamp(request, CHAMP_IDTOPIC);
+		int idTopic = Integer.parseInt(getValeurChamp(request, CHAMP_IDTOPIC)); 
 		Response r = new Response(text, creator, idTopic);
 		String sql = "INSERT INTO RESPONSE VALUES('"+String.valueOf(r.getId())+"','"+text+"','"+creator+"','"+String.valueOf(r.getDatePost())+"','"+String.valueOf(r.getIdTopic())+",)";
 		statement.executeUpdate(sql);
@@ -153,7 +145,7 @@ public final class DTBRequest {
 	public ArrayList<Response> getAllResponseByTopic (HttpServletRequest request) throws SQLException {
 		ArrayList<Response> allResponses = new ArrayList<Response>();
 		Statement statement = connect.createStatement();
-		int idTopic = getValeurChamp(request, CHAMP_IDTOPIC);
+		int idTopic = Integer.parseInt(getValeurChamp(request, CHAMP_IDTOPIC)); 
 		ResultSet result = statement.executeQuery("SELECT * FROM RESPONSES");
 		while (result.next()) {
 			if (result.getInt(5) == idTopic){
@@ -167,5 +159,36 @@ public final class DTBRequest {
 			}
 		}
 		return allResponses;
+	}
+	
+	public ArrayList<Game> getAllGames() throws SQLException{
+		ArrayList<Game> games = new ArrayList<Game>();
+		Statement statement = connect.createStatement();
+		ResultSet res = statement.executeQuery("SELECT * FROM GAMES");
+		while(res.next()){
+			games.add(new Game(res.getInt(1),res.getInt(2),res.getString(3),res.getString(4),res.getInt(5)));
+		}
+		return games;
+	}
+
+	private String getValeurChamp(HttpServletRequest request, String nomChamp) {
+		 String valeur = request.getParameter( nomChamp );
+         return valeur;
+	}
+
+	public void setOnGoingGame(String idGame) throws SQLException {
+		Statement statement = connect.createStatement();
+		String sql = "UPDATE GAMES SET OnGoing = 1 WHERE Id ="+idGame;
+    	statement.executeUpdate(sql);
+	}
+
+	public int getOnGoingGameById(String idGame) throws SQLException {
+		Statement statement = connect.createStatement();
+		String sql = "SELECT onGoing FROM GAMES WHERE Id ="+idGame;
+		ResultSet res = statement.executeQuery(sql);
+		if(res.next()){
+			return res.getInt(1);
+		}
+		return (Integer) null;
 	}
 }

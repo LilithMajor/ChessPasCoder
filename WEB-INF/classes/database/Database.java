@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.User;
 
+import com.Game;
+
 
 public class Database {
 	private static Database INSTANCE = null;
@@ -32,6 +34,19 @@ public class Database {
 
 	public User registerUser(HttpServletRequest request) throws SQLException {
 		return db.registerUser(request);
+	}
+
+	public ArrayList<Game> getAllGames() throws SQLException {
+		// TODO Auto-generated method stub
+		return db.getAllGames();
+	}
+
+	public void setOnGoingGame(String idGame) throws SQLException {
+		db.setOnGoingGame(idGame);
+	}
+	
+	public int getOnGoingGameById(String idGame) throws SQLException{
+		return db.getOnGoingGameById(idGame);
 	}
 	
 }
