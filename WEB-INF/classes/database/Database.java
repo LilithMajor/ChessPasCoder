@@ -45,8 +45,8 @@ public class Database {
 		db.setOnGoingGame(idGame);
 	}
 	
-	public int getOnGoingGameById(String idGame) throws SQLException{
-		return db.getOnGoingGameById(idGame);
+	public Game getGameById(String idGame) throws SQLException{
+		return db.getGameById(idGame);
 	}
 	
 }

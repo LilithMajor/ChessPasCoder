@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.Game;
+
 import database.Database;
 
 
@@ -24,8 +26,11 @@ public class GameServlet extends HttpServlet{
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
 		Database db = Database.getDatabase();
+		Game game;
 		try {
-			if(db.getOnGoingGameById(request.getParameter("idGame"))==1){
+			game = db.getGameById(request.getParameter("idGame"));
+			request.setAttribute("game", game);
+			if(game.getOnGoing()==1){
 				response.sendRedirect(request.getContextPath() + "/index");
 			}else{
 				this.getServletContext().getRequestDispatcher("/WEB-INF/chess.jsp").forward( request, response );

@@ -182,13 +182,14 @@ public final class DTBRequest {
     	statement.executeUpdate(sql);
 	}
 
-	public int getOnGoingGameById(String idGame) throws SQLException {
+	public Game getGameById(String idGame) throws SQLException {
 		Statement statement = connect.createStatement();
-		String sql = "SELECT onGoing FROM GAMES WHERE Id ="+idGame;
+		String sql = "SELECT * FROM GAMES WHERE Id ="+idGame;
 		ResultSet res = statement.executeQuery(sql);
-		if(res.next()){
-			return res.getInt(1);
+		Game game = null;
+		while(res.next()){
+			game = new Game(res.getInt(1),res.getInt(2),res.getString(3),res.getString(4),res.getInt(5));
 		}
-		return (Integer) null;
+		return game;
 	}
 }
