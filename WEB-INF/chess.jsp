@@ -39,7 +39,7 @@
 			<%if(g.getOnGoing()==0){
 				%>$("#Color").after("Vous jouez avec les blancs");
 			<%}else{
-				%>$("#Color").after("Vous jouez avec les noirs (n'y allez pas trop fort avec le fouet)");
+				%>$("#Color").after("Vous jouez avec les noirs");
 				initGame();	
 			<%}%>
 		};
