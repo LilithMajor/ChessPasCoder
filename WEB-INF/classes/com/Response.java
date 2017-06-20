@@ -19,6 +19,14 @@ public class Response {
 		this.idTopic = idTopic;
 	}
 	
+	public Response(int id, String text, String creator, Date date, int idTopic){
+		this.id = id;
+		this.text = text;
+		this.creator = creator;
+		this.datePost = date;
+		this.idTopic = idTopic;
+	}
+	
 	public Response(){
 		
 	}
