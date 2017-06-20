@@ -5,21 +5,19 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.User;
-
 import com.Game;
-
+import com.User;
 
 public class Database {
 	private static Database INSTANCE = null;
 	private DTBRequest db;
-	
-	public Database(){
+
+	public Database() {
 		this.db = new DTBRequest();
 	}
-	
-	public static synchronized Database getDatabase(){
-		if(INSTANCE == null)
+
+	public static synchronized Database getDatabase() {
+		if (INSTANCE == null)
 			INSTANCE = new Database();
 		return INSTANCE;
 	}
@@ -44,9 +42,13 @@ public class Database {
 	public void setOnGoingGame(String idGame, int OnGoing) throws SQLException {
 		db.setOnGoingGame(idGame, OnGoing);
 	}
-	
-	public Game getGameById(String idGame) throws SQLException{
+
+	public Game getGameById(String idGame) throws SQLException {
 		return db.getGameById(idGame);
 	}
-	
+
+	public void createGame() throws SQLException {
+		db.createGame();
+	}
+
 }
