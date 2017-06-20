@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.Game;
@@ -149,12 +151,7 @@ public final class DTBRequest {
 		ResultSet result = statement.executeQuery("SELECT * FROM RESPONSES");
 		while (result.next()) {
 			if (result.getInt(5) == idTopic){
-				Response r = new Response();
-				r.setId(result.getInt(1));
-				r.setText(result.getString(2));
-				r.setCreator(result.getString(3));
-				r.setDatePost(result.getDate(4));
-				r.setIdTopic(result.getInt(5));
+				Response r = new Response(result.getInt(1),result.getString(2),result.getString(3),result.getDate(4), result.getInt(5));
 				allResponses.add(r);
 			}
 		}
@@ -191,5 +188,33 @@ public final class DTBRequest {
 			game = new Game(res.getInt(1),res.getInt(2),res.getString(3),res.getString(4),res.getInt(5));
 		}
 		return game;
+	}
+
+	public Topic getTopicById(String idTop) throws SQLException {
+		Statement statement = connect.createStatement();
+		String sql = "SELECT * FROM TOPICS WHERE Id_Topic ="+idTop;
+		String sql2 = "SELECT * FROM RESPONSES WHERE R_Id_Topic ="+idTop;
+		ResultSet res = statement.executeQuery(sql);
+		ResultSet res2 = statement.executeQuery(sql2);
+		ArrayList<Response> rep = new ArrayList<Response>();
+		while(res2.next()){
+			rep.add(new Response(res2.getInt(1), res2.getString(2), res2.getString(3), res2.getDate(4), res2.getInt(5)));
+		}
+		Topic top = null;
+		while(res.next()){
+			top = new Topic(res.getInt(1), res.getString(2), res.getString(3), res.getDate(4), res.getDate(5));
+		}
+		top.setL_Rep(rep);
+		return top;
+	}
+
+	public ArrayList<Topic> getAllTopic() throws SQLException {
+		ArrayList<Topic> top = new ArrayList<Topic>();
+		Statement statement = connect.createStatement();
+		ResultSet res = statement.executeQuery("SELECT * FROM GAMES");
+		while(res.next()){
+			top.add(new Topic(res.getInt(1), res.getString(2), res.getString(3), res.getDate(4), res.getDate(5)));
+		}
+		return top;
 	}
 }

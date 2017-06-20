@@ -65,6 +65,25 @@
         <url-pattern>/wschat/WsChatServlet</url-pattern>
     </servlet-mapping>
 	
+	<servlet>
+        <servlet-name>forum</servlet-name>
+        <servlet-class>forum.ForumServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>forum</servlet-name>
+        <url-pattern>/forum</url-pattern>
+    </servlet-mapping>
+	
+	<servlet>
+        <servlet-name>topic</servlet-name>
+        <servlet-class>forum.TopicServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>topic</servlet-name>
+        <url-pattern>/topic</url-pattern>
+    </servlet-mapping>
 	
 	
 </web-app>

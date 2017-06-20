@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.User;
 
 import com.Game;
+import com.Topic;
 
 
 public class Database {
@@ -47,6 +48,14 @@ public class Database {
 	
 	public Game getGameById(String idGame) throws SQLException{
 		return db.getGameById(idGame);
+	}
+	
+	public Topic getTopicById(String idTop) throws SQLException{
+		return db.getTopicById(idTop);
+	}
+	
+	public ArrayList<Topic> getAllTopic() throws SQLException{
+		return db.getAllTopic();
 	}
 	
 }

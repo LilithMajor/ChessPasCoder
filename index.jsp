@@ -15,6 +15,7 @@
 		}else{
 			%>
 			<a href="<%=request.getContextPath()+"/game"%>">Game</a>
+			<a href="<%=request.getContextPath()+"/forum"%>">Forum</a>
 			<a href="<%=request.getContextPath()+"/disconnection"%>">Disconnect</a>
 			<h1>Welcome <%=user.getName()%> !</h1><%
 		}
