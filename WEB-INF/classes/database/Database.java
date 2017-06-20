@@ -5,22 +5,20 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.User;
-
 import com.Game;
 import com.Topic;
-
+import com.User;
 
 public class Database {
 	private static Database INSTANCE = null;
 	private DTBRequest db;
-	
-	public Database(){
+
+	public Database() {
 		this.db = new DTBRequest();
 	}
-	
-	public static synchronized Database getDatabase(){
-		if(INSTANCE == null)
+
+	public static synchronized Database getDatabase() {
+		if (INSTANCE == null)
 			INSTANCE = new Database();
 		return INSTANCE;
 	}
@@ -42,11 +40,11 @@ public class Database {
 		return db.getAllGames();
 	}
 
-	public void setOnGoingGame(String idGame) throws SQLException {
-		db.setOnGoingGame(idGame);
+	public void setOnGoingGame(String idGame, int OnGoing) throws SQLException {
+		db.setOnGoingGame(idGame, OnGoing);
 	}
-	
-	public Game getGameById(String idGame) throws SQLException{
+
+	public Game getGameById(String idGame) throws SQLException {
 		return db.getGameById(idGame);
 	}
 	
@@ -57,5 +55,7 @@ public class Database {
 	public ArrayList<Topic> getAllTopic() throws SQLException{
 		return db.getAllTopic();
 	}
-	
+	public void createGame() throws SQLException {
+		db.createGame();
+	}
 }
