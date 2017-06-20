@@ -65,6 +65,11 @@ INSERT INTO USERS VALUES ('Admin', 'admin','admin','alex.bournadet@etu.parisdesc
 INSERT INTO USERS VALUES ('Loser', 'loser','loser','alex.bournadet@etu.parisdescartes.fr', '0');
 INSERT INTO GAMES(Id, nbPlayer) VALUES (GAME_NUMBER.NEXTVAL, '0');
 INSERT INTO GAMES(Id, nbPlayer) VALUES (GAME_NUMBER.NEXTVAL, '0');
+INSERT INTO TOPICS VALUES ('1', 'Patate','admin',DATE '2017-02-20', DATE '2017-02-21');
+INSERT INTO TOPICS VALUES ('2', 'PatatePourrite','admin',DATE '2017-02-20', DATE '2017-02-21');
+INSERT INTO RESPONSES VALUES ('3', 'Je suis un rigolo','admin',DATE '2017-02-20', '1');
+INSERT INTO RESPONSES VALUES ('4', 'Je suis un rigolo qui mange du pain','admin',DATE '2017-02-20', '1');
+INSERT INTO RESPONSES VALUES ('5', 'Je suis un rigolo qui suce des bites','admin',DATE '2017-02-20', '2');
 
 
 COMMIT;
