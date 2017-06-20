@@ -15,6 +15,7 @@ import javax.websocket.server.ServerEndpoint;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.Game;
 import com.JsonDecoder;
 import com.JsonEncoder;
 
@@ -30,14 +31,12 @@ public class WsGameServlet{
     	Database db = Database.getDatabase();
         sessionList.add(session);
         System.out.println("Session game added for game :" + idGame);
-        if(sessionList.size() == 2){
-        	try {
-				db.setOnGoingGame(idGame);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        }
+        try {
+			db.setOnGoingGame(idGame, sessionList.size());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     @OnClose
@@ -46,21 +45,36 @@ public class WsGameServlet{
     }
  
     @OnMessage
-    public void onMessage(String msg){
+    public void onMessage(String msg, @PathParam("idGame") String idGame){
     	System.out.println("Session game received : " + msg);
-    	JSONObject json = null;
-    	try {
-			json = new JSONObject(msg);
-		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-        try{
-            for(Session session : sessionList){
-				//asynchronous communication
-            	System.out.println("le json" + json);
-                session.getBasicRemote().sendObject(json);
-            }
-        }catch(IOException | EncodeException e){}
+    	if(msg.equals("getOnGoing")){
+    		Database db = Database.getDatabase();
+    		try {
+				Game game = db.getGameById(idGame);
+				for(Session session : sessionList){
+    				//asynchronous communication
+                	System.out.println("On envoie le nombre de joueurs: " + game.getNbPlayer());
+                    session.getBasicRemote().sendObject(game.getNbPlayer());
+                }
+			} catch (SQLException | IOException | EncodeException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}else{
+    		JSONObject json = null;
+        	try {
+    			json = new JSONObject(msg);
+    		} catch (JSONException e1) {
+    			// TODO Auto-generated catch block
+    			e1.printStackTrace();
+    		}
+            try{
+                for(Session session : sessionList){
+    				//asynchronous communication
+                	System.out.println("le json" + json);
+                    session.getBasicRemote().sendObject(json);
+                }
+            }catch(IOException | EncodeException e){}
+    	}
     }
 }

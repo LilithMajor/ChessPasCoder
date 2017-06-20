@@ -5,14 +5,14 @@ public class Game {
 	private int nbMove;
 	private String loginWin;
 	private String loginLoss;
-	private int onGoing;
+	private int nbPlayer;
 	
-	public Game(int id, int nbMove, String LoginWin, String LoginLoss, int onGoing) {
+	public Game(int id, int nbMove, String LoginWin, String LoginLoss, int nbPlayer) {
 		this.setId(id);
 		this.nbMove = nbMove;
 		this.loginWin = LoginWin;
 		this.loginLoss = LoginLoss;
-		this.onGoing = onGoing;
+		this.nbPlayer = nbPlayer;
 	}
 	
 	public int getNbMove() {
@@ -46,11 +46,16 @@ public class Game {
 		this.loginLoss = loginLoss;
 	}
 
-	public int getOnGoing() {
-		return onGoing;
+	public int getNbPlayer() {
+		return nbPlayer;
 	}
 
-	public void setOnGoing(int onGoing) {
-		this.onGoing = onGoing;
+	public void setNbPlayer(int nbPlayer) {
+		this.nbPlayer = nbPlayer;
 	}
+	
+	public void addNbPlayer(){
+		nbPlayer++;
+	}
+
 }

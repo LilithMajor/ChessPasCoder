@@ -176,9 +176,9 @@ public final class DTBRequest {
          return valeur;
 	}
 
-	public void setOnGoingGame(String idGame) throws SQLException {
+	public void setOnGoingGame(String idGame, int OnGoing) throws SQLException {
 		Statement statement = connect.createStatement();
-		String sql = "UPDATE GAMES SET OnGoing = 1 WHERE Id ="+idGame;
+		String sql = "UPDATE GAMES SET OnGoing ="+OnGoing+"WHERE Id ="+idGame;
     	statement.executeUpdate(sql);
 	}
 

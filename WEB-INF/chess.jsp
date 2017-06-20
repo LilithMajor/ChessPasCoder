@@ -20,6 +20,7 @@
 	$(document).ready(function(){
 		<% Game g = (Game) request.getAttribute("game");%>
 		 var ws = new WebSocket("ws://172.19.35.150:8080/ChessPasCoder/wsgame/"+<%=g.getId()%>);
+		interval = setInterval(isOnGoing, 2000);
 		var initGame = function () {
 			var cfg = {
 				draggable: true,
@@ -34,20 +35,33 @@
 			ws.send(JSON.stringify(move));
 		}	
 		ws.onopen = function(){
-			<% Game g = (Game) request.getAttribute("game");%>
-			if(g.getOnGoing()==0){
-				$("Color").after("Vous jouez avec les blancs");
-			}else{
-				$("Color").after("Vous jouez avec les noirs (n'y allez pas trop fort avec le fouet)");
+			console.log(<%=g.getOnGoing()%>);
+			<%if(g.getOnGoing()==0){
+				%>$("#Color").after("Vous jouez avec les blancs");
+			<%}else{
+				%>$("#Color").after("Vous jouez avec les noirs (n'y allez pas trop fort avec le fouet)");
 				initGame();	
-			}
+			<%}%>
 		};
 		ws.onmessage = function(message){
-		  game.move(JSON.parse(message.data));
-		   board.position(game.fen());
+			if(message.data == "1" || message.data == "2"){
+				if(message.data == "2"){
+					console.log(message.data);
+					initGame();
+					clearInterval(interval);
+				}
+				console.log(message.data);
+			}else{
+				console.log(message.data);
+				game.move(JSON.parse(message.data));
+				board.position(game.fen());
+			}
 		};
 		function closeConnect(){
 			ws.close();
+		}
+		function isOnGoing(){
+			ws.send("getOnGoing");
 		}
 	});
 	
