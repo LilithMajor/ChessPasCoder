@@ -6,10 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-<<<<<<< HEAD
-import java.util.Date;
-=======
->>>>>>> 2567ab007e90b3f7b824908cc894499c6073ed7c
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -190,16 +186,17 @@ public final class DTBRequest {
 
 	public Topic getTopicById(String idTop) throws SQLException {
 		Statement statement = connect.createStatement();
-		String sql = "SELECT * FROM TOPICS WHERE Id_Topic ="+idTop;
-		String sql2 = "SELECT * FROM RESPONSES WHERE R_Id_Topic ="+idTop;
+		String sql = "SELECT * FROM TOPICS WHERE Id_Topic =" + idTop;
+		String sql2 = "SELECT * FROM RESPONSES WHERE R_Id_Topic =" + idTop;
 		ResultSet res = statement.executeQuery(sql);
 		ResultSet res2 = statement.executeQuery(sql2);
 		ArrayList<Response> rep = new ArrayList<Response>();
-		while(res2.next()){
-			rep.add(new Response(res2.getInt(1), res2.getString(2), res2.getString(3), res2.getDate(4), res2.getInt(5)));
+		while (res2.next()) {
+			rep.add(new Response(res2.getInt(1), res2.getString(2), res2.getString(3), res2.getDate(4),
+					res2.getInt(5)));
 		}
 		Topic top = null;
-		while(res.next()){
+		while (res.next()) {
 			top = new Topic(res.getInt(1), res.getString(2), res.getString(3), res.getDate(4), res.getDate(5));
 		}
 		top.setL_Rep(rep);
@@ -210,7 +207,7 @@ public final class DTBRequest {
 		ArrayList<Topic> top = new ArrayList<Topic>();
 		Statement statement = connect.createStatement();
 		ResultSet res = statement.executeQuery("SELECT * FROM GAMES");
-		while(res.next()){
+		while (res.next()) {
 			top.add(new Topic(res.getInt(1), res.getString(2), res.getString(3), res.getDate(4), res.getDate(5)));
 		}
 		return top;

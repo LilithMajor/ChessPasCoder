@@ -1,6 +1,5 @@
 package game;
 
-
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -8,34 +7,38 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.Game;
-import com.User;
 
 import database.Database;
 
-
-public class GameServlet extends HttpServlet{
+public class GameServlet extends HttpServlet {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
-		this.getServletContext().getRequestDispatcher("/WEB-INF/chess.jsp").forward( request, response );
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Database db = Database.getDatabase();
+		try {
+			db.createGame();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		response.sendRedirect(request.getContextPath() + "/index");
 	}
-	
-	public void doPost(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
+
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Database db = Database.getDatabase();
 		Game game;
 		try {
 			game = db.getGameById(request.getParameter("idGame"));
 			request.setAttribute("game", game);
-			if(game.getNbPlayer()==2){
+			if (game.getNbPlayer() == 2) {
 				response.sendRedirect(request.getContextPath() + "/index");
-			}else{
-				this.getServletContext().getRequestDispatcher("/WEB-INF/chess.jsp").forward( request, response );
+			} else {
+				this.getServletContext().getRequestDispatcher("/WEB-INF/chess.jsp").forward(request, response);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

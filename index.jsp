@@ -47,7 +47,7 @@
 					<th>Number of moves</th>
 					<th>Winner</th>
 					<th>Loser</th>
-					<th>Number of players in the game</th>
+					<th>Number of players</th>
 					<th>Join</th>
 				</tr>
 				<% for(Game g : (ArrayList<Game>) request.getAttribute("games")){%>
