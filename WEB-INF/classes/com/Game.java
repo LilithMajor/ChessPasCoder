@@ -49,7 +49,7 @@ public class Game {
 	public int getNbPlayer() {
 		return nbPlayer;
 	}
-
+ 
 	public void setNbPlayer(int nbPlayer) {
 		this.nbPlayer = nbPlayer;
 	}
