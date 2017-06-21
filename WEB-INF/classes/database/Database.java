@@ -68,4 +68,7 @@ public class Database {
 		db.setGame(idGame, nbMove, winner, loser);
 	}
 
+	public void createTopic(String parameter, String login, String s) throws SQLException {
+		db.createTopic(parameter, login, s);
+	}
 }

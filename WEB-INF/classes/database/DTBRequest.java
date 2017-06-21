@@ -280,10 +280,10 @@ public final class DTBRequest {
 		statement.executeUpdate(sql);
 	}
 
-	public void createTopic(int idtop, String text, String name, String date) throws SQLException {
+	public void createTopic(String text, String name, String date) throws SQLException {
 		Statement statement = connect.createStatement();
-		String sql = "INSERT INTO RESPONSES VALUES (RESPONSE_NUMBER.NEXTVAL, '" + text + "','" + name + "',DATE '"
-				+ date + "', '" + idtop + "')";
+		String sql = "INSERT INTO TOPICS VALUES (TOPIC_NUMBER.NEXTVAL, '" + text + "','" + name + "',DATE '" + date
+				+ "', null)";
 		statement.executeUpdate(sql);
 	}
 
