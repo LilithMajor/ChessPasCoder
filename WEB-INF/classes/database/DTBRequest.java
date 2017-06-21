@@ -145,25 +145,6 @@ public final class DTBRequest {
 		return r;
 	}
 	
-	public ArrayList<Response> getAllResponsesByTopic (HttpServletRequest request) throws SQLException {
-		ArrayList<Response> allResponses = new ArrayList<Response>();
-		Statement statement = connect.createStatement();
-		int idTopic = getValeurChamp(request, CHAMP_IDTOPIC);
-		ResultSet result = statement.executeQuery("SELECT * FROM RESPONSE");
-		while (result.next()) {
-			if (result.getInt(5) == idTopic){
-				Response r = new Response();
-				r.setId(result.getInt(1));
-				r.setText(result.getString(2));
-				r.setCreator(result.getString(3));
-				r.setDatePost(result.getDate(4));
-				r.setIdTopic(result.getInt(5));
-				allResponses.add(r);
-			}
-		}
-		return allResponses;
-	}	
-	
 	public ArrayList<Topic> getAllTopics (HttpServletRequest request) throws SQLException {
 		ArrayList<Topic> allTopics = new ArrayList<Topic>();
 		Statement statement = connect.createStatement();
@@ -214,7 +195,7 @@ public final class DTBRequest {
 			topics.add(t);
 		}
 		return topics;	
-
+	}
 	public ArrayList<Game> getAllGames() throws SQLException {
 		ArrayList<Game> games = new ArrayList<Game>();
 		Statement statement = connect.createStatement();
