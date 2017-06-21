@@ -58,6 +58,7 @@
 		ws.onmessage = function(message){
 			console.log(" Premier caractère du msg :" + message.data.charAt(0));
 			console.log("On regarde si c'est { ::: " + "{".charAt(0));
+			console.log(message.data);
 			if(message.data == "0" || message.data == "1" || message.data == "2"){
 				if(message.data == "2"){
 					console.log(message.data);
@@ -71,6 +72,7 @@
 				game.move(JSON.parse(message.data));
 				board.position(game.fen());
 			}else{
+				console.log("ça rentre ?");
 				$("#adversary").html(message.data);
 			}
 		};

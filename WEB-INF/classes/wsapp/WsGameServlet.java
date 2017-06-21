@@ -83,7 +83,7 @@ public class WsGameServlet {
 			try {
 				for (Session session : sessionList) {
 					// asynchronous communication
-					System.out.println("le msg" + msg);
+					System.out.println("le msg " + msg);
 					session.getBasicRemote().sendObject(msg);
 				}
 			} catch (IOException | EncodeException e) {
