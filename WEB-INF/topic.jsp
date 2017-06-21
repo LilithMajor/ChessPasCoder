@@ -23,5 +23,6 @@
 			<table>
 			<form action="topic" method="post"><input type="hidden" name="idTopic" value="<%=t.getId()%>"><input type="text" name="newPost"><input type="submit" value="Send"></form>
         </form>
+		<form action="forum" method="get"><input type="submit" value="Retour"></form>
     </body>
 </html>
