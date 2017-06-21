@@ -1,3 +1,4 @@
+<%@ page import="com.Game"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -6,7 +7,8 @@
         <link type="text/css" rel="stylesheet" href="./css/chessboard-0.3.0.min.css" />
     </head>
 	<body>
-    <div id="gameBoard" style="width: 400px"></div>
+    <div id="gameBoard" style="width: 400px"><img src="./img/Loading_icon.gif" style="width: 400px"></div>
+	<p id="Color"></p>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
     <script src="./js/chessboard-0.3.0.min.js"></script>
 	<script
@@ -16,7 +18,9 @@
 	</body>
 	<script>
 	$(document).ready(function(){
-		 var ws = new WebSocket("ws://172.19.35.85:8080/ChessPasCoder/wsgame");
+		<% Game g = (Game) request.getAttribute("game");%>
+		 var ws = new WebSocket("ws://172.19.35.150:8080/ChessPasCoder/wsgame/"+<%=g.getId()%>);
+		interval = setInterval(isOnGoing, 2000);
 		var initGame = function () {
 			var cfg = {
 				draggable: true,
@@ -29,16 +33,35 @@
 		var handleMove = function(source, target) {
 			var move = game.move({from: source, to: target});
 			ws.send(JSON.stringify(move));
-		}
-		initGame();		
+		}	
 		ws.onopen = function(){
+			console.log(<%=g.getOnGoing()%>);
+			<%if(g.getOnGoing()==0){
+				%>$("#Color").after("Vous jouez avec les blancs");
+			<%}else{
+				%>$("#Color").after("Vous jouez avec les noirs");
+				initGame();	
+			<%}%>
 		};
 		ws.onmessage = function(message){
-		  game.move(JSON.parse(message.data));
-		   board.position(game.fen());
+			if(message.data == "1" || message.data == "2"){
+				if(message.data == "2"){
+					console.log(message.data);
+					initGame();
+					clearInterval(interval);
+				}
+				console.log(message.data);
+			}else{
+				console.log(message.data);
+				game.move(JSON.parse(message.data));
+				board.position(game.fen());
+			}
 		};
 		function closeConnect(){
 			ws.close();
+		}
+		function isOnGoing(){
+			ws.send("getOnGoing");
 		}
 	});
 	

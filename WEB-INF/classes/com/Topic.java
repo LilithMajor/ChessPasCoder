@@ -1,5 +1,6 @@
 package com;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Topic {
@@ -7,8 +8,9 @@ public class Topic {
 	private int id;
 	private String name;
 	private String creator;
-	Date dateCreation;
-	Date dateClose;
+	private Date dateCreation;
+	private Date dateClose;
+	private ArrayList<Response> L_Rep;
 	
 	private static int compteur = 1;
 	
@@ -18,6 +20,16 @@ public class Topic {
 		this.creator = creator;
 		dateCreation = new java.util.Date();
 		dateClose = null;
+		this.L_Rep = new ArrayList<Response>();
+	}
+	
+	public Topic (int i, String name, String creator, Date dateOpen, Date dateClose, ArrayList<Response> rep) {
+		this.id = i;
+		this.name = name;
+		this.creator = creator;
+		this.dateCreation = dateOpen;
+		this.dateClose = dateClose;
+		this.setL_Rep(rep);
 	}
 	
 	public Topic () {
@@ -64,5 +76,15 @@ public class Topic {
 		this.dateClose = dateClose;
 	}
 
+	public ArrayList<Response> getL_Rep() {
+		return L_Rep;
+	}
 
+	public void setL_Rep(ArrayList<Response> l_Rep) {
+		L_Rep = l_Rep;
+	}
+	
+	public int getNumberOfResponse(){
+		return L_Rep.size();
+	}
 }

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.Game;
 import com.User;
 
 import database.Database;
@@ -23,8 +24,16 @@ public class Index extends HttpServlet {
 	public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
 		Database db = Database.getDatabase();
 		ArrayList<User> users = new ArrayList<User>();
-		users = db.getAllUsers();
+		ArrayList<Game> games = new ArrayList<Game>();
+		try {
+			games = db.getAllGames();
+			users = db.getAllUsers();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		request.setAttribute("users", users);
+		request.setAttribute("games", games);
 		this.getServletContext().getRequestDispatcher("/index.jsp").forward( request, response );
 	}
 	
