@@ -12,6 +12,7 @@
 	<p id="Color"></p>
 	<p>Status: <span id="status"></span></p>
 	<p>Your adversary : </p><p id="adversary"></p>
+	<input type="button" id="resign" value="Resign">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
     <script src="./js/chessboard-0.3.0.min.js"></script>
 	<script
@@ -78,6 +79,7 @@
 			}else{
 				if(message.data != "<%=u.getLogin()%>"){
 					$("#adversary").html(message.data);
+					clearInterval(interval);
 				}
 			}
 		};
@@ -129,7 +131,9 @@
 		  else if(game.in_threefold_repetition()){
 			  status = 'Game over, in threefold position';
 		  }
-
+		  else if(game.insufficient_material()){
+			  status = 'Game over, insufficient material';
+		  }
 		  // game still on
 		  else {
 			status = moveColor + ' to move';
@@ -141,6 +145,14 @@
 		  }
 		  $("#status").html(status);
 		};
+		$("#resign").on("click", function(){
+			ws.send(JSON.stringify({
+					'nbMove' : nbMove,
+					'Winner' : $("#adversary").text(),
+					'Loser' : "<%=u.getLogin()%>",
+			}));
+			chess.clear();
+		});
 	});
 	</script>
 </html>
