@@ -11,8 +11,8 @@
     <div id="gameBoard" style="width: 400px"><img src="./img/Loading_icon.gif" style="width: 400px"></div>
 	<p id="Color"></p>
 	<p>Status: <span id="status"></span></p>
-	<p>Your adversary : </p><p id="adversary"></p>
-	<input type="button" id="resign" value="Resign">
+	<p>Your adversary : </p><p id="adversary">Waiting</p>
+	<p id="return"></p>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
     <script src="./js/chessboard-0.3.0.min.js"></script>
 	<script
@@ -64,6 +64,7 @@
 		}
 		ws.onmessage = function(message){
 			console.log(message.data);
+			console.log(message.data.charAt(1));
 			if(message.data == "0" || message.data == "1" || message.data == "2"){
 				if(message.data == "2"){
 					console.log(message.data);
@@ -79,7 +80,6 @@
 			}else{
 				if(message.data != "<%=u.getLogin()%>"){
 					$("#adversary").html(message.data);
-					clearInterval(interval);
 				}
 			}
 		};
@@ -116,6 +116,7 @@
 					'Loser' : "<%=u.getLogin()%>",
 				}));
 			}
+			$("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
 			clearInterval(statusupdate);
 		  }
 		  // draw?
@@ -126,13 +127,16 @@
 		  //stalemate ?
 		  else if(game.in_stalemate() === true){
 			  status = 'Game over, stalemate position';
+			  clearInterval(statusupdate);
 		  }
 		  //threefold repetition ?
 		  else if(game.in_threefold_repetition()){
 			  status = 'Game over, in threefold position';
+			  clearInterval(statusupdate);
 		  }
 		  else if(game.insufficient_material()){
 			  status = 'Game over, insufficient material';
+			  clearInterval(statusupdate);
 		  }
 		  // game still on
 		  else {
@@ -145,14 +149,6 @@
 		  }
 		  $("#status").html(status);
 		};
-		$("#resign").on("click", function(){
-			ws.send(JSON.stringify({
-					'nbMove' : nbMove,
-					'Winner' : $("#adversary").text(),
-					'Loser' : "<%=u.getLogin()%>",
-			}));
-			chess.clear();
-		});
 	});
 	</script>
 </html>

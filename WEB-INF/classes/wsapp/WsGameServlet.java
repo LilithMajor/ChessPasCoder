@@ -94,7 +94,6 @@ public class WsGameServlet {
 				}
 			}
 		} else {
-			System.out.println("ça rentre pas la ?");
 			try {
 				for (Session session : sessionList) {
 					// asynchronous communication
