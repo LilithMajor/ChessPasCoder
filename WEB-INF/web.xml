@@ -85,5 +85,14 @@
         <url-pattern>/topic</url-pattern>
     </servlet-mapping>
 	
+	<servlet>
+        <servlet-name>addtopic</servlet-name>
+        <servlet-class>forum.AddTopicServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>addtopic</servlet-name>
+        <url-pattern>/addtopic</url-pattern>
+    </servlet-mapping>
 	
 </web-app>

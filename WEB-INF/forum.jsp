@@ -31,5 +31,6 @@
 				<%}%>
 			<table>
         </form>
+		<form action="addtopic" method="post"><label>Pour créer un topic entrer un nom <input type="text" name="newTopic"><input type="submit" value="Create topic"></form>
     </body>
 </html>

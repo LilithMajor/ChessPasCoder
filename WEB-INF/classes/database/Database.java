@@ -62,4 +62,8 @@ public class Database {
 	public void createResponse(int idtop, String text, String name, String date) throws SQLException {
 		db.createResponse(idtop, text, name, date);
 	}
+
+	public void createTopic(String parameter, String login, String s) throws SQLException {
+		db.createTopic(parameter, login, s);
+	}
 }
