@@ -32,6 +32,10 @@ public class Topic {
 		this.setL_Rep(rep);
 	}
 	
+	public Topic () {
+		
+	}
+	
 	public int getId() {
 		return id;
 	}
