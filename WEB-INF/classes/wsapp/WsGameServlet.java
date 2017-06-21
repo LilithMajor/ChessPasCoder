@@ -30,7 +30,7 @@ public class WsGameServlet {
 	public void onOpen(Session session, @PathParam("idGame") String idGame) {
 		Database db = Database.getDatabase();
 		sessionList.add(session);
-		System.out.println("Session game added for game :" + idGame);
+		System.out.println("Session added for game :" + idGame);
 		try {
 			db.setOnGoingGame(idGame, sessionList.size());
 		} catch (SQLException e) {
@@ -47,6 +47,8 @@ public class WsGameServlet {
 	@OnMessage
 	public void onMessage(String msg, @PathParam("idGame") String idGame) {
 		System.out.println("Session game received : " + msg);
+		System.out.println(msg.charAt(0));
+		System.out.println("{".charAt(0));
 		if (msg.equals("getOnGoing")) {
 			Database db = Database.getDatabase();
 			try {
@@ -60,7 +62,7 @@ public class WsGameServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} else {
+		} else if (msg.charAt(0) == "{".charAt(0)) {
 			JSONObject json = null;
 			try {
 				json = new JSONObject(msg);
@@ -73,6 +75,16 @@ public class WsGameServlet {
 					// asynchronous communication
 					System.out.println("le json" + json);
 					session.getBasicRemote().sendObject(json);
+				}
+			} catch (IOException | EncodeException e) {
+			}
+		} else {
+			System.out.println("ça rentre pas la ?");
+			try {
+				for (Session session : sessionList) {
+					// asynchronous communication
+					System.out.println("le msg" + msg);
+					session.getBasicRemote().sendObject(msg);
 				}
 			} catch (IOException | EncodeException e) {
 			}
