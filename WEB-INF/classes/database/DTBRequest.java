@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.Game;
@@ -144,8 +145,8 @@ public final class DTBRequest {
 		statement.executeUpdate(sql);
 		return r;
 	}
-	
-	public ArrayList<Topic> getAllTopics (HttpServletRequest request) throws SQLException {
+
+	public ArrayList<Topic> getAllTopics(HttpServletRequest request) throws SQLException {
 		ArrayList<Topic> allTopics = new ArrayList<Topic>();
 		Statement statement = connect.createStatement();
 		ResultSet result = statement.executeQuery("SELECT * FROM TOPIC");
@@ -160,8 +161,8 @@ public final class DTBRequest {
 		}
 		return allTopics;
 	}
-	
-	public ArrayList<Topic> getTopicsByName (HttpServletRequest request) throws SQLException {
+
+	public ArrayList<Topic> getTopicsByName(HttpServletRequest request) throws SQLException {
 		ArrayList<Topic> topics = new ArrayList<Topic>();
 		Statement statement = connect.createStatement();
 		String name = getValeurChamp(request, CHAMP_NAME);
@@ -176,10 +177,10 @@ public final class DTBRequest {
 			t.setDateClose(result.getDate(5));
 			topics.add(t);
 		}
-		return topics;	
+		return topics;
 	}
-	
-	public ArrayList<Topic> getTopicsByCreator (HttpServletRequest request) throws SQLException {
+
+	public ArrayList<Topic> getTopicsByCreator(HttpServletRequest request) throws SQLException {
 		ArrayList<Topic> topics = new ArrayList<Topic>();
 		Statement statement = connect.createStatement();
 		String creator = getValeurChamp(request, CHAMP_CREATOR);
@@ -199,7 +200,7 @@ public final class DTBRequest {
 	public ArrayList<Game> getAllGames() throws SQLException {
 		ArrayList<Game> games = new ArrayList<Game>();
 		Statement statement = connect.createStatement();
-		ResultSet res = statement.executeQuery("SELECT * FROM GAMES");
+		ResultSet res = statement.executeQuery("SELECT * FROM GAMES WHERE nbPlayer <> 2");
 		while (res.next()) {
 			games.add(new Game(res.getInt(1), res.getInt(2), res.getString(3), res.getString(4), res.getInt(5)));
 		}
@@ -219,7 +220,7 @@ public final class DTBRequest {
 
 	public void setOnGoingGame(String idGame, int OnGoing) throws SQLException {
 		Statement statement = connect.createStatement();
-		String sql = "UPDATE GAMES SET OnGoing =" + OnGoing + "WHERE Id =" + idGame;
+		String sql = "UPDATE GAMES SET nbPlayer =" + OnGoing + "WHERE Id =" + idGame;
 		statement.executeUpdate(sql);
 	}
 
@@ -236,11 +237,12 @@ public final class DTBRequest {
 
 	public Topic getTopicById(String idTop) throws SQLException {
 		Statement statement = connect.createStatement();
-		String sql = "SELECT * FROM TOPICS WHERE Id_Topic="+idTop;
+		String sql = "SELECT * FROM TOPICS WHERE Id_Topic=" + idTop;
 		ResultSet res = statement.executeQuery(sql);
 		Topic top = null;
-		while(res.next()){
-			top = new Topic(res.getInt(1), res.getString(2), res.getString(3), res.getDate(4), res.getDate(5), getAllResponsesByTopic(Integer.parseInt(idTop)));
+		while (res.next()) {
+			top = new Topic(res.getInt(1), res.getString(2), res.getString(3), res.getDate(4), res.getDate(5),
+					getAllResponsesByTopic(Integer.parseInt(idTop)));
 		}
 		return top;
 	}
@@ -249,35 +251,52 @@ public final class DTBRequest {
 		ArrayList<Topic> top = new ArrayList<Topic>();
 		Statement statement = connect.createStatement();
 		ResultSet res = statement.executeQuery("SELECT * FROM TOPICS");
-		while(res.next()){
+		while (res.next()) {
 			int i = res.getInt(1);
 			System.out.println(i);
-			top.add(new Topic(i, res.getString(2), res.getString(3), res.getDate(4), res.getDate(5), getAllResponsesByTopic(i)));
+			top.add(new Topic(i, res.getString(2), res.getString(3), res.getDate(4), res.getDate(5),
+					getAllResponsesByTopic(i)));
 		}
 		return top;
 	}
-	
-	public ArrayList<Response> getAllResponsesByTopic(int i) throws SQLException{
-		String sql2 = "SELECT * FROM RESPONSES WHERE R_Id_Topic ="+i;
+
+	public ArrayList<Response> getAllResponsesByTopic(int i) throws SQLException {
+		String sql2 = "SELECT * FROM RESPONSES WHERE R_Id_Topic =" + i;
 		Statement statement2 = connect.createStatement();
 		ResultSet res2 = statement2.executeQuery(sql2);
 		ArrayList<Response> rep = new ArrayList<Response>();
-		while(res2.next()){
-			rep.add(new Response(res2.getInt(1), res2.getString(2), res2.getString(3), res2.getDate(4), res2.getInt(5)));
+		while (res2.next()) {
+			rep.add(new Response(res2.getInt(1), res2.getString(2), res2.getString(3), res2.getDate(4),
+					res2.getInt(5)));
 		}
 		return rep;
 	}
 
 	public void createResponse(int idtop, String text, String name, String date) throws SQLException {
 		Statement statement = connect.createStatement();
-		String sql = "INSERT INTO RESPONSES VALUES (RESPONSE_NUMBER.NEXTVAL, '"+text+"','"+name+"',DATE '"+date+"', '"+idtop+"')";
+		String sql = "INSERT INTO RESPONSES VALUES (RESPONSE_NUMBER.NEXTVAL, '" + text + "','" + name + "',DATE '"
+				+ date + "', '" + idtop + "')";
 		statement.executeUpdate(sql);
 	}
-	
-	public void createTopic(int idtop, String text, String name, String date) throws SQLException {
-		Statement statement = connect.createStatement();
-		String sql = "INSERT INTO RESPONSES VALUES (RESPONSE_NUMBER.NEXTVAL, '"+text+"','"+name+"',DATE '"+date+"', '"+idtop+"')";
-		statement.executeUpdate(sql);
 
+	public void createTopic(String text, String name, String date) throws SQLException {
+		Statement statement = connect.createStatement();
+		String sql = "INSERT INTO TOPICS VALUES (TOPIC_NUMBER.NEXTVAL, '" + text + "','" + name + "',DATE '" + date
+				+ "', null)";
+		statement.executeUpdate(sql);
+	}
+
+	public void setGame(String idGame, int nbMove, String winner, String loser) {
+		Statement statement;
+		System.out.println(nbMove);
+		try {
+			statement = connect.createStatement();
+			String sql = "UPDATE GAMES SET nbRound =" + nbMove + ", LoginWin='" + winner + "', LoginLoss='" + loser
+					+ "' WHERE Id =" + idGame;
+			statement.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

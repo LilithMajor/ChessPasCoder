@@ -35,7 +35,7 @@ public class GameServlet extends HttpServlet {
 		try {
 			game = db.getGameById(request.getParameter("idGame"));
 			request.setAttribute("game", game);
-			if (game.getNbPlayer() == 2) {
+			if (game.getNbPlayer() >= 2) {
 				response.sendRedirect(request.getContextPath() + "/index");
 			} else {
 				this.getServletContext().getRequestDispatcher("/WEB-INF/chess.jsp").forward(request, response);

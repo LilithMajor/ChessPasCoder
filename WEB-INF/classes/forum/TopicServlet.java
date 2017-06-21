@@ -37,15 +37,17 @@ public class TopicServlet extends HttpServlet{
 		Date d = new java.util.Date();
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		String s = df.format(d);
-		HttpSession session = request.getSession(true);
-		User n = (User) session.getAttribute("ATT_SESSION_USER");
+		HttpSession session = request.getSession();
+		User n = (User) session.getAttribute("user");
 		try {
 			Topic t = db.getTopicById(request.getParameter("idTopic"));
+			System.out.println(n.getLogin());
+			System.out.println(t.getId());
 			db.createResponse(t.getId(), request.getParameter("newPost"), n.getLogin(), s );
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		response.sendRedirect(request.getContextPath() + "/topic");
+		this.doGet(request, response);
 	}
 }
