@@ -46,11 +46,11 @@ public class WsGameServlet {
 
 	@OnMessage
 	public void onMessage(String msg, @PathParam("idGame") String idGame) {
+		Database db = Database.getDatabase();
 		System.out.println("Session game received : " + msg);
 		System.out.println(msg.charAt(0));
 		System.out.println("{".charAt(0));
 		if (msg.equals("getOnGoing")) {
-			Database db = Database.getDatabase();
 			try {
 				Game game = db.getGameById(idGame);
 				for (Session session : sessionList) {
@@ -63,20 +63,35 @@ public class WsGameServlet {
 				e.printStackTrace();
 			}
 		} else if (msg.charAt(0) == "{".charAt(0)) {
-			JSONObject json = null;
-			try {
-				json = new JSONObject(msg);
-			} catch (JSONException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			try {
-				for (Session session : sessionList) {
-					// asynchronous communication
-					System.out.println("le json" + json);
-					session.getBasicRemote().sendObject(json);
+			if (msg.charAt(2) == "n".charAt(0)) {
+				JSONObject json = null;
+				try {
+					json = new JSONObject(msg);
+					int nbMove = json.getInt("nbMove");
+					String winner = json.getString("Winner");
+					String loser = json.getString("Loser");
+					System.out.println(nbMove + winner + loser);
+					db.setGame(idGame, nbMove, winner, loser);
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
-			} catch (IOException | EncodeException e) {
+			} else {
+				JSONObject json = null;
+				try {
+					json = new JSONObject(msg);
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					for (Session session : sessionList) {
+						// asynchronous communication
+						System.out.println("le json" + json);
+						session.getBasicRemote().sendObject(json);
+					}
+				} catch (IOException | EncodeException e) {
+				}
 			}
 		} else {
 			System.out.println("ça rentre pas la ?");
@@ -84,9 +99,9 @@ public class WsGameServlet {
 				for (Session session : sessionList) {
 					// asynchronous communication
 					System.out.println("le msg " + msg);
-					session.getBasicRemote().sendObject(msg);
+					session.getBasicRemote().sendText(msg);
 				}
-			} catch (IOException | EncodeException e) {
+			} catch (IOException e) {
 			}
 		}
 	}

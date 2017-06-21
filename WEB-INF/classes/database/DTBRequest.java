@@ -145,27 +145,8 @@ public final class DTBRequest {
 		statement.executeUpdate(sql);
 		return r;
 	}
-	
-	public ArrayList<Response> getAllResponsesByTopic (HttpServletRequest request) throws SQLException {
-		ArrayList<Response> allResponses = new ArrayList<Response>();
-		Statement statement = connect.createStatement();
-		int idTopic = getValeurChamp(request, CHAMP_IDTOPIC);
-		ResultSet result = statement.executeQuery("SELECT * FROM RESPONSE");
-		while (result.next()) {
-			if (result.getInt(5) == idTopic){
-				Response r = new Response();
-				r.setId(result.getInt(1));
-				r.setText(result.getString(2));
-				r.setCreator(result.getString(3));
-				r.setDatePost(result.getDate(4));
-				r.setIdTopic(result.getInt(5));
-				allResponses.add(r);
-			}
-		}
-		return allResponses;
-	}	
-	
-	public ArrayList<Topic> getAllTopics (HttpServletRequest request) throws SQLException {
+
+	public ArrayList<Topic> getAllTopics(HttpServletRequest request) throws SQLException {
 		ArrayList<Topic> allTopics = new ArrayList<Topic>();
 		Statement statement = connect.createStatement();
 		ResultSet result = statement.executeQuery("SELECT * FROM TOPIC");
@@ -180,8 +161,8 @@ public final class DTBRequest {
 		}
 		return allTopics;
 	}
-	
-	public ArrayList<Topic> getTopicsByName (HttpServletRequest request) throws SQLException {
+
+	public ArrayList<Topic> getTopicsByName(HttpServletRequest request) throws SQLException {
 		ArrayList<Topic> topics = new ArrayList<Topic>();
 		Statement statement = connect.createStatement();
 		String name = getValeurChamp(request, CHAMP_NAME);
@@ -196,10 +177,10 @@ public final class DTBRequest {
 			t.setDateClose(result.getDate(5));
 			topics.add(t);
 		}
-		return topics;	
+		return topics;
 	}
-	
-	public ArrayList<Topic> getTopicsByCreator (HttpServletRequest request) throws SQLException {
+
+	public ArrayList<Topic> getTopicsByCreator(HttpServletRequest request) throws SQLException {
 		ArrayList<Topic> topics = new ArrayList<Topic>();
 		Statement statement = connect.createStatement();
 		String creator = getValeurChamp(request, CHAMP_CREATOR);
@@ -214,7 +195,8 @@ public final class DTBRequest {
 			t.setDateClose(result.getDate(5));
 			topics.add(t);
 		}
-		return topics;	
+		return topics;
+	}
 
 	public ArrayList<Game> getAllGames() throws SQLException {
 		ArrayList<Game> games = new ArrayList<Game>();
@@ -303,6 +285,19 @@ public final class DTBRequest {
 		String sql = "INSERT INTO RESPONSES VALUES (RESPONSE_NUMBER.NEXTVAL, '" + text + "','" + name + "',DATE '"
 				+ date + "', '" + idtop + "')";
 		statement.executeUpdate(sql);
+	}
 
+	public void setGame(String idGame, int nbMove, String winner, String loser) {
+		Statement statement;
+		System.out.println(nbMove);
+		try {
+			statement = connect.createStatement();
+			String sql = "UPDATE GAMES SET nbRound =" + nbMove + ", LoginWin='" + winner + "', LoginLoss='" + loser
+					+ "' WHERE Id =" + idGame;
+			statement.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
