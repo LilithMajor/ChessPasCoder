@@ -20,6 +20,10 @@ public class Topic {
 		dateClose = null;
 	}
 	
+	public Topic () {
+		
+	}
+	
 	public int getId() {
 		return id;
 	}
