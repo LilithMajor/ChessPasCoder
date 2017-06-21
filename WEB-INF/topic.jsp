@@ -11,16 +11,17 @@
     <body>
         <form method="post" action="topic">
            <table id="topic">
-				<% Topic t = (Topic) (request.getAttribute("topic"));
-					for(Response r : t.getL_Rep()){%>
+				<% Topic t = (Topic) (request.getAttribute("topic"));%>
+					<%for(Response r : t.getL_Rep()){%>
 						<tr class="ligne">
-							<td><%=t.getId()%></td>
-							<td><%=t.getText()%></td>
-							<td><%=t.getCreator()%></td>
-							<td><%=t.getDatePost()%></td>
-						</tr>		
+							<td><%=r.getId()%></td>
+							<td><%=r.getText()%></td>
+							<td><%=r.getCreator()%></td>
+							<td><%=r.getDatePost()%></td>
+						<tr>		
 				<%}%>
 			<table>
+			<form action="topic" method="post"><input type="hidden" name="idTopic" value="<%=t.getId()%>"><input type="text" name="newPost"><input type="submit" value="Send"></form>
         </form>
     </body>
 </html>

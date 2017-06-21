@@ -20,14 +20,16 @@ public class Topic {
 		this.creator = creator;
 		dateCreation = new java.util.Date();
 		dateClose = null;
+		this.L_Rep = new ArrayList<Response>();
 	}
 	
-	public Topic (int i, String name, String creator, Date dateOpen, Date dateClose) {
-		this.id = id;
+	public Topic (int i, String name, String creator, Date dateOpen, Date dateClose, ArrayList<Response> rep) {
+		this.id = i;
 		this.name = name;
 		this.creator = creator;
-		dateCreation = dateOpen;
-		dateClose = dateClose;
+		this.dateCreation = dateOpen;
+		this.dateClose = dateClose;
+		this.setL_Rep(rep);
 	}
 	
 	public int getId() {

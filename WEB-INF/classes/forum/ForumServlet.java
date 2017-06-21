@@ -37,7 +37,7 @@ public class ForumServlet extends HttpServlet{
 		Database db = Database.getDatabase();
 		Topic topic;
 		try {
-			topic = db.getTopicById(request.getParameter("IdTopic"));
+			topic = db.getTopicById(request.getParameter("idTopic"));
 			request.setAttribute("topic", topic);
 			this.getServletContext().getRequestDispatcher("/WEB-INF/topic.jsp").forward( request, response );
 		} catch (SQLException e) {

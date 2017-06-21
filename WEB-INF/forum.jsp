@@ -26,7 +26,7 @@
 							<td><%=t.getDateCreation()%></td>
 							<td><%=t.getDateClose()%></td>
 							<td><%=t.getNumberOfResponse()%></td>
-							<form action="forum" method="post"><td><input type="hidden" name="IdTopic" value="<%=t.getId()%>"><input type="submit" value="See Topic"></td></form>
+							<form action="forum" method="post"><td><input type="hidden" name="idTopic" value="<%=t.getId()%>"><input type="submit" value="See Topic"></td></form>
 						</tr>		
 				<%}%>
 			<table>

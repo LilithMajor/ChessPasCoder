@@ -58,4 +58,8 @@ public class Database {
 	public void createGame() throws SQLException {
 		db.createGame();
 	}
+	
+	public void createResponse(int idtop, String text, String name, String date) throws SQLException {
+		db.createResponse(idtop, text, name, date);
+	}
 }

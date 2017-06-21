@@ -6,11 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-<<<<<<< HEAD
 import java.util.Date;
-=======
->>>>>>> 2567ab007e90b3f7b824908cc894499c6073ed7c
-
 import javax.servlet.http.HttpServletRequest;
 
 import com.Game;
@@ -190,29 +186,47 @@ public final class DTBRequest {
 
 	public Topic getTopicById(String idTop) throws SQLException {
 		Statement statement = connect.createStatement();
-		String sql = "SELECT * FROM TOPICS WHERE Id_Topic ="+idTop;
-		String sql2 = "SELECT * FROM RESPONSES WHERE R_Id_Topic ="+idTop;
+		String sql = "SELECT * FROM TOPICS WHERE Id_Topic="+idTop;
 		ResultSet res = statement.executeQuery(sql);
-		ResultSet res2 = statement.executeQuery(sql2);
-		ArrayList<Response> rep = new ArrayList<Response>();
-		while(res2.next()){
-			rep.add(new Response(res2.getInt(1), res2.getString(2), res2.getString(3), res2.getDate(4), res2.getInt(5)));
-		}
 		Topic top = null;
 		while(res.next()){
-			top = new Topic(res.getInt(1), res.getString(2), res.getString(3), res.getDate(4), res.getDate(5));
+			top = new Topic(res.getInt(1), res.getString(2), res.getString(3), res.getDate(4), res.getDate(5), getAllResponsesByTopic(Integer.parseInt(idTop)));
 		}
-		top.setL_Rep(rep);
 		return top;
 	}
 
 	public ArrayList<Topic> getAllTopic() throws SQLException {
 		ArrayList<Topic> top = new ArrayList<Topic>();
 		Statement statement = connect.createStatement();
-		ResultSet res = statement.executeQuery("SELECT * FROM GAMES");
+		ResultSet res = statement.executeQuery("SELECT * FROM TOPICS");
 		while(res.next()){
-			top.add(new Topic(res.getInt(1), res.getString(2), res.getString(3), res.getDate(4), res.getDate(5)));
+			int i = res.getInt(1);
+			System.out.println(i);
+			top.add(new Topic(i, res.getString(2), res.getString(3), res.getDate(4), res.getDate(5), getAllResponsesByTopic(i)));
 		}
 		return top;
+	}
+	
+	public ArrayList<Response> getAllResponsesByTopic(int i) throws SQLException{
+		String sql2 = "SELECT * FROM RESPONSES WHERE R_Id_Topic ="+i;
+		Statement statement2 = connect.createStatement();
+		ResultSet res2 = statement2.executeQuery(sql2);
+		ArrayList<Response> rep = new ArrayList<Response>();
+		while(res2.next()){
+			rep.add(new Response(res2.getInt(1), res2.getString(2), res2.getString(3), res2.getDate(4), res2.getInt(5)));
+		}
+		return rep;
+	}
+
+	public void createResponse(int idtop, String text, String name, String date) throws SQLException {
+		Statement statement = connect.createStatement();
+		String sql = "INSERT INTO RESPONSES VALUES (RESPONSE_NUMBER.NEXTVAL, '"+text+"','"+name+"',DATE '"+date+"', '"+idtop+"')";
+		statement.executeUpdate(sql);
+	}
+	
+	public void createTopic(int idtop, String text, String name, String date) throws SQLException {
+		Statement statement = connect.createStatement();
+		String sql = "INSERT INTO RESPONSES VALUES (RESPONSE_NUMBER.NEXTVAL, '"+text+"','"+name+"',DATE '"+date+"', '"+idtop+"')";
+		statement.executeUpdate(sql);
 	}
 }
