@@ -149,7 +149,7 @@ public final class DTBRequest {
 	public ArrayList<Game> getAllGames() throws SQLException {
 		ArrayList<Game> games = new ArrayList<Game>();
 		Statement statement = connect.createStatement();
-		ResultSet res = statement.executeQuery("SELECT * FROM GAMES");
+		ResultSet res = statement.executeQuery("SELECT * FROM GAMES WHERE nbPlayer <> 2");
 		while (res.next()) {
 			games.add(new Game(res.getInt(1), res.getInt(2), res.getString(3), res.getString(4), res.getInt(5)));
 		}
