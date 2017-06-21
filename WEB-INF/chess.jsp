@@ -34,6 +34,7 @@
 				onDragStart: onDragStart,
 				onDrop: handleMove,
 				onSnapEnd: onSnapEnd,
+				promotion : "q",
 			};
 			board = new ChessBoard('gameBoard', cfg);	
 			game = new Chess();
@@ -115,11 +116,18 @@
 			}
 			clearInterval(statusupdate);
 		  }
-
 		  // draw?
 		  else if (game.in_draw() === true) {
 			status = 'Game over, drawn position';
 			clearInterval(statusupdate);
+		  }
+		  //stalemate ?
+		  else if(game.in_stalemate() === true){
+			  status = 'Game over, stalemate position';
+		  }
+		  //threefold repetition ?
+		  else if(game.in_threefold_repetition()){
+			  status = 'Game over, in threefold position';
 		  }
 
 		  // game still on
