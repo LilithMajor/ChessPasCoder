@@ -201,7 +201,7 @@ public final class DTBRequest {
 	public ArrayList<Game> getAllGames() throws SQLException {
 		ArrayList<Game> games = new ArrayList<Game>();
 		Statement statement = connect.createStatement();
-		ResultSet res = statement.executeQuery("SELECT * FROM GAMES WHERE nbPlayer <> 2");
+		ResultSet res = statement.executeQuery("SELECT * FROM GAMES WHERE nbPlayer < 2");
 		while (res.next()) {
 			games.add(new Game(res.getInt(1), res.getInt(2), res.getString(3), res.getString(4), res.getInt(5)));
 		}
@@ -268,7 +268,7 @@ public final class DTBRequest {
 	}
 
 	public ArrayList<Response> getAllResponsesByTopic(int i) throws SQLException {
-		String sql2 = "SELECT * FROM RESPONSES WHERE R_Id_Topic =" + i;
+		String sql2 = "SELECT * FROM RESPONSES WHERE R_Id_Topic =" + i +" ORDER BY RESPONSES.Id_Response";
 		Statement statement2 = connect.createStatement();
 		ResultSet res2 = statement2.executeQuery(sql2);
 		ArrayList<Response> rep = new ArrayList<Response>();

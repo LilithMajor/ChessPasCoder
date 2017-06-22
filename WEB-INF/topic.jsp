@@ -2,6 +2,7 @@
 <%@ page import="com.Topic"%>
 <%@ page import="com.Response"%>
 <%@ page import="java.util.*"%>
+<%@ page import="com.User"%>
 <html>
     <head>
         <meta charset="utf-8" />
@@ -23,6 +24,10 @@
 			<table>
 			<form action="topic" method="post"><input type="hidden" name="idTopic" value="<%=t.getId()%>"><input type="text" name="newPost"><input type="submit" value="Send"></form>
         </form>
+		<% User u = (User) session.getAttribute("user"); %>
+		<% if (t.getCreator()==u.getLogin()){%>
+			<form action="forum" method="get"><input type="submit" value="Close Subject"></form>
+		<% } %>
 		<form action="forum" method="get"><input type="submit" value="Retour"></form>
     </body>
 </html>
