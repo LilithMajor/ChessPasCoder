@@ -43,21 +43,21 @@
 										<input type="hidden" id="name" value="<%=user.getName()%>">
 										<li><a href="<%=request.getContextPath()+"/creategame"%>">Create a game</a></li>
 										<li><a href="<%=request.getContextPath()+"/forum"%>">Forum</a></li>
-									<li><a href="<%=request.getContextPath()+"/disconnection"%>">Disconnect</a></li><%}%>
+									<li><a href="<%=request.getContextPath()+"/disconnection"%>">Disconnect</a></li>
+									<%}%>
 								</ul>				
 						</nav>
 					</div>
 				</div>	
-					<h1 style="text-align:center;">Welcome <%=user.getName()%> !</h1>	
+				<% if (user != null) {%>
+					<h1 style="text-align:center;">Welcome <%=user.getName()%> !</h1>
+				<%}%>		
 				<div class="row">
 					<% if(user == null) {%>
 						<h1 style="text-align:center">Welcome on ChessPasCoder !</h1>
 						<p style="text-align:center">You can connect or register to play a chess game.</p>
 					<%}%>
 				</div>				
-					<h1 style="text-align:center; color:black">Welcome <%=user.getName()%> !</h1>
-					<%}%>			
-
 			</header>
 			<div class="row">
 				<div class="col-sm-offset-3 col-sm-6" style="background-image:url(img/blanc.png)">
@@ -94,11 +94,13 @@
 					<h2 style="text-align:center; color:#545D5C;">Games List</h1>
 					<table style="color:black;border:2px solid black;" class="table table-bordered table-striped table-condensed" id="games">
 						<tr>
+							<th>Id of the game</th>
 							<th>Number of players</th>
 							<th>Join</th>
 						</tr>
 						<% for(Game g : (ArrayList<Game>) request.getAttribute("games")){%>
 								<tr class="ligne">
+									<td>Game n&deg;<%=g.getId()%></td>
 									<td><%=g.getNbPlayer()%> / 2</td>
 									<form action="game" method="post"><td><input type="hidden" name="login" value="<%=user.getLogin()%>"><input type="hidden" name="idGame" value="<%=g.getId()%>"><input type="submit" value="Join"></td></form>
 								</tr>		

@@ -68,8 +68,8 @@ PROMPT  ->  Tables creees
 
 INSERT INTO USERS VALUES ('Admin', 'admin','admin','alex.bournadet@etu.parisdescartes.fr', '1200');
 INSERT INTO USERS VALUES ('Loser', 'loser','loser','alex.bournadet@etu.parisdescartes.fr', '1200');
-INSERT INTO TOPICS VALUES (TOPIC_NUMBER.NEXTVAL, 'Patate','admin',DATE '2017-02-20', DATE '2017-02-21');
-INSERT INTO TOPICS VALUES (TOPIC_NUMBER.NEXTVAL, 'PatatePourrite','admin',DATE '2017-02-20', DATE '2017-02-21');
+INSERT INTO TOPICS VALUES (TOPIC_NUMBER.NEXTVAL, 'Patate','admin',DATE '2017-02-20');
+INSERT INTO TOPICS VALUES (TOPIC_NUMBER.NEXTVAL, 'PatatePourrite','admin',DATE '2017-02-20');
 INSERT INTO RESPONSES VALUES (RESPONSE_NUMBER.NEXTVAL, 'Je suis un rigolo','admin',DATE '2017-02-20', '1');
 INSERT INTO RESPONSES VALUES (RESPONSE_NUMBER.NEXTVAL, 'Je suis un rigolo qui mange du pain','admin',DATE '2017-02-20', '1');
 INSERT INTO RESPONSES VALUES (RESPONSE_NUMBER.NEXTVAL, 'Je suis un rigolo qui suce des bites','admin',DATE '2017-02-20', '2');

@@ -114,7 +114,8 @@
 			if (game.turn() === 'b') {
 				moveColor = 'b';
 			}
-		console.log(game.fen());
+			console.log(game.fen());
+			console.log(game.ascii());
 		  // checkmate?
 		  if (game.in_checkmate() === true) {
 			status = 'Game over, ' + moveColor + ' is in checkmate.';
