@@ -21,7 +21,7 @@ public class Topic {
 		this.L_Rep = new ArrayList<Response>();
 	}
 	
-	public Topic (int i, String name, String creator, Date dateOpen, Date dateClose, ArrayList<Response> rep) {
+	public Topic (int i, String name, String creator, Date dateOpen, ArrayList<Response> rep) {
 		this.id = i;
 		this.name = name;
 		this.creator = creator;

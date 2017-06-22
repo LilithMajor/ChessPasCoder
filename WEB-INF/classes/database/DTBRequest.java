@@ -245,7 +245,7 @@ public final class DTBRequest {
 		ResultSet res = statement.executeQuery(sql);
 		Topic top = null;
 		while (res.next()) {
-			top = new Topic(res.getInt(1), res.getString(2), res.getString(3), res.getDate(4), res.getDate(5),
+			top = new Topic(res.getInt(1), res.getString(2), res.getString(3), res.getDate(4), 
 					getAllResponsesByTopic(Integer.parseInt(idTop)));
 		}
 		return top;
@@ -258,7 +258,7 @@ public final class DTBRequest {
 		while (res.next()) {
 			int i = res.getInt(1);
 			System.out.println(i);
-			top.add(new Topic(i, res.getString(2), res.getString(3), res.getDate(4), res.getDate(5),
+			top.add(new Topic(i, res.getString(2), res.getString(3), res.getDate(4), 
 					getAllResponsesByTopic(i)));
 		}
 		return top;

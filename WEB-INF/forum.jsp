@@ -57,7 +57,6 @@
 								<th>Name</th>
 								<th>Creator</th>
 								<th>DateCreation</th>
-								<th>DateClose</th>
 								<th>NbResp</th>
 							</tr>
 							<% for(Topic t : (ArrayList<Topic>) request.getAttribute("forum")){%>
@@ -65,7 +64,6 @@
 										<td> <%=t.getName()%> </td>
 										<td> <%=t.getCreator()%> </td>
 										<td> <%=t.getDateCreation()%> </td>
-										<td> <%=t.getDateClose()%> </td>
 										<td> <%=t.getNumberOfResponse()%> </td>
 										<td><input type="hidden" name="idTopic" value="<%=t.getId()%>"><button style="margin:3px" type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-eye-open"></span> See the topic</button></td>
 									</tr>		
