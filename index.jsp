@@ -78,11 +78,13 @@
 					<h2 style="text-align:center; color:#545D5C;">Games List</h1>
 					<table style="color:black;border:2px solid black;" class="table table-bordered table-striped table-condensed" id="games">
 						<tr>
+							<th>Id of the game</th>
 							<th>Number of players</th>
 							<th>Join</th>
 						</tr>
 						<% for(Game g : (ArrayList<Game>) request.getAttribute("games")){%>
 								<tr class="ligne">
+									<td>Game n&deg;<%=g.getId()%></td>
 									<td><%=g.getNbPlayer()%> / 2</td>
 									<form action="game" method="post"><td><input type="hidden" name="login" value="<%=user.getLogin()%>"><input type="hidden" name="idGame" value="<%=g.getId()%>"><input type="submit" value="Join"></td></form>
 								</tr>		
