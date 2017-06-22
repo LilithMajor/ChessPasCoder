@@ -90,7 +90,7 @@
 					</table></br>
 					<form class="well">
 						<legend style="color:white">Chat</legend>
-						<textarea class="form-control" id="chatlog" readonly></textarea><br/>
+						<textarea class="form-control" id="chatlog" style="width: 100%; height: 25%; resize: none" readonly></textarea><br/>
 						<input class="form-control" id="msg" type="text" />
 						</br>
 						<button class="btn btn-primary btn-info" type="submit" id="sendButton" onClick="postToServer()"><span class="glyphicon glyphicon-share-alt"></span> Send !</button>
@@ -106,6 +106,7 @@
 				};
 				ws.onmessage = function(message){
 					document.getElementById("chatlog").textContent += message.data + "\n";
+					scrollToBottom();
 				};
 				function postToServer(){
 					event.preventDefault();
@@ -115,6 +116,11 @@
 				}
 				function closeConnect(){
 					ws.close();
+				}
+				
+				function scrollToBottom() {
+				  $('#chatlog').scrollTop($('#chatlog')[0].scrollHeight);
+				  console.log("resize");
 				}
 			</script>
 		</div>

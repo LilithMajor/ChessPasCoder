@@ -28,7 +28,7 @@ public class GameServlet extends HttpServlet {
 				user = db.getUserByLogin(request.getParameter("login"));
 				game = db.getGameById(request.getParameter("idGame"));
 
-				if (game.getNbPlayer() >= 3) {
+				if (game.getNbPlayer() >= 2) {
 					response.sendRedirect(request.getContextPath() + "/index");
 				} else {
 					db.addPlayerGame(request.getParameter("idGame"));
