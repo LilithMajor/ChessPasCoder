@@ -80,6 +80,7 @@
 				console.log(message.data);
 			}else if(message.data.charAt(0) == "{".charAt(0)){
 				console.log(message.data);
+				nbMove++;
 				game.move(JSON.parse(message.data));
 				board.position(game.fen());
 			}else{
