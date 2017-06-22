@@ -9,3 +9,5 @@
 /WsGameServlet$MyMessageInbound.class
 /WsGameServlet$MyGameInbound.class
 /WsChat.class
+/wsChatGameServlet.class
+/wsChatGameServlet$WsChatServlet.class

@@ -111,8 +111,10 @@
 				function postToServer(){
 					event.preventDefault();
 					name = $("#name").val();
-					ws.send(name +": "+ document.getElementById("msg").value);
-					document.getElementById("msg").value = "";
+					if(document.getElementById("msg").value != ""){
+						ws.send(name +": "+ document.getElementById("msg").value);
+						document.getElementById("msg").value = "";
+					}
 				}
 				function closeConnect(){
 					ws.close();
