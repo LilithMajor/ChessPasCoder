@@ -110,7 +110,7 @@
 				};
 				function postToServer(){
 					event.preventDefault();
-					name = $("#name").val();
+					name = $("#name").val();	
 					if(document.getElementById("msg").value != ""){
 						ws.send(name +": "+ document.getElementById("msg").value);
 						document.getElementById("msg").value = "";
@@ -122,7 +122,6 @@
 				
 				function scrollToBottom() {
 				  $('#chatlog').scrollTop($('#chatlog')[0].scrollHeight);
-				  console.log("resize");
 				}
 			</script>
 		</div>

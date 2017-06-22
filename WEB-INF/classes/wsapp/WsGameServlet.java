@@ -32,12 +32,6 @@ public class WsGameServlet {
 		if (sessionList.size() != 2) {
 			sessionList.add(session);
 		}
-		System.out.println("Session added for game :" + idGame);
-		/*
-		 * try { db.setOnGoingGame(idGame, sessionList.size()); } catch
-		 * (SQLException e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); }
-		 */
 	}
 
 	@OnClose
@@ -53,15 +47,11 @@ public class WsGameServlet {
 	@OnMessage
 	public void onMessage(String msg, @PathParam("idGame") String idGame) {
 		Database db = Database.getDatabase();
-		System.out.println("Session game received : " + msg);
-		System.out.println(msg.charAt(0));
-		System.out.println("{".charAt(0));
 		if (msg.equals("getOnGoing")) {
 			try {
 				Game game = db.getGameById(idGame);
 				for (Session session : sessionList) {
 					// asynchronous communication
-					System.out.println("On envoie le nombre de joueurs: " + game.getNbPlayer());
 					session.getBasicRemote().sendObject(game.getNbPlayer());
 				}
 			} catch (SQLException | IOException | EncodeException e) {
@@ -76,7 +66,6 @@ public class WsGameServlet {
 					int nbMove = json.getInt("nbMove");
 					String winner = json.getString("Winner");
 					String loser = json.getString("Loser");
-					System.out.println(nbMove + winner + loser);
 					db.setElo(winner, loser);
 					db.setGame(idGame, nbMove, winner, loser);
 				} catch (JSONException | SQLException e1) {
@@ -94,7 +83,6 @@ public class WsGameServlet {
 				try {
 					for (Session session : sessionList) {
 						// asynchronous communication
-						System.out.println("le json" + json);
 						session.getBasicRemote().sendObject(json);
 					}
 				} catch (IOException | EncodeException e) {
@@ -104,7 +92,6 @@ public class WsGameServlet {
 			try {
 				for (Session session : sessionList) {
 					// asynchronous communication
-					System.out.println("le msg " + msg);
 					session.getBasicRemote().sendText(msg);
 				}
 			} catch (IOException e) {

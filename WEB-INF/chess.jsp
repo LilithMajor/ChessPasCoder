@@ -56,7 +56,6 @@
 			updateStatus();
 		}	
 		ws.onopen = function(){
-			console.log(<%=g.getNbPlayer()%>);
 			<%if(g.getNbPlayer()==0){
 				%>$("#Color").after("You are playing white");
 				<%u.setColor("w");
@@ -68,18 +67,13 @@
 			<%}%>
 		};
 		ws.onmessage = function(message){
-			console.log(message.data);
-			console.log(message.data.charAt(1));
 			if(message.data == "0" || message.data == "1" || message.data == "2"){
 				if(message.data == "2"){
-					console.log(message.data);
 					initGame();
 					statusupdate = setInterval(updateStatus, 2000);
 					clearInterval(interval);
 				}
-				console.log(message.data);
 			}else if(message.data.charAt(0) == "{".charAt(0)){
-				console.log(message.data);
 				nbMove++;
 				game.move(JSON.parse(message.data));
 				board.position(game.fen());
@@ -116,7 +110,6 @@
 		  if (game.in_checkmate() === true) {
 			status = 'Game over, ' + moveColor + ' is in checkmate.';
 			if("<%=u.getColor()%>" == moveColor){
-				console.log("on envoie la fin");
 				ws.send(JSON.stringify({
 					'nbMove' : nbMove,
 					'Winner' : $("#adversary").text(),
@@ -126,7 +119,6 @@
 			}else{}
 			$("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
 			clearInterval(statusupdate);
-			console.log("on enleve l'intervalle");
 		  }
 		  // draw?
 		  else if (game.in_draw() === true) {
@@ -167,7 +159,6 @@
 			scrollToBottom();
 		};
 		$("#sendButton").on("click", function postToServer(){
-			console.log("ça rentre la ?");
 			name = "<%=u.getName()%>";
 			if(document.getElementById("msg").value != ""){
 				wschat.send(name +": "+ document.getElementById("msg").value);
@@ -179,7 +170,6 @@
 		}
 		function scrollToBottom() {
 		  $('#chatlog').scrollTop($('#chatlog')[0].scrollHeight);
-		  console.log("resize");
 		}
 	});
 	</script>
