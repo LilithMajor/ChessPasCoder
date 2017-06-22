@@ -65,7 +65,7 @@
 		<url-pattern>/creategame</url-pattern>
 	</servlet-mapping>
 	
-	<servlet>
+	<!-- <servlet>
         <servlet-name>WsChatServlet</servlet-name>
         <servlet-class>wsapp.WsChatServlet</servlet-class>
     </servlet>
@@ -73,7 +73,7 @@
     <servlet-mapping>
         <servlet-name>WsChatServlet</servlet-name>
         <url-pattern>/wschat/WsChatServlet</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping> -->
 	
 	<servlet>
         <servlet-name>forum</servlet-name>

@@ -12,6 +12,15 @@
 	<p id="Color"></p>
 	<p>Status: <span id="status"></span></p>
 	<p>Your adversary : </p><p id="adversary">Waiting</p>
+	<form class="well">
+		<legend style="color:white">Chat</legend>
+		<textarea class="form-control" id="chatlog" style="width: 100%; height: 25%; resize: none" readonly></textarea><br/>
+		<input class="form-control" id="msg" type="text" />
+		</br>
+		<button class="btn btn-primary btn-info" type="submit" id="sendButton" onClick="postToServer()"><span class="glyphicon glyphicon-share-alt"></span> Send !</button>
+		<button class="pull-right btn btn-primary btn-danger" type="submit" id="sendButton" onClick="closeConnect()"><span class="glyphicon glyphicon-remove"></span> End</button>
+		</br>
+	</form>
 	<p id="return"></p>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
     <script src="./js/chessboard-0.3.0.min.js"></script>
@@ -26,6 +35,7 @@
 		<% User u = (User) request.getAttribute("user");%>
 		nbMove = 0;
 		var ws = new WebSocket("ws://172.19.35.150:8080/ChessPasCoder/wsgame/"+<%=g.getId()%>);
+		var wschat = new WebSocket("ws://172.19.35.150:8080/ChessPasCoder/wschatgame/"+<%=g.getId()%>);
 		interval = setInterval(isOnGoing, 2000);
 		var initGame = function () {
 			var cfg = {
@@ -150,6 +160,27 @@
 		  }
 		  $("#status").html(status);
 		};
+		wschat.onopen = function(){
+		};
+		wschat.onmessage = function(message){
+			document.getElementById("chatlog").textContent += message.data + "\n";
+			scrollToBottom();
+		};
+		function postToServer(){
+			event.preventDefault();
+			name = $("#name").val();
+			if(document.getElementById("msg").value != ""){
+				ws.send(name +": "+ document.getElementById("msg").value);
+				document.getElementById("msg").value = "";
+			}
+		}
+		function closeConnect(){
+			ws.close();
+		}
+		function scrollToBottom() {
+		  $('#chatlog').scrollTop($('#chatlog')[0].scrollHeight);
+		  console.log("resize");
+		}
 	});
 	</script>
 </html>
