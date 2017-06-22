@@ -37,7 +37,7 @@ public class TopicServlet extends HttpServlet{
 	public void doPost(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
 		Database db = Database.getDatabase();
 		Date d = new java.util.Date();
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		String s = df.format(d);
 		HttpSession session = request.getSession();
 		User n = (User) session.getAttribute("user");
