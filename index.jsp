@@ -48,11 +48,7 @@
 						</nav>
 					</div>
 				</div>	
-					<% if (user != null) {%>
-					<h1 style="text-align:center;">Welcome <%=user.getName()%> !</h1>
-					<%
-			}
-			%>		
+					<h1 style="text-align:center;">Welcome <%=user.getName()%> !</h1>	
 				<div class="row">
 					<% if(user == null) {%>
 						<h1 style="text-align:center">Welcome on ChessPasCoder !</h1>
