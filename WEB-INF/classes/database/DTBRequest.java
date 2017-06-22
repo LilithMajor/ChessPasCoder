@@ -128,7 +128,7 @@ public final class DTBRequest {
 		String creator = getValeurChamp(request, CHAMP_CREATOR);
 		Topic t = new Topic(name, creator);
 		String sql = "INSERT INTO TOPIC VALUES('" + String.valueOf(t.getId()) + "','" + name + "','" + creator + "','"
-				+ String.valueOf(t.getDateCreation()) + "','" + null + "')";
+				+ String.valueOf(t.getDateCreation()) + "')";
 		statement.executeUpdate(sql);
 		createResponse(request);
 		return t;
@@ -156,7 +156,6 @@ public final class DTBRequest {
 			t.setName(result.getString(2));
 			t.setCreator(result.getString(3));
 			t.setDateCreation(result.getDate(4));
-			t.setDateClose(result.getDate(5));
 			allTopics.add(t);
 		}
 		return allTopics;
@@ -174,7 +173,6 @@ public final class DTBRequest {
 			t.setName(result.getString(2));
 			t.setCreator(result.getString(3));
 			t.setDateCreation(result.getDate(4));
-			t.setDateClose(result.getDate(5));
 			topics.add(t);
 		}
 		return topics;
@@ -192,7 +190,6 @@ public final class DTBRequest {
 			t.setName(result.getString(2));
 			t.setCreator(result.getString(3));
 			t.setDateCreation(result.getDate(4));
-			t.setDateClose(result.getDate(5));
 			topics.add(t);
 		}
 		return topics;
@@ -257,7 +254,7 @@ public final class DTBRequest {
 	public ArrayList<Topic> getAllTopic() throws SQLException {
 		ArrayList<Topic> top = new ArrayList<Topic>();
 		Statement statement = connect.createStatement();
-		ResultSet res = statement.executeQuery("SELECT * FROM TOPICS");
+		ResultSet res = statement.executeQuery("SELECT * FROM TOPICS ORDER BY TOPICS.Id_Topic");
 		while (res.next()) {
 			int i = res.getInt(1);
 			System.out.println(i);
@@ -289,7 +286,7 @@ public final class DTBRequest {
 	public void createTopic(String text, String name, String date) throws SQLException {
 		Statement statement = connect.createStatement();
 		String sql = "INSERT INTO TOPICS VALUES (TOPIC_NUMBER.NEXTVAL, '" + text + "','" + name + "',DATE '" + date
-				+ "', null)";
+				+ "')";
 		statement.executeUpdate(sql);
 	}
 
@@ -371,5 +368,4 @@ public final class DTBRequest {
 		int foo = (elo1 - elo2) / 400;
 		return 1 / (1 + Math.pow(10, foo));
 	}
-
 }

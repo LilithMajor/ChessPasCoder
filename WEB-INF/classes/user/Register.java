@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import com.User;
 
+import Exception.DataBaseException;
 import database.Database;
 
 public class Register extends HttpServlet {
@@ -38,7 +39,7 @@ public class Register extends HttpServlet {
 		User user = new User();
 		try {
 			user = db.registerUser(request);
-		} catch (SQLException e) {
+		} catch (DataBaseException e) {
 			System.out.println("SQLException");
 		} catch (NullPointerException e) {
 			erreur = true;

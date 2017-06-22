@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.Game;
 import com.User;
 
+import Exception.DataBaseException;
 import database.Database;
 
 public class Index extends HttpServlet {
@@ -28,7 +29,7 @@ public class Index extends HttpServlet {
 		try {
 			games = db.getAllGames();
 			users = db.getAllUsers();
-		} catch (SQLException e) {
+		} catch (DataBaseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

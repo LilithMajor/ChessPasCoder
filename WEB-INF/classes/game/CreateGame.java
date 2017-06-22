@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import Exception.DataBaseException;
 import database.Database;
 
 public class CreateGame extends HttpServlet {
@@ -20,7 +21,7 @@ public class CreateGame extends HttpServlet {
 		Database db = Database.getDatabase();
 		try {
 			db.createGame();
-		} catch (SQLException e) {
+		} catch (DataBaseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

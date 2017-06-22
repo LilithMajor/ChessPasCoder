@@ -9,7 +9,6 @@ public class Topic {
 	private String name;
 	private String creator;
 	private Date dateCreation;
-	private Date dateClose;
 	private ArrayList<Response> L_Rep;
 	
 	private static int compteur = 1;
@@ -19,7 +18,6 @@ public class Topic {
 		this.name = name;
 		this.creator = creator;
 		dateCreation = new java.util.Date();
-		dateClose = null;
 		this.L_Rep = new ArrayList<Response>();
 	}
 	
@@ -28,7 +26,6 @@ public class Topic {
 		this.name = name;
 		this.creator = creator;
 		this.dateCreation = dateOpen;
-		this.dateClose = dateClose;
 		this.setL_Rep(rep);
 	}
 	
@@ -66,14 +63,6 @@ public class Topic {
 
 	public void setDateCreation(Date dateCreation) {
 		this.dateCreation = dateCreation;
-	}
-
-	public Date getDateClose() {
-		return dateClose;
-	}
-
-	public void setDateClose(Date dateClose) {
-		this.dateClose = dateClose;
 	}
 
 	public ArrayList<Response> getL_Rep() {

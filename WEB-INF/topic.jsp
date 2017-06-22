@@ -21,13 +21,9 @@
 							<td><%=r.getDatePost()%></td>
 						<tr>		
 				<%}%>
-			<table>
-			<form action="topic" method="post"><input type="hidden" name="idTopic" value="<%=t.getId()%>"><input type="text" name="newPost"><input type="submit" value="Send"></form>
+			</table>
         </form>
-		<% User u = (User) session.getAttribute("user"); %>
-		<% if (t.getCreator()==u.getLogin()){%>
-			<form action="forum" method="get"><input type="submit" value="Close Subject"></form>
-		<% } %>
+		<form action="topic" method="post"><input type="hidden" name="idTopic" value="<%=t.getId()%>"><input type="text" name="newPost"><input type="submit" value="Send"></form>	
 		<form action="forum" method="get"><input type="submit" value="Retour"></form>
     </body>
 </html>

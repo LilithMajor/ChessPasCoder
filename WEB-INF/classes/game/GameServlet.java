@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.Game;
 import com.User;
 
+import Exception.DataBaseException;
 import database.Database;
 
 public class GameServlet extends HttpServlet {
@@ -36,7 +37,7 @@ public class GameServlet extends HttpServlet {
 					request.setAttribute("game", game);
 					this.getServletContext().getRequestDispatcher("/WEB-INF/chess.jsp").forward(request, response);
 				}
-			} catch (SQLException e) {
+			} catch (DataBaseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

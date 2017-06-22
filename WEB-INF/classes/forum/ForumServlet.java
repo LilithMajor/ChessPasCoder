@@ -8,11 +8,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.Game;
 import com.Topic;
 import com.User;
 
+import Exception.DataBaseException;
 import database.Database;
 
 public class ForumServlet extends HttpServlet{
@@ -24,7 +26,7 @@ public class ForumServlet extends HttpServlet{
 		ArrayList<Topic> tops = new ArrayList<Topic>();
 		try {
 			tops = db.getAllTopic();
-		} catch (SQLException e) {
+		} catch (DataBaseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -37,10 +39,13 @@ public class ForumServlet extends HttpServlet{
 		Database db = Database.getDatabase();
 		Topic topic;
 		try {
+			HttpSession session = request.getSession();
+			User n = (User) session.getAttribute("user");
 			topic = db.getTopicById(request.getParameter("idTopic"));
+			request.setAttribute("User", n.getLogin());
 			request.setAttribute("topic", topic);
 			this.getServletContext().getRequestDispatcher("/WEB-INF/topic.jsp").forward( request, response );
-		} catch (SQLException e) {
+		} catch (DataBaseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
