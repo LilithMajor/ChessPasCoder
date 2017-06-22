@@ -20,6 +20,7 @@
 		<input class="btn btn-primary btn-info" type="button" id="sendButton" value="Send !"><span class="glyphicon glyphicon-share-alt"></span>
 		</br>
 	</form>
+	<input type="button" id="resign" value="Resign">
 	<p id="return"></p>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
     <script src="./js/chessboard-0.3.0.min.js"></script>
@@ -30,6 +31,7 @@
 	</body>
 	<script>
 	$(document).ready(function(){
+		$("#resign").hide();
 		<% Game g = (Game) request.getAttribute("game");%>
 		<% User u = (User) request.getAttribute("user");%>
 		nbMove = 0;
@@ -46,6 +48,7 @@
 			};
 			board = new ChessBoard('gameBoard', cfg);	
 			game = new Chess();
+			$("#resign").show();
 			ws.send("<%=u.getLogin()%>");
 		}
 		var handleMove = function(source, target) {
@@ -74,9 +77,15 @@
 					clearInterval(interval);
 				}
 			}else if(message.data.charAt(0) == "{".charAt(0)){
-				nbMove++;
-				game.move(JSON.parse(message.data));
-				board.position(game.fen());
+				if(message.data.charAt(2) != "s".charAt(0)){
+					board.position(JSON.parse(message.data));
+					game.load(board.fen());
+					updateStatus();
+				}else{
+					nbMove++;
+					game.move(JSON.parse(message.data));
+					board.position(game.fen());
+				}
 			}else{
 				if(message.data != "<%=u.getLogin()%>"){
 					$("#adversary").html(message.data);
@@ -105,7 +114,7 @@
 			if (game.turn() === 'b') {
 				moveColor = 'b';
 			}
-
+		console.log(game.fen());
 		  // checkmate?
 		  if (game.in_checkmate() === true) {
 			status = 'Game over, ' + moveColor + ' is in checkmate.';
@@ -171,6 +180,9 @@
 		function scrollToBottom() {
 		  $('#chatlog').scrollTop($('#chatlog')[0].scrollHeight);
 		}
+		$("#resign").on('click', function(){
+			ws.send("{r"+"<%=u.getColor()%>}");
+		})
 	});
 	</script>
 </html>
