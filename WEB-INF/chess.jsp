@@ -77,20 +77,22 @@
 					clearInterval(interval);
 				}
 			}else if(message.data.charAt(0) == "{".charAt(0)){
-				if(message.data.charAt(2) != "s".charAt(0)){
-					board.position(JSON.parse(message.data));
-					console.log(board.fen());
+				nbMove++;
+				game.move(JSON.parse(message.data));
+				board.position(game.fen());
+			}else if(message.data == "rw" || message.data == "rb"){
+					if(message.data == "rw"){
+						//white
+					}else{
+						//black
+					}
+					board.position('rnb1kbnr/pppp1ppp/8/4p3/5PPq/8/PPPPP2P/RNBQKBNR w KQkq - 1 3');
 					if(game.load('rnb1kbnr/pppp1ppp/8/4p3/5PPq/8/PPPPP2P/RNBQKBNR w KQkq - 1 3')){
 						console.log("ok");
 					}else{
 						console.log("nok");
 					}
 					updateStatus();
-				}else{
-					nbMove++;
-					game.move(JSON.parse(message.data));
-					board.position(game.fen());
-				}
 			}else{
 				if(message.data != "<%=u.getLogin()%>"){
 					$("#adversary").html(message.data);
@@ -187,7 +189,7 @@
 		  $('#chatlog').scrollTop($('#chatlog')[0].scrollHeight);
 		}
 		$("#resign").on('click', function(){
-			ws.send("{r"+"<%=u.getColor()%>}");
+			ws.send("r"+"<%=u.getColor()%>");
 		})
 	});
 	</script>

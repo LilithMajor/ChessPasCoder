@@ -60,15 +60,17 @@ public class WsGameServlet {
 			}
 		} else if (msg.charAt(0) == "{".charAt(0)) {
 			if (msg.charAt(2) == "n".charAt(0)) {
-
-			} else if (msg.charAt(1) == "r".charAt(0)) {
+				JSONObject json = null;
 				try {
-					for (Session session : sessionList) {
-						// asynchronous communication
-						System.out.println("on envoie : " + msg);
-						session.getBasicRemote().sendText(msg);
-					}
-				} catch (IOException e) {
+					json = new JSONObject(msg);
+					int nbMove = json.getInt("nbMove");
+					String winner = json.getString("Winner");
+					String loser = json.getString("Loser");
+					db.setElo(winner, loser);
+					db.setGame(idGame, nbMove, winner, loser);
+				} catch (JSONException | DataBaseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 			} else {
 				JSONObject json = null;
@@ -86,9 +88,15 @@ public class WsGameServlet {
 				} catch (IOException | EncodeException e) {
 				}
 			}
-		} else
-
-		{
+		} else if (msg.equals("rw") || msg.equals("rb")) {
+			try {
+				for (Session session : sessionList) {
+					// asynchronous communication
+					session.getBasicRemote().sendText(msg);
+				}
+			} catch (IOException e) {
+			}
+		} else {
 			try {
 				for (Session session : sessionList) {
 					// asynchronous communication
