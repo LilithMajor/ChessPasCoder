@@ -79,4 +79,8 @@ public class Database {
 	public void setElo(String winner, String loser) throws SQLException {
 		db.setElo(winner, loser);
 	}
+
+	public void removePlayerGame(String idGame) throws SQLException {
+		db.removePlayerGame(idGame);
+	}
 }

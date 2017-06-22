@@ -225,6 +225,12 @@ public final class DTBRequest {
 		statement.executeUpdate(sql);
 	}
 
+	public void removePlayerGame(String idGame) throws SQLException {
+		Statement statement = connect.createStatement();
+		String sql = "UPDATE GAMES SET nbPlayer = nbPlayer - 1 WHERE Id =" + idGame;
+		statement.executeUpdate(sql);
+	}
+
 	public Game getGameById(String idGame) throws SQLException {
 		Statement statement = connect.createStatement();
 		String sql = "SELECT * FROM GAMES WHERE Id =" + idGame;
@@ -365,4 +371,5 @@ public final class DTBRequest {
 		int foo = (elo1 - elo2) / 400;
 		return 1 / (1 + Math.pow(10, foo));
 	}
+
 }

@@ -41,7 +41,12 @@ public class WsGameServlet {
 	}
 
 	@OnClose
-	public void onClose(Session session) {
+	public void onClose(Session session, @PathParam("idGame") String idGame) throws SQLException {
+		Database db = Database.getDatabase();
+		Game game = db.getGameById(idGame);
+		if (game.getNbPlayer() == 1) {
+			db.removePlayerGame(Integer.toString(game.getId()));
+		}
 		sessionList.remove(session);
 	}
 

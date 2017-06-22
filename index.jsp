@@ -7,6 +7,10 @@
         <title>ChessPasCoder</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 		<link rel="stylesheet" href="style.css" />
+		<script
+  src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous"></script>
 		<style type="text/css">
 			body { background-color:#DDD; color: white; }
 			[class*="col"] { margin-bottom: 20px; }
@@ -31,9 +35,12 @@
 									<%User user = (User) session.getAttribute("user");
 									if(user == null){
 										%><li> <a href="<%=request.getContextPath()+"/connection"%>">Connect</a></li>
-										<li><a href="<%=request.getContextPath()+"/register"%>">Register</a></li><%
+										<li><a href="<%=request.getContextPath()+"/register"%>">Register</a></li>
+										<input type="hidden" id="name" value="">
+										<%
 									}else{
 										%>
+										<input type="hidden" id="name" value="<%=user.getName()%>">
 										<li><a href="<%=request.getContextPath()+"/creategame"%>">Create a game</a></li>
 										<li><a href="<%=request.getContextPath()+"/forum"%>">Forum</a></li>
 										<li><a href="<%=request.getContextPath()+"/disconnection"%>">Disconnect</a></li>
@@ -42,9 +49,8 @@
 						</nav>
 					</div>
 				</div>				
-					<h1 style="text-align:center; color:black">Welcome <%=user.getName()%> !</h1><%
-			}
-			%>			
+					<h1 style="text-align:center; color:black">Welcome <%=user.getName()%> !</h1>
+					<%}%>			
 			</header>
 			<div class="row">
 				<section class="col-md-offset-3 col-md-6 col-xs-12 table-responsive">
@@ -112,7 +118,9 @@
 					document.getElementById("chatlog").textContent += message.data + "\n";
 				};
 				function postToServer(){
-					ws.send(document.getElementById("msg").value);
+					event.preventDefault();
+					name = $("#name").val();
+					ws.send(name +": "+ document.getElementById("msg").value);
 					document.getElementById("msg").value = "";
 				}
 				function closeConnect(){
