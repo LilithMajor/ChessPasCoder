@@ -34,7 +34,7 @@
 										<li><a href="<%=request.getContextPath()+"/register"%>">Register</a></li><%
 									}else{
 										%>
-										<li><a href="<%=request.getContextPath()+"/game"%>">Create a game</a></li>
+										<li><a href="<%=request.getContextPath()+"/creategame"%>">Create a game</a></li>
 										<li><a href="<%=request.getContextPath()+"/forum"%>">Forum</a></li>
 										<li><a href="<%=request.getContextPath()+"/disconnection"%>">Disconnect</a></li>
 								</ul>
@@ -87,7 +87,7 @@
 									<td><%=g.getLoginLoss()%></td>
 									<td><%=g.getNbPlayer()%></td>
 									<%if(g.getNbPlayer() != 2){
-										%><form action="game" method="post"><td><input type="hidden" name="idGame" value="<%=g.getId()%>"><input type="submit" value="Join"></td></form>
+										%><form action="game" method="post"><td><input type="hidden" name="login" value="<%=user.getLogin()%>"><input type="hidden" name="idGame" value="<%=g.getId()%>"><input type="submit" value="Join"></td></form>
 									<%}%>
 								</tr>		
 						<%}%>

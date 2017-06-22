@@ -65,10 +65,8 @@ CREATE SEQUENCE RESPONSE_NUMBER START WITH 0 MINVALUE 0 INCREMENT BY 1;
 
 PROMPT  ->  Tables creees
 
-INSERT INTO USERS VALUES ('Admin', 'admin','admin','alex.bournadet@etu.parisdescartes.fr', '0');
-INSERT INTO USERS VALUES ('Loser', 'loser','loser','alex.bournadet@etu.parisdescartes.fr', '0');
-INSERT INTO GAMES(Id, nbPlayer) VALUES (GAME_NUMBER.NEXTVAL, '0');
-INSERT INTO GAMES(Id, nbPlayer) VALUES (GAME_NUMBER.NEXTVAL, '0');
+INSERT INTO USERS VALUES ('Admin', 'admin','admin','alex.bournadet@etu.parisdescartes.fr', '1200');
+INSERT INTO USERS VALUES ('Loser', 'loser','loser','alex.bournadet@etu.parisdescartes.fr', '1200');
 INSERT INTO TOPICS VALUES (TOPIC_NUMBER.NEXTVAL, 'Patate','admin',DATE '2017-02-20', DATE '2017-02-21');
 INSERT INTO TOPICS VALUES (TOPIC_NUMBER.NEXTVAL, 'PatatePourrite','admin',DATE '2017-02-20', DATE '2017-02-21');
 INSERT INTO RESPONSES VALUES (RESPONSE_NUMBER.NEXTVAL, 'Je suis un rigolo','admin',DATE '2017-02-20', '1');

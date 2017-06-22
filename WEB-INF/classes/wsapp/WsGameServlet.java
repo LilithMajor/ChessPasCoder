@@ -29,14 +29,15 @@ public class WsGameServlet {
 	@OnOpen
 	public void onOpen(Session session, @PathParam("idGame") String idGame) {
 		Database db = Database.getDatabase();
-		sessionList.add(session);
-		System.out.println("Session added for game :" + idGame);
-		try {
-			db.setOnGoingGame(idGame, sessionList.size());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (sessionList.size() != 2) {
+			sessionList.add(session);
 		}
+		System.out.println("Session added for game :" + idGame);
+		/*
+		 * try { db.setOnGoingGame(idGame, sessionList.size()); } catch
+		 * (SQLException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); }
+		 */
 	}
 
 	@OnClose
@@ -71,8 +72,9 @@ public class WsGameServlet {
 					String winner = json.getString("Winner");
 					String loser = json.getString("Loser");
 					System.out.println(nbMove + winner + loser);
+					db.setElo(winner, loser);
 					db.setGame(idGame, nbMove, winner, loser);
-				} catch (JSONException e1) {
+				} catch (JSONException | SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}

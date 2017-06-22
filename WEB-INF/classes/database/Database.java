@@ -40,8 +40,12 @@ public class Database {
 		return db.getAllGames();
 	}
 
-	public void setOnGoingGame(String idGame, int OnGoing) throws SQLException {
-		db.setOnGoingGame(idGame, OnGoing);
+	public void addPlayerGame(String idGame) throws SQLException {
+		db.addPlayerGame(idGame);
+	}
+
+	public User getUserByLogin(String login) throws SQLException {
+		return db.getUserByLogin(login);
 	}
 
 	public Game getGameById(String idGame) throws SQLException {
@@ -70,5 +74,9 @@ public class Database {
 
 	public void createTopic(String parameter, String login, String s) throws SQLException {
 		db.createTopic(parameter, login, s);
+	}
+
+	public void setElo(String winner, String loser) throws SQLException {
+		db.setElo(winner, loser);
 	}
 }

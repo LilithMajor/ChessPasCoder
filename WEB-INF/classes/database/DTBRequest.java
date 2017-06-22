@@ -195,8 +195,9 @@ public final class DTBRequest {
 			t.setDateClose(result.getDate(5));
 			topics.add(t);
 		}
-		return topics;	
+		return topics;
 	}
+
 	public ArrayList<Game> getAllGames() throws SQLException {
 		ArrayList<Game> games = new ArrayList<Game>();
 		Statement statement = connect.createStatement();
@@ -218,9 +219,9 @@ public final class DTBRequest {
 		statement.executeUpdate(sql);
 	}
 
-	public void setOnGoingGame(String idGame, int OnGoing) throws SQLException {
+	public void addPlayerGame(String idGame) throws SQLException {
 		Statement statement = connect.createStatement();
-		String sql = "UPDATE GAMES SET nbPlayer =" + OnGoing + "WHERE Id =" + idGame;
+		String sql = "UPDATE GAMES SET nbPlayer = nbPlayer + 1 WHERE Id =" + idGame;
 		statement.executeUpdate(sql);
 	}
 
@@ -298,5 +299,70 @@ public final class DTBRequest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public User getUserByLogin(String login) throws SQLException {
+		Statement statement = connect.createStatement();
+		ResultSet result = statement.executeQuery("SELECT * FROM USERS WHERE Login='" + login + "'");
+		User u = null;
+		if (result.next()) {
+			u = new User(result.getString(1), result.getString(2), result.getString(3), result.getString(4),
+					result.getInt(5));
+		}
+		return u;
+	}
+
+	public void setElo(String winner, String loser) throws SQLException {
+		Statement statement = connect.createStatement();
+		ResultSet result = statement.executeQuery("SELECT * FROM USERS WHERE Login='" + winner + "'");
+		User userWinner = null;
+		User userLoser = null;
+		if (result.next()) {
+			userWinner = new User(result.getString(1), result.getString(2), result.getString(3), result.getString(4),
+					result.getInt(5));
+		}
+		ResultSet result2 = statement.executeQuery("SELECT * FROM USERS WHERE Login='" + loser + "'");
+		if (result2.next()) {
+			userLoser = new User(result2.getString(1), result2.getString(2), result2.getString(3), result2.getString(4),
+					result2.getInt(5));
+		}
+		// Do maths
+		int eloWinner = Math.round(mathsElo(userWinner.getElo(), userLoser.getElo(), 1));
+		int eloLoser = Math.round(mathsElo(userLoser.getElo(), userWinner.getElo(), 0));
+
+		statement.executeUpdate("UPDATE USERS SET Elo=" + eloWinner + "WHERE Login='" + winner + "'");
+		statement.executeUpdate("UPDATE USERS SET Elo=" + eloLoser + "WHERE Login='" + loser + "'");
+	}
+
+	private int mathsElo(int elo1, int elo2, int score) {
+		int k = valK(elo1);
+		double prob = prob(elo1, elo2);
+		int newElo = (int) (elo1 + k * (score - prob));
+		if (newElo < 300) {
+			newElo = 300;
+		}
+		return newElo;
+	}
+
+	private int valK(int elo) {
+		int k = 0;
+		if (elo < 1000) {
+			k = 80;
+		}
+		if (elo >= 1000 && elo < 2000) {
+			k = 50;
+		}
+		if (elo >= 2000 && elo <= 2400) {
+			k = 30;
+		}
+		if (elo > 2400) {
+			k = 20;
+		}
+		return k;
+	}
+
+	private double prob(int elo1, int elo2) {
+		int foo = (elo1 - elo2) / 400;
+		return 1 / (1 + Math.pow(10, foo));
 	}
 }

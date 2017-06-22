@@ -23,11 +23,11 @@
 	<script>
 	$(document).ready(function(){
 		<% Game g = (Game) request.getAttribute("game");%>
-		<% User u = (User) session.getAttribute("user");%>
+		<% User u = (User) request.getAttribute("user");%>
 		nbMove = 0;
 		var ws = new WebSocket("ws://172.19.35.150:8080/ChessPasCoder/wsgame/"+<%=g.getId()%>);
 		interval = setInterval(isOnGoing, 2000);
-		sendLogin = setInterval(sendLogin, 2000);
+		//sendLogin = setInterval(sendLogin, 2000);
 		var initGame = function () {
 			var cfg = {
 				draggable: true,
@@ -35,13 +35,13 @@
 				onDragStart: onDragStart,
 				onDrop: handleMove,
 				onSnapEnd: onSnapEnd,
-				promotion : "q",
 			};
 			board = new ChessBoard('gameBoard', cfg);	
 			game = new Chess();
+			ws.send("<%=u.getLogin()%>");
 		}
 		var handleMove = function(source, target) {
-			var move = game.move({from: source, to: target});
+			var move = game.move({from: source, to: target, promotion:'q'});
 			if (move === null) return 'snapback';
 			ws.send(JSON.stringify(move));
 			nbMove++;
@@ -56,12 +56,12 @@
 				%>$("#Color").after("You are playing black");
 				<%u.setColor("b");%>
 				initGame();	
-				statusupdate = setInterval(updateStatus, 2000);
+				statusupdateblack = setInterval(updateStatus, 2000);
 			<%}%>
 		};
-		function sendLogin(){
-			ws.send("<%=u.getLogin()%>");
-		}
+		/* function sendLogin(){
+			
+		} */
 		ws.onmessage = function(message){
 			console.log(message.data);
 			console.log(message.data.charAt(1));
@@ -110,34 +110,39 @@
 		  if (game.in_checkmate() === true) {
 			status = 'Game over, ' + moveColor + ' is in checkmate.';
 			if("<%=u.getColor()%>" == moveColor){
+				console.log("on envoie la fin");
 				ws.send(JSON.stringify({
 					'nbMove' : nbMove,
 					'Winner' : $("#adversary").text(),
 					'Loser' : "<%=u.getLogin()%>",
 				}));
-			}
+				clearInterval(statusupdateblack);
+			}else{}
 			$("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
 			clearInterval(statusupdate);
+			console.log("on enleve l'intervalle");
 		  }
 		  // draw?
 		  else if (game.in_draw() === true) {
 			status = 'Game over, drawn position';
+			$("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
 			clearInterval(statusupdate);
+			if(game.insufficient_material()){
+			  status = 'Game over, insufficient material';
+			  $("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
+			}
+			if(game.in_threefold_repetition()){
+			  status = 'Game over, in threefold position';
+			  $("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
+		  }
 		  }
 		  //stalemate ?
 		  else if(game.in_stalemate() === true){
 			  status = 'Game over, stalemate position';
+			  $("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
 			  clearInterval(statusupdate);
-		  }
-		  //threefold repetition ?
-		  else if(game.in_threefold_repetition()){
-			  status = 'Game over, in threefold position';
-			  clearInterval(statusupdate);
-		  }
-		  else if(game.insufficient_material()){
-			  status = 'Game over, insufficient material';
-			  clearInterval(statusupdate);
-		  }
+		  }		  
+		  
 		  // game still on
 		  else {
 			status = moveColor + ' to move';
