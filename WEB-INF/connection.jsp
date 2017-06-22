@@ -18,11 +18,17 @@
     <body>
 		<div class="container">
 			<header class="row">
-					<h1 style="text-align:center; color:black;">ChessPasCoder</h1>
+				</br>
+				<div class="col-sm-4"></div>
+				<div class="col-sm-4">
+					<img style="width:100%; text-align:center;" class="img-circle img-responsive" src="./img/bigstock-Chess-Game-Over-18503750.jpg" alt="Picture of pawns">
+				</div>
+				<div class="col-sm-4"></div>
+				</br>
 			</header>
 			<div class="row">
-				<div class="col-lg-2"></div>
-				<div class="col-lg-8">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-8">
 					<form class ="well" method="post" action="connection">
 						<fieldset>
 							<legend style="color:white">Connection</legend>
@@ -36,13 +42,13 @@
 							}%>
 							<div class="form-group">
 								<label for="nom" <% if(erreur){%>style="color:red"<%}%>>Login<span class="requis">*</span></label>
-								<input class="form-control" type="login" id="login" name="login" value="" size="20" maxlength="60" />
+								<input class="form-control" required type="login" id="login" name="login" value="" size="20" maxlength="60" />
 							</div>
 							
 							<div class="form-group">
 								<label for="password"<% if(erreur){%>style="color:red"<%}%>>Password<span class="requis">*</span></label>
-								<input class="form-control" type="password" id="password" name="password" value="" size="20" maxlength="20" />
-							</div
+								<input class="form-control" required type="password" id="password" name="password" value="" size="20" maxlength="20" />
+							</div>
 
 							<% if(erreur){%><p style="color:red"> Incorrect login or password<p><%}%>
 							
@@ -50,10 +56,15 @@
 								<button class=" pull-right btn btn-primary btn-info sansLabel" type="submit"><span class="glyphicon glyphicon-user"></span> Connection</button>
 							</div>
 							
+							
+							
 						</fieldset>
 					</form>
+					<form action="index" method="get">
+						<button type="submit" class="btn btn-primary btn-primary"><span class="glyphicon glyphicon-arrow-left"></span> Back</button>
+					</form>
 				</div>
-				<div class="col-lg-2"></div>
+				<div class="col-sm-2"></div>
 			</div>
 		</div>
     </body>

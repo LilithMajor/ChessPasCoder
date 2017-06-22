@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import com.Topic;
 import com.User;
 
+import Exception.DataBaseException;
 import database.Database;
 
 public class AddTopicServlet extends HttpServlet{
@@ -26,7 +27,7 @@ public class AddTopicServlet extends HttpServlet{
 		ArrayList<Topic> tops = new ArrayList<Topic>();
 		try {
 			tops = db.getAllTopic();
-		} catch (SQLException e) {
+		} catch (DataBaseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -43,7 +44,7 @@ public class AddTopicServlet extends HttpServlet{
 		User n = (User) session.getAttribute("user");
 		try {
 			db.createTopic(request.getParameter("newTopic"), n.getLogin(), s );
-		} catch (SQLException e) {
+		} catch (DataBaseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

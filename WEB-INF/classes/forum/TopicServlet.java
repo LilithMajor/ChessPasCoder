@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import com.Topic;
 import com.User;
 
+import Exception.DataBaseException;
 import database.Database;
 
 public class TopicServlet extends HttpServlet{
@@ -22,11 +23,12 @@ public class TopicServlet extends HttpServlet{
 	public void doGet(HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException{
 		Database db = Database.getDatabase();
 		Topic topic;
+		HttpSession session = request.getSession();
 		try {
 			topic = db.getTopicById(request.getParameter("idTopic"));
 			request.setAttribute("topic", topic);
 			this.getServletContext().getRequestDispatcher("/WEB-INF/topic.jsp").forward( request, response );
-		} catch (SQLException e) {
+		} catch (DataBaseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -44,7 +46,7 @@ public class TopicServlet extends HttpServlet{
 			System.out.println(n.getLogin());
 			System.out.println(t.getId());
 			db.createResponse(t.getId(), request.getParameter("newPost"), n.getLogin(), s );
-		} catch (SQLException e) {
+		} catch (DataBaseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

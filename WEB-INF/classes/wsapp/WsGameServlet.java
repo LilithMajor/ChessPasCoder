@@ -19,6 +19,7 @@ import com.Game;
 import com.JsonDecoder;
 import com.JsonEncoder;
 
+import Exception.DataBaseException;
 import database.Database;
 
 @ServerEndpoint(value = "/wsgame/{idGame}", encoders = { JsonEncoder.class }, decoders = { JsonDecoder.class })
@@ -34,7 +35,7 @@ public class WsGameServlet {
 	}
 
 	@OnClose
-	public void onClose(Session session, @PathParam("idGame") String idGame) throws SQLException {
+	public void onClose(Session session, @PathParam("idGame") String idGame) throws DataBaseException {
 		Database db = Database.getDatabase();
 		Game game = db.getGameById(idGame);
 		if (game.getNbPlayer() == 1) {
@@ -54,7 +55,7 @@ public class WsGameServlet {
 					// asynchronous communication
 					session.getBasicRemote().sendObject(game.getNbPlayer());
 				}
-			} catch (SQLException | IOException | EncodeException e) {
+			} catch (DataBaseException | IOException | EncodeException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -68,7 +69,7 @@ public class WsGameServlet {
 					String loser = json.getString("Loser");
 					db.setElo(winner, loser);
 					db.setGame(idGame, nbMove, winner, loser);
-				} catch (JSONException | SQLException e1) {
+				} catch (JSONException | DataBaseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
