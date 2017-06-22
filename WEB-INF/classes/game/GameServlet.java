@@ -20,6 +20,10 @@ public class GameServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	}
+
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		synchronized (this) {
 			Database db = Database.getDatabase();
@@ -28,7 +32,6 @@ public class GameServlet extends HttpServlet {
 			try {
 				user = db.getUserByLogin(request.getParameter("login"));
 				game = db.getGameById(request.getParameter("idGame"));
-
 				if (game.getNbPlayer() >= 2) {
 					response.sendRedirect(request.getContextPath() + "/index");
 				} else {

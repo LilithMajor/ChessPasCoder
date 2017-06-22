@@ -14,11 +14,10 @@
 	<p>Your adversary : </p><p id="adversary">Waiting</p>
 	<form class="well">
 		<legend style="color:white">Chat</legend>
-		<textarea class="form-control" id="chatlog" style="width: 100%; height: 25%; resize: none" readonly></textarea><br/>
+		<textarea class="form-control" id="chatlog" style="width: 100%; height: 200px; resize: none" readonly></textarea><br/>
 		<input class="form-control" id="msg" type="text" />
 		</br>
-		<button class="btn btn-primary btn-info" type="submit" id="sendButton" onClick="postToServer()"><span class="glyphicon glyphicon-share-alt"></span> Send !</button>
-		<button class="pull-right btn btn-primary btn-danger" type="submit" id="sendButton" onClick="closeConnect()"><span class="glyphicon glyphicon-remove"></span> End</button>
+		<input class="btn btn-primary btn-info" type="button" id="sendButton" value="Send !"><span class="glyphicon glyphicon-share-alt"></span>
 		</br>
 	</form>
 	<p id="return"></p>
@@ -57,7 +56,6 @@
 			updateStatus();
 		}	
 		ws.onopen = function(){
-			console.log(<%=g.getNbPlayer()%>);
 			<%if(g.getNbPlayer()==0){
 				%>$("#Color").after("You are playing white");
 				<%u.setColor("w");
@@ -69,18 +67,14 @@
 			<%}%>
 		};
 		ws.onmessage = function(message){
-			console.log(message.data);
-			console.log(message.data.charAt(1));
 			if(message.data == "0" || message.data == "1" || message.data == "2"){
 				if(message.data == "2"){
-					console.log(message.data);
 					initGame();
 					statusupdate = setInterval(updateStatus, 2000);
 					clearInterval(interval);
 				}
-				console.log(message.data);
 			}else if(message.data.charAt(0) == "{".charAt(0)){
-				console.log(message.data);
+				nbMove++;
 				game.move(JSON.parse(message.data));
 				board.position(game.fen());
 			}else{
@@ -116,7 +110,6 @@
 		  if (game.in_checkmate() === true) {
 			status = 'Game over, ' + moveColor + ' is in checkmate.';
 			if("<%=u.getColor()%>" == moveColor){
-				console.log("on envoie la fin");
 				ws.send(JSON.stringify({
 					'nbMove' : nbMove,
 					'Winner' : $("#adversary").text(),
@@ -126,7 +119,6 @@
 			}else{}
 			$("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
 			clearInterval(statusupdate);
-			console.log("on enleve l'intervalle");
 		  }
 		  // draw?
 		  else if (game.in_draw() === true) {
@@ -166,20 +158,18 @@
 			document.getElementById("chatlog").textContent += message.data + "\n";
 			scrollToBottom();
 		};
-		function postToServer(){
-			event.preventDefault();
-			name = $("#name").val();
+		$("#sendButton").on("click", function postToServer(){
+			name = "<%=u.getName()%>";
 			if(document.getElementById("msg").value != ""){
-				ws.send(name +": "+ document.getElementById("msg").value);
+				wschat.send(name +": "+ document.getElementById("msg").value);
 				document.getElementById("msg").value = "";
 			}
-		}
+		});
 		function closeConnect(){
-			ws.close();
+			wschat.close();
 		}
 		function scrollToBottom() {
 		  $('#chatlog').scrollTop($('#chatlog')[0].scrollHeight);
-		  console.log("resize");
 		}
 	});
 	</script>
