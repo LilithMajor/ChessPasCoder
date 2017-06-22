@@ -8,9 +8,9 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 		<link rel="stylesheet" href="style.css" />
 		<style type="text/css">
-			body { background-color:#DDD; color: white; }
+			body { background-color:#DDD; color: black; }
 			[class*="col"] { margin-bottom: 20px; }
-			img { width:100%; }
+			
 			.well {
 				background-color:#556563;
 				padding: 20px;
@@ -22,10 +22,10 @@
 			</br>
 			<header>
 				<div class="row">
-					<div class="col-md-offset-3 col-md-6">
+					<div class="col-sm-offset-3 col-xs-offset-1 col-sm-6 col xs-10">
 						<nav class="navbar navbar-inverse">
 							<div class="navbar-header">
-								<p class="navbar-brand">ChessPasCoder</h1>
+								<p class="navbar-brand active">ChessPasCoder</p>
 							</div>
 								<ul class="nav navbar-nav">
 									<%User user = (User) session.getAttribute("user");
@@ -36,18 +36,29 @@
 										%>
 										<li><a href="<%=request.getContextPath()+"/game"%>">Create a game</a></li>
 										<li><a href="<%=request.getContextPath()+"/forum"%>">Forum</a></li>
-										<li><a href="<%=request.getContextPath()+"/disconnection"%>">Disconnect</a></li>
-								</ul>
-							</div>
+									<li><a href="<%=request.getContextPath()+"/disconnection"%>">Disconnect</a></li><%}%>
+								</ul>				
 						</nav>
 					</div>
-				</div>				
-					<h1 style="text-align:center; color:black">Welcome <%=user.getName()%> !</h1><%
+				</div>	
+					<% if (user != null) {%>
+					<h1 style="text-align:center;">Welcome <%=user.getName()%> !</h1>
+					<%
 			}
-			%>			
+			%>		
+				<div class="row">
+					<% if(user == null) {%>
+						<h1 style="text-align:center">Welcome on ChessPasCoder !</h1>
+						<p style="text-align:center">You can connect or register to play a chess game.</p>
+					<%}%>
+				</div>
 			</header>
 			<div class="row">
-				<section class="col-md-offset-3 col-md-6 col-xs-12 table-responsive">
+				<div class="col-sm-offset-3 col-sm-6" style="background-image:url(img/blanc.png)">
+				</div>
+			</div>
+			<div class="row">
+				<section class="col-sm-offset-3 col-sm-6 col-xs-12 table-responsive">
 					<h2 style="text-align:center; color:#545D5C;">Leader Board</h1>
 					<table style="color:black; border:2px solid black;" class="table table-bordered table-striped table-condensed" id="users">
 						<tr>
@@ -67,6 +78,11 @@
 								</tr>		
 						<%}%>
 					</table>
+				</section>
+				<div class="col-sm-3"></div>
+			</div>
+			<div class="row">
+				<section class="col-sm-offset-3 col-sm-6 col-xs-12 table-responsive">
 					<%if(user != null){%>
 					</br>
 					<h2 style="text-align:center; color:#545D5C;">Games List</h1>
@@ -91,10 +107,15 @@
 									<%}%>
 								</tr>		
 						<%}%>
-					</table></br>
+					</table>
+				</section>
+			</div>
+			<div class="row">
+				<section class="col-sm-offset-3 col-sm-6 col-xs-12">
+					</br>
 					<form class="well">
 						<legend style="color:white">Chat</legend>
-						<textarea class="form-control" id="chatlog" readonly></textarea><br/>
+						<textarea class="form-control noresize" id="chatlog" readonly></textarea><br/>
 						<input class="form-control" id="msg" type="text" />
 						</br>
 						<button class="btn btn-primary btn-info" type="submit" id="sendButton" onClick="postToServer()"><span class="glyphicon glyphicon-share-alt"></span> Send !</button>
@@ -104,6 +125,17 @@
 				<%}%>
 				</section>
 			</div>
+			<% if (user == null) {%>
+			<div class="row">
+				<section class="col-sm-offset-3 col-sm-6 col-xs-12">
+					</br>
+					<blockquote>Chess helps you to concentrate, improve your logic.
+					It teaches you to play by the rules and take responsibility for your actions, 
+					how to problem solve in an uncertain environment.</br>
+					<small class="pull-right">Garri Kasparov</small></br>
+					</blockquote>
+				</section>
+			</div><%}%>
 			<script type="text/javascript">
 			  var ws = new WebSocket("ws://172.19.35.150:8080/ChessPasCoder/wschat");
 				ws.onopen = function(){
@@ -119,7 +151,6 @@
 					ws.close();
 				}
 			</script>
-		</div>
 		</div>
 	</body>
 </html>
