@@ -2,6 +2,7 @@
 <%@ page import="com.Topic"%>
 <%@ page import="com.Response"%>
 <%@ page import="java.util.*"%>
+<%@ page import="com.User"%>
 <html>
     <head>
         <meta charset="utf-8" />

@@ -19,6 +19,7 @@ import com.Game;
 import com.JsonDecoder;
 import com.JsonEncoder;
 
+import Exception.DataBaseException;
 import database.Database;
 
 @ServerEndpoint(value = "/wsgame/{idGame}", encoders = { JsonEncoder.class }, decoders = { JsonDecoder.class })
@@ -29,36 +30,32 @@ public class WsGameServlet {
 	@OnOpen
 	public void onOpen(Session session, @PathParam("idGame") String idGame) {
 		Database db = Database.getDatabase();
-		sessionList.add(session);
-		System.out.println("Session added for game :" + idGame);
-		try {
-			db.setOnGoingGame(idGame, sessionList.size());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (sessionList.size() != 2) {
+			sessionList.add(session);
 		}
 	}
 
 	@OnClose
-	public void onClose(Session session) {
+	public void onClose(Session session, @PathParam("idGame") String idGame) throws DataBaseException {
+		Database db = Database.getDatabase();
+		Game game = db.getGameById(idGame);
+		if (game.getNbPlayer() == 1) {
+			db.removePlayerGame(Integer.toString(game.getId()));
+		}
 		sessionList.remove(session);
 	}
 
 	@OnMessage
 	public void onMessage(String msg, @PathParam("idGame") String idGame) {
 		Database db = Database.getDatabase();
-		System.out.println("Session game received : " + msg);
-		System.out.println(msg.charAt(0));
-		System.out.println("{".charAt(0));
 		if (msg.equals("getOnGoing")) {
 			try {
 				Game game = db.getGameById(idGame);
 				for (Session session : sessionList) {
 					// asynchronous communication
-					System.out.println("On envoie le nombre de joueurs: " + game.getNbPlayer());
 					session.getBasicRemote().sendObject(game.getNbPlayer());
 				}
-			} catch (SQLException | IOException | EncodeException e) {
+			} catch (DataBaseException | IOException | EncodeException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -70,9 +67,9 @@ public class WsGameServlet {
 					int nbMove = json.getInt("nbMove");
 					String winner = json.getString("Winner");
 					String loser = json.getString("Loser");
-					System.out.println(nbMove + winner + loser);
+					db.setElo(winner, loser);
 					db.setGame(idGame, nbMove, winner, loser);
-				} catch (JSONException e1) {
+				} catch (JSONException | DataBaseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -87,18 +84,15 @@ public class WsGameServlet {
 				try {
 					for (Session session : sessionList) {
 						// asynchronous communication
-						System.out.println("le json" + json);
 						session.getBasicRemote().sendObject(json);
 					}
 				} catch (IOException | EncodeException e) {
 				}
 			}
 		} else {
-			System.out.println("ça rentre pas la ?");
 			try {
 				for (Session session : sessionList) {
 					// asynchronous communication
-					System.out.println("le msg " + msg);
 					session.getBasicRemote().sendText(msg);
 				}
 			} catch (IOException e) {

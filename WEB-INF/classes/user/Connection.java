@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import com.User;
 
+import Exception.DataBaseException;
 import database.Database;
 
 
@@ -38,7 +39,7 @@ public class Connection extends HttpServlet {
        User user = new User();
 		try {
 			user = db.connectUser( request );
-		} catch (SQLException e) {
+		} catch (DataBaseException e) {
 			System.out.println("SQLException");
 			System.out.println(e.getMessage());
 			e.printStackTrace();

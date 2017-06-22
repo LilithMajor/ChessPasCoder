@@ -6,7 +6,7 @@ public class Game {
 	private String loginWin;
 	private String loginLoss;
 	private int nbPlayer;
-	
+
 	public Game(int id, int nbMove, String LoginWin, String LoginLoss, int nbPlayer) {
 		this.setId(id);
 		this.nbMove = nbMove;
@@ -14,10 +14,11 @@ public class Game {
 		this.loginLoss = LoginLoss;
 		this.nbPlayer = nbPlayer;
 	}
-	
+
 	public int getNbMove() {
 		return nbMove;
 	}
+
 	public void setNbMove(int nbMove) {
 		this.nbMove = nbMove;
 	}
@@ -49,13 +50,12 @@ public class Game {
 	public int getNbPlayer() {
 		return nbPlayer;
 	}
- 
+
 	public void setNbPlayer(int nbPlayer) {
 		this.nbPlayer = nbPlayer;
 	}
-	
-	public void addNbPlayer(){
+
+	public void addNbPlayer() {
 		nbPlayer++;
 	}
-
 }

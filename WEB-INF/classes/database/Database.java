@@ -1,5 +1,7 @@
 package database;
 
+import Exception.DataBaseException;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -27,48 +29,125 @@ public class Database {
 		return db.getAllUsers();
 	}
 
-	public User connectUser(HttpServletRequest request) throws SQLException {
-		return db.connectUser(request);
+	public User connectUser(HttpServletRequest request) throws DataBaseException {
+		try{
+			return db.connectUser(request);
+		}
+		catch(SQLException e){
+			throw new DataBaseException();
+		}
 	}
 
-	public User registerUser(HttpServletRequest request) throws SQLException {
-		return db.registerUser(request);
+	public User registerUser(HttpServletRequest request) throws DataBaseException {
+		try{
+			return db.registerUser(request);
+		}
+		catch(SQLException e){
+			throw new DataBaseException();
+		}
 	}
 
-	public ArrayList<Game> getAllGames() throws SQLException {
-		// TODO Auto-generated method stub
-		return db.getAllGames();
+	public ArrayList<Game> getAllGames() throws DataBaseException {
+		try{
+			// TODO Auto-generated method stub
+			return db.getAllGames();
+		}
+		catch(SQLException e){
+			throw new DataBaseException();
+		}
 	}
 
-	public void setOnGoingGame(String idGame, int OnGoing) throws SQLException {
-		db.setOnGoingGame(idGame, OnGoing);
+	public void addPlayerGame(String idGame) throws DataBaseException {	
+		try{
+			db.addPlayerGame(idGame);
+		}
+		catch(SQLException e){
+			throw new DataBaseException();
+		}
 	}
 
-	public Game getGameById(String idGame) throws SQLException {
-		return db.getGameById(idGame);
+	public User getUserByLogin(String login) throws DataBaseException {
+		try{
+			return db.getUserByLogin(login);
+		}
+		catch(SQLException e){
+			throw new DataBaseException();
+		}
 	}
 
-	public Topic getTopicById(String idTop) throws SQLException {
-		return db.getTopicById(idTop);
+	public Game getGameById(String idGame) throws DataBaseException {
+		try{
+			return db.getGameById(idGame);
+		}
+		catch(SQLException e){
+			throw new DataBaseException();
+		}
 	}
 
-	public ArrayList<Topic> getAllTopic() throws SQLException {
-		return db.getAllTopic();
+	public Topic getTopicById(String idTop) throws DataBaseException {
+		try{
+			return db.getTopicById(idTop);
+		}
+		catch(SQLException e){
+			throw new DataBaseException();
+		}
 	}
 
-	public void createGame() throws SQLException {
-		db.createGame();
+	public ArrayList<Topic> getAllTopic() throws DataBaseException {
+		try{
+			return db.getAllTopic();
+		}
+		catch(SQLException e){
+			throw new DataBaseException();
+		}
 	}
 
-	public void createResponse(int idtop, String text, String name, String date) throws SQLException {
-		db.createResponse(idtop, text, name, date);
+	public void createGame() throws DataBaseException {
+		try{
+			db.createGame();
+		}
+		catch(SQLException e){
+			throw new DataBaseException();
+		}
+	}
+
+	public void createResponse(int idtop, String text, String name, String date) throws DataBaseException {
+		try{
+			db.createResponse(idtop, text, name, date);
+		}
+		catch(SQLException e){
+			throw new DataBaseException();
+		}
 	}
 
 	public void setGame(String idGame, int nbMove, String winner, String loser) {
 		db.setGame(idGame, nbMove, winner, loser);
 	}
 
-	public void createTopic(String parameter, String login, String s) throws SQLException {
-		db.createTopic(parameter, login, s);
+	public void createTopic(String parameter, String login, String s) throws DataBaseException {
+		try{
+			db.createTopic(parameter, login, s);
+		}
+		catch(SQLException e){
+			throw new DataBaseException();
+		}
+	}
+
+	public void setElo(String winner, String loser) throws DataBaseException {
+		try{
+			db.setElo(winner, loser);
+		}
+		catch(SQLException e){
+			throw new DataBaseException();
+		}
+	}
+
+	public void removePlayerGame(String idGame) throws DataBaseException {
+		try {
+			db.removePlayerGame(idGame);
+		}
+		catch(SQLException e){
+			throw new DataBaseException();
+		}
 	}
 }

@@ -7,6 +7,10 @@
         <title>ChessPasCoder</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 		<link rel="stylesheet" href="style.css" />
+		<script
+  src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous"></script>
 		<style type="text/css">
 			body { background-color:#DDD; color: black; }
 			[class*="col"] { margin-bottom: 20px; }
@@ -31,10 +35,13 @@
 									<%User user = (User) session.getAttribute("user");
 									if(user == null){
 										%><li> <a href="<%=request.getContextPath()+"/connection"%>">Connect</a></li>
-										<li><a href="<%=request.getContextPath()+"/register"%>">Register</a></li><%
+										<li><a href="<%=request.getContextPath()+"/register"%>">Register</a></li>
+										<input type="hidden" id="name" value="">
+										<%
 									}else{
 										%>
-										<li><a href="<%=request.getContextPath()+"/game"%>">Create a game</a></li>
+										<input type="hidden" id="name" value="<%=user.getName()%>">
+										<li><a href="<%=request.getContextPath()+"/creategame"%>">Create a game</a></li>
 										<li><a href="<%=request.getContextPath()+"/forum"%>">Forum</a></li>
 									<li><a href="<%=request.getContextPath()+"/disconnection"%>">Disconnect</a></li><%}%>
 								</ul>				
@@ -51,7 +58,10 @@
 						<h1 style="text-align:center">Welcome on ChessPasCoder !</h1>
 						<p style="text-align:center">You can connect or register to play a chess game.</p>
 					<%}%>
-				</div>
+				</div>				
+					<h1 style="text-align:center; color:black">Welcome <%=user.getName()%> !</h1>
+					<%}%>			
+
 			</header>
 			<div class="row">
 				<div class="col-sm-offset-3 col-sm-6" style="background-image:url(img/blanc.png)">
@@ -88,23 +98,13 @@
 					<h2 style="text-align:center; color:#545D5C;">Games List</h1>
 					<table style="color:black;border:2px solid black;" class="table table-bordered table-striped table-condensed" id="games">
 						<tr>
-							<th>Id</th>
-							<th>Number of moves</th>
-							<th>Winner</th>
-							<th>Loser</th>
 							<th>Number of players</th>
 							<th>Join</th>
 						</tr>
 						<% for(Game g : (ArrayList<Game>) request.getAttribute("games")){%>
 								<tr class="ligne">
-									<td><%=g.getId()%></td>
-									<td><%=g.getNbMove()%></td>
-									<td><%=g.getLoginWin()%></td>
-									<td><%=g.getLoginLoss()%></td>
-									<td><%=g.getNbPlayer()%></td>
-									<%if(g.getNbPlayer() != 2){
-										%><form action="game" method="post"><td><input type="hidden" name="idGame" value="<%=g.getId()%>"><input type="submit" value="Join"></td></form>
-									<%}%>
+									<td><%=g.getNbPlayer()%> / 2</td>
+									<form action="game" method="post"><td><input type="hidden" name="login" value="<%=user.getLogin()%>"><input type="hidden" name="idGame" value="<%=g.getId()%>"><input type="submit" value="Join"></td></form>
 								</tr>		
 						<%}%>
 					</table>
@@ -115,7 +115,8 @@
 					</br>
 					<form class="well">
 						<legend style="color:white">Chat</legend>
-						<textarea class="form-control noresize" id="chatlog" readonly></textarea><br/>
+						<textarea class="form-control" id="chatlog" style="width: 100%; height: 25%; resize: none" readonly></textarea><br/>
+
 						<input class="form-control" id="msg" type="text" />
 						</br>
 						<button class="btn btn-primary btn-info" type="submit" id="sendButton" onClick="postToServer()"><span class="glyphicon glyphicon-share-alt"></span> Send !</button>
@@ -142,13 +143,22 @@
 				};
 				ws.onmessage = function(message){
 					document.getElementById("chatlog").textContent += message.data + "\n";
+					scrollToBottom();
 				};
 				function postToServer(){
-					ws.send(document.getElementById("msg").value);
-					document.getElementById("msg").value = "";
+					event.preventDefault();
+					name = $("#name").val();	
+					if(document.getElementById("msg").value != ""){
+						ws.send(name +": "+ document.getElementById("msg").value);
+						document.getElementById("msg").value = "";
+					}
 				}
 				function closeConnect(){
 					ws.close();
+				}
+				
+				function scrollToBottom() {
+				  $('#chatlog').scrollTop($('#chatlog')[0].scrollHeight);
 				}
 			</script>
 		</div>
