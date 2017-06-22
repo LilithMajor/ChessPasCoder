@@ -1,7 +1,6 @@
 package wsapp;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.websocket.EncodeException;
@@ -61,42 +60,15 @@ public class WsGameServlet {
 			}
 		} else if (msg.charAt(0) == "{".charAt(0)) {
 			if (msg.charAt(2) == "n".charAt(0)) {
-				JSONObject json = null;
-				try {
-					json = new JSONObject(msg);
-					int nbMove = json.getInt("nbMove");
-					String winner = json.getString("Winner");
-					String loser = json.getString("Loser");
-					db.setElo(winner, loser);
-					db.setGame(idGame, nbMove, winner, loser);
-				} catch (JSONException | DataBaseException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+
 			} else if (msg.charAt(1) == "r".charAt(0)) {
-				JSONObject json = null;
-				if (msg.charAt(2) == "w".charAt(0)) {
-					try {
-						json = new JSONObject("{a4: 'wK',c4: 'bK',a7: 'bR'}");
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				} else {
-					try {
-						json = new JSONObject("{a4: 'bK',c4: 'wK',a7: 'wR'}");
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
 				try {
 					for (Session session : sessionList) {
 						// asynchronous communication
-						System.out.println("on envoie : " + json);
-						session.getBasicRemote().sendObject(json);
+						System.out.println("on envoie : " + msg);
+						session.getBasicRemote().sendText(msg);
 					}
-				} catch (IOException | EncodeException e) {
+				} catch (IOException e) {
 				}
 			} else {
 				JSONObject json = null;

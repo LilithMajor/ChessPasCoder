@@ -79,7 +79,12 @@
 			}else if(message.data.charAt(0) == "{".charAt(0)){
 				if(message.data.charAt(2) != "s".charAt(0)){
 					board.position(JSON.parse(message.data));
-					game.load(board.fen());
+					console.log(board.fen());
+					if(game.load('rnb1kbnr/pppp1ppp/8/4p3/5PPq/8/PPPPP2P/RNBQKBNR w KQkq - 1 3')){
+						console.log("ok");
+					}else{
+						console.log("nok");
+					}
 					updateStatus();
 				}else{
 					nbMove++;
