@@ -27,7 +27,6 @@
 		nbMove = 0;
 		var ws = new WebSocket("ws://172.19.35.150:8080/ChessPasCoder/wsgame/"+<%=g.getId()%>);
 		interval = setInterval(isOnGoing, 2000);
-		//sendLogin = setInterval(sendLogin, 2000);
 		var initGame = function () {
 			var cfg = {
 				draggable: true,
@@ -59,9 +58,6 @@
 				statusupdateblack = setInterval(updateStatus, 2000);
 			<%}%>
 		};
-		/* function sendLogin(){
-			
-		} */
 		ws.onmessage = function(message){
 			console.log(message.data);
 			console.log(message.data.charAt(1));
