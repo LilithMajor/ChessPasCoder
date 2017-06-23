@@ -49,7 +49,7 @@
 		<div class="col-sm-1"></div>
 		<button type="submit" id="resign" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Resign</button></br>
 		<p id="return"></p>
-		<div class="center" style="width:250px; overflow:auto; height:200px;  border:2px solid black;"">
+		<div class="center" style="width:300px; overflow:auto; height:150px;  border:2px solid black;"">
 			<table style="color:black" class="table table-bordered table-striped table-condensed">
 				<tr>
 					<th>Your color</th>
