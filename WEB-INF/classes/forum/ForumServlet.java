@@ -42,6 +42,7 @@ public class ForumServlet extends HttpServlet{
 			HttpSession session = request.getSession();
 			User n = (User) session.getAttribute("user");
 			topic = db.getTopicById(request.getParameter("idTopic"));
+			System.out.println(topic.getId());
 			request.setAttribute("User", n.getLogin());
 			request.setAttribute("topic", topic);
 			this.getServletContext().getRequestDispatcher("/WEB-INF/topic.jsp").forward( request, response );
