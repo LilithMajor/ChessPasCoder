@@ -49,8 +49,29 @@
 		<div class="col-sm-1"></div>
 		<button type="submit" id="resign" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Resign</button></br>
 		<p id="return"></p>
-		<div class="center" style="background-color: #B7965D;
-				border: 2px solid black;width:200px">
+		<div class="center" style="width:200px">
+			<table style="color:black; border:2px solid black;" class="table table-bordered table-striped table-condensed">
+				<tr>
+					<th>Your color</th>
+					<td id="color"></td>
+				</tr>
+				
+				<tr>
+					<th>Status</th>
+					<td id="status"></td>
+				</tr>
+				
+				<tr>
+					<th>History</th>
+					<td id="history"></td>
+				</tr>
+				
+				<tr>
+					<th>Your adversary</th>
+					<td id="adversary"></td>
+				</tr>
+			</table>
+		</div>
 		<p class="center" id="Color"></p></br>
 		<p class="center">Status: <span id="status"></span></p>
 		<p class="center">History: <span id="history"></span></p>
