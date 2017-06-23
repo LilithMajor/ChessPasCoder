@@ -1,8 +1,13 @@
 package Exception;
 
 public class DataBaseException extends Exception {
-	
-	public DataBaseException(){
-		super ("Bug in database");
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7130564424160539799L;
+
+	public DataBaseException() {
+		super("Bug in database");
 	}
 }

@@ -1,7 +1,6 @@
 package game;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,6 +19,7 @@ public class CreateGame extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Database db = Database.getDatabase();
 		try {
+			// We create a new game
 			db.createGame();
 		} catch (DataBaseException e) {
 			// TODO Auto-generated catch block

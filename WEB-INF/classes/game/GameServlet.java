@@ -1,7 +1,6 @@
 package game;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,6 +24,8 @@ public class GameServlet extends HttpServlet {
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Synchronized to prevent two players to enter the game at the same
+		// time
 		synchronized (this) {
 			Database db = Database.getDatabase();
 			Game game;
@@ -32,10 +33,14 @@ public class GameServlet extends HttpServlet {
 			try {
 				user = db.getUserByLogin(request.getParameter("login"));
 				game = db.getGameById(request.getParameter("idGame"));
+				// if the game is launched
 				if (game.getNbPlayer() >= 2) {
+					// We don't let him enter the game
 					response.sendRedirect(request.getContextPath() + "/index");
 				} else {
+					// We add a player in the game
 					db.addPlayerGame(request.getParameter("idGame"));
+					// We send to the jsp the user and the game
 					request.setAttribute("user", user);
 					request.setAttribute("game", game);
 					this.getServletContext().getRequestDispatcher("/WEB-INF/chess.jsp").forward(request, response);

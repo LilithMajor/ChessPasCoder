@@ -32,10 +32,13 @@ public final class DTBRequest {
 
 	public DTBRequest() {
 		try {
+			// Connection to the database, only works in IUT local, to connect
+			// to our own bdd change the getConnection parameters.
 			Class.forName("oracle.jdbc.OracleDriver");
 			this.connect = DriverManager.getConnection("jdbc:oracle:thin:@vs-oracle2:1521:ORCL", "GRAMMONTG",
 					"GRAMMONTG");
-			this.salt = getSalt();
+			// We get the salt for the hashing
+			DTBRequest.salt = getSalt();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -51,21 +54,25 @@ public final class DTBRequest {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	// To get all users in the database
 	public ArrayList<User> getAllUsers() {
 		ArrayList<User> users = new ArrayList<User>();
 		try {
+			// Creating to statement to avoid problems
 			Statement statement = connect.createStatement();
 			Statement stategames = connect.createStatement();
+			// Select everything from users
 			ResultSet result = statement.executeQuery("SELECT * FROM USERS");
 			while (result.next()) {
 				ArrayList<Game> games = new ArrayList<Game>();
+				// Select the games of the user
 				ResultSet res = stategames.executeQuery("SELECT * FROM GAMES WHERE LoginWin='"
 						+ result.getString("Login") + "' OR LoginLoss='" + result.getString("Login") + "'");
 				while (res.next()) {
 					games.add(
 							new Game(res.getInt(1), res.getInt(2), res.getString(3), res.getString(4), res.getInt(5)));
 				}
+				// Set the user
 				User u = new User();
 				u.setName(result.getString(1));
 				u.setLogin(result.getString(2));
@@ -82,14 +89,18 @@ public final class DTBRequest {
 		return users;
 	}
 
+	// Connect user to web app from the database
 	public User connectUser(HttpServletRequest request) throws SQLException {
+		// Get the login and password from the request
 		String login = getValeurChamp(request, "login");
 		String password = getValeurChamp(request, "password");
+		// Get the hashed password
 		String securePassword = getSecurePassword(password, salt);
 		ArrayList<Game> games = new ArrayList<Game>();
 		User u = new User();
 		Statement statement = connect.createStatement();
 		Statement stategames = connect.createStatement();
+		// Get the user
 		ResultSet result = statement
 				.executeQuery("SELECT * FROM USERS WHERE login='" + login + "' AND password='" + securePassword + "'");
 		if (!result.next()) {
@@ -106,23 +117,29 @@ public final class DTBRequest {
 		while (res.next()) {
 			games.add(new Game(res.getInt(1), res.getInt(2), res.getString(3), res.getString(4), res.getInt(5)));
 		}
+		// Set the game list
 		u.setGames(games);
+		// Return the user to set it in the session
 		return u;
 	}
 
+	// Register an user
 	public User registerUser(HttpServletRequest request) throws SQLException {
 		Statement statement = connect.createStatement();
+		// get the informations from the request
 		String login = getValeurChamp(request, CHAMP_LOGIN);
 		String password = getValeurChamp(request, CHAMP_PASS);
 		String name = getValeurChamp(request, CHAMP_NAME);
 		String email = getValeurChamp(request, CHAMP_EMAIL);
 		ResultSet result = statement.executeQuery("SELECT login FROM USERS");
+		// hashing the password
 		String securePassword = getSecurePassword(password, salt);
 		while (result.next()) {
 			if (result.getString(1).equals(login)) {
 				throw new NullPointerException();
 			}
 		}
+		// insert the new user in the database
 		String sql = "INSERT INTO USERS VALUES ('" + name + "'," + "'" + login + "'," + "'" + securePassword + "',"
 				+ "'" + email + "','1200')";
 		statement.executeUpdate(sql);
@@ -133,9 +150,11 @@ public final class DTBRequest {
 		u.setEmail(email);
 		u.setElo(0);
 		u.setGames(new ArrayList<Game>());
+		// return the new user
 		return u;
 	}
 
+	// Create a topic
 	public Topic createTopic(HttpServletRequest request) throws SQLException {
 		Statement statement = connect.createStatement();
 		String name = getValeurChamp(request, CHAMP_NAME);
@@ -148,6 +167,7 @@ public final class DTBRequest {
 		return t;
 	}
 
+	// Create a response
 	public Response createResponse(HttpServletRequest request) throws SQLException {
 		Statement statement = connect.createStatement();
 		String text = getValeurChamp(request, CHAMP_TEXT);
@@ -160,6 +180,7 @@ public final class DTBRequest {
 		return r;
 	}
 
+	// Get all topics
 	public ArrayList<Topic> getAllTopics(HttpServletRequest request) throws SQLException {
 		ArrayList<Topic> allTopics = new ArrayList<Topic>();
 		Statement statement = connect.createStatement();
@@ -175,6 +196,7 @@ public final class DTBRequest {
 		return allTopics;
 	}
 
+	// Get a topic by his name
 	public ArrayList<Topic> getTopicsByName(HttpServletRequest request) throws SQLException {
 		ArrayList<Topic> topics = new ArrayList<Topic>();
 		Statement statement = connect.createStatement();
@@ -192,6 +214,7 @@ public final class DTBRequest {
 		return topics;
 	}
 
+	// Get topics from his creator
 	public ArrayList<Topic> getTopicsByCreator(HttpServletRequest request) throws SQLException {
 		ArrayList<Topic> topics = new ArrayList<Topic>();
 		Statement statement = connect.createStatement();
@@ -209,6 +232,7 @@ public final class DTBRequest {
 		return topics;
 	}
 
+	// Get all games that are not finished or ongoing
 	public ArrayList<Game> getAllGames() throws SQLException {
 		ArrayList<Game> games = new ArrayList<Game>();
 		Statement statement = connect.createStatement();
@@ -219,29 +243,34 @@ public final class DTBRequest {
 		return games;
 	}
 
-	private String getValeurChamp(HttpServletRequest request, String nomChamp) {
-		String valeur = request.getParameter(nomChamp);
+	// Private method to get the information from the request
+	private String getValeurChamp(HttpServletRequest request, String fieldName) {
+		String valeur = request.getParameter(fieldName);
 		return valeur;
 	}
 
+	// Create a game
 	public void createGame() throws SQLException {
 		Statement statement = connect.createStatement();
 		String sql = "INSERT INTO GAMES(Id, nbPlayer) VALUES (GAME_NUMBER.NEXTVAL, '0')";
 		statement.executeUpdate(sql);
 	}
 
+	// increment the number of players in a game
 	public void addPlayerGame(String idGame) throws SQLException {
 		Statement statement = connect.createStatement();
 		String sql = "UPDATE GAMES SET nbPlayer = nbPlayer + 1 WHERE Id =" + idGame;
 		statement.executeUpdate(sql);
 	}
 
+	// Decrement the number of players in a game
 	public void removePlayerGame(String idGame) throws SQLException {
 		Statement statement = connect.createStatement();
 		String sql = "UPDATE GAMES SET nbPlayer = nbPlayer - 1 WHERE Id =" + idGame;
 		statement.executeUpdate(sql);
 	}
 
+	// Get a game by his id
 	public Game getGameById(String idGame) throws SQLException {
 		Statement statement = connect.createStatement();
 		String sql = "SELECT * FROM GAMES WHERE Id =" + idGame;
@@ -253,6 +282,7 @@ public final class DTBRequest {
 		return game;
 	}
 
+	// Get a topic by his id
 	public Topic getTopicById(String idTop) throws SQLException {
 		Statement statement = connect.createStatement();
 		String sql = "SELECT * FROM TOPICS WHERE Id_Topic=" + idTop;
@@ -265,6 +295,7 @@ public final class DTBRequest {
 		return top;
 	}
 
+	// Get all topics
 	public ArrayList<Topic> getAllTopic() throws SQLException {
 		ArrayList<Topic> top = new ArrayList<Topic>();
 		Statement statement = connect.createStatement();
@@ -277,6 +308,7 @@ public final class DTBRequest {
 		return top;
 	}
 
+	// Get all responses by topic id
 	public ArrayList<Response> getAllResponsesByTopic(int i) throws SQLException {
 		String sql2 = "SELECT * FROM RESPONSES WHERE R_Id_Topic =" + i + " ORDER BY RESPONSES.Id_Response";
 		Statement statement2 = connect.createStatement();
@@ -289,6 +321,7 @@ public final class DTBRequest {
 		return rep;
 	}
 
+	// Create a new response
 	public void createResponse(int idtop, String text, String name, String date) throws SQLException {
 		Statement statement = connect.createStatement();
 		String sql = "INSERT INTO RESPONSES VALUES (RESPONSE_NUMBER.NEXTVAL, '" + text + "','" + name + "',DATE '"
@@ -296,6 +329,7 @@ public final class DTBRequest {
 		statement.executeUpdate(sql);
 	}
 
+	// Create a new topic
 	public void createTopic(String text, String name, String date) throws SQLException {
 		Statement statement = connect.createStatement();
 		String sql = "INSERT INTO TOPICS VALUES (TOPIC_NUMBER.NEXTVAL, '" + text + "','" + name + "',DATE '" + date
@@ -303,6 +337,7 @@ public final class DTBRequest {
 		statement.executeUpdate(sql);
 	}
 
+	// Set a finished game
 	public void setGame(String idGame, int nbMove, String winner, String loser) {
 		Statement statement;
 		System.out.println(nbMove);
@@ -317,6 +352,7 @@ public final class DTBRequest {
 		}
 	}
 
+	// Get user by his login
 	public User getUserByLogin(String login) throws SQLException {
 		Statement statement = connect.createStatement();
 		ResultSet result = statement.executeQuery("SELECT * FROM USERS WHERE Login='" + login + "'");
@@ -328,9 +364,11 @@ public final class DTBRequest {
 		return u;
 	}
 
+	// Set elo of the winner and the loser
 	public void setElo(String winner, String loser) throws SQLException {
 		Statement statement = connect.createStatement();
 		ResultSet result = statement.executeQuery("SELECT * FROM USERS WHERE Login='" + winner + "'");
+		// Get the winner and the loser by their login
 		User userWinner = null;
 		User userLoser = null;
 		if (result.next()) {
@@ -350,16 +388,24 @@ public final class DTBRequest {
 		statement.executeUpdate("UPDATE USERS SET Elo=" + eloLoser + "WHERE Login='" + loser + "'");
 	}
 
+	// Private function to calculate the elo of a player with the elo of both
+	// player and the result of the game
 	private int mathsElo(int elo1, int elo2, int score) {
+		// Get the k coefficient
 		int k = valK(elo1);
+		// Get the probability
 		double prob = prob(elo1, elo2);
+		// Calculate the new elo with the coefficient, the score and the
+		// probability of winning of the winner
 		int newElo = (int) (elo1 + k * (score - prob));
+		// We don't want an elo below 300
 		if (newElo < 300) {
 			newElo = 300;
 		}
 		return newElo;
 	}
 
+	// Calculate the coefficient by the elo of a player
 	private int valK(int elo) {
 		int k = 0;
 		if (elo < 1000) {
@@ -377,11 +423,13 @@ public final class DTBRequest {
 		return k;
 	}
 
+	// Calculate the probability that elo1 have to win against elo2
 	private double prob(int elo1, int elo2) {
 		int foo = (elo1 - elo2) / 400;
 		return 1 / (1 + Math.pow(10, foo));
 	}
 
+	// Get the hashing of the password with the salt
 	private static String getSecurePassword(String passwordToHash, byte[] salt) {
 		String generatedPassword = null;
 		try {

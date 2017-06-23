@@ -1,7 +1,6 @@
 package index;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -16,13 +15,14 @@ import Exception.DataBaseException;
 import database.Database;
 
 public class Index extends HttpServlet {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1884058970705099571L;
 
-	public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// When the application is launch we get the games and the users
 		Database db = Database.getDatabase();
 		ArrayList<User> users = new ArrayList<User>();
 		ArrayList<Game> games = new ArrayList<Game>();
@@ -35,7 +35,7 @@ public class Index extends HttpServlet {
 		}
 		request.setAttribute("users", users);
 		request.setAttribute("games", games);
-		this.getServletContext().getRequestDispatcher("/index.jsp").forward( request, response );
+		this.getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
 	}
-	
+
 }

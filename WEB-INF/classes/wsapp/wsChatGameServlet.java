@@ -9,6 +9,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+//Only one chat websocket per game
 @ServerEndpoint(value = "/wschatgame/{idGame}")
 public class wsChatGameServlet {
 	// notice:not thread-safe
@@ -16,10 +17,11 @@ public class wsChatGameServlet {
 
 	@OnOpen
 	public void onOpen(Session session) {
+		// Only 2 session in the session list
 		if (sessionList.size() != 2) {
 			sessionList.add(session);
+			System.out.println("Session chat game added");
 		}
-		System.out.println("Session chat game added");
 		try {
 			session.getBasicRemote().sendText("Hello!");
 		} catch (IOException e) {

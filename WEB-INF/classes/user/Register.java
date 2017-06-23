@@ -29,7 +29,7 @@ public class Register extends HttpServlet {
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		// We register a new user
 		Database db = Database.getDatabase();
 		HttpSession session = request.getSession(true);
 		Boolean erreur = false;

@@ -135,13 +135,16 @@
 				</section>
 			</div><%}%>
 			<script type="text/javascript">
+			//Connect to the websocket
 			  var ws = new WebSocket("ws://172.19.35.150:8080/ChessPasCoder/wschat");
 				ws.onopen = function(){
 				};
+				//When we receive a message we show it in the chat log
 				ws.onmessage = function(message){
 					document.getElementById("chatlog").textContent += message.data + "\n";
 					scrollToBottom();
 				};
+				//When the client click on the send button we send to the server is name then it's message
 				function postToServer(event){
 					name = $("#name").val();	
 					if(document.getElementById("msg").value != ""){
@@ -153,11 +156,11 @@
 				function closeConnect(){
 					ws.close();
 				}
-				
+				//Scroll the chatlog to the bottom
 				function scrollToBottom() {
 				  $('#chatlog').scrollTop($('#chatlog')[0].scrollHeight);
 				}
-				
+				//Function so that the client can send a message by pressing enter
 				$("#msg").keydown(function(event){
 					if(event.keyCode == 13) {
 					  postToServer(event);
