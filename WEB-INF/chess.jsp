@@ -21,6 +21,7 @@
 			}
 			p {
 				color:black;
+				text-align:center;
 			}
 		</style>
     </head>
@@ -32,7 +33,7 @@
 			</div>
 		</div>
 
-		<div class="center" id="gameBoard" style="width: 400px"><img src="./img/Loading_icon.gif" style="width: 400px"></div>
+		<div class="center" id="gameBoard" style="width: 400px"><img src="./img/Loading_icon.gif" style="width: 400px"></div></br>
 		<p class="center" id="Color"></p></br>
 		<p class="center">Status: <span id="status"></span></p>
 		<p class="center">History: <span id="history"></span></p>
@@ -42,10 +43,10 @@
 			<textarea class="form-control" id="chatlog" style="width: 100%; height: 200px; resize: none" readonly></textarea><br/>
 			<input class="form-control" id="msg" type="text" />
 			</br>
-			<input class="btn btn-primary btn-info" type="button" id="sendButton" value="Send !"><span class="glyphicon glyphicon-share-alt"></span>
+			<input class="btn btn-primary btn-info" type="button" id="sendButton" value="Send !">
 			</br>
 		</form>
-		<button type="submit" id="resign" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Resign</button>
+		<button type="submit" id="resign" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Resign</button></br>
 		<p id="return"></p>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
 		<script src="./js/chessboard-0.3.0.min.js"></script>
@@ -85,10 +86,10 @@
 		}	
 		ws.onopen = function(){
 			<%if(g.getNbPlayer()==0){
-				%>$("#Color").after("You are playing white");
+				%>$("#Color").html("You are playing white");
 				<%u.setColor("w");
 			}else{
-				%>$("#Color").after("You are playing black");
+				%>$("#Color").html("You are playing black");
 				<%u.setColor("b");%>
 				initGame();	
 				statusupdateblack = setInterval(updateStatus, 2000);
@@ -157,7 +158,7 @@
 					clearInterval(statusupdate);
 				}
 			}else{}
-			$("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
+			$("#return").html("<form action='index' method='get'><input class="btn btn-primary btn-primary" type='submit' value='Back'></form>")
 			clearInterval(statusupdate);
 		  }
 		  // draw?
