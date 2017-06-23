@@ -11,6 +11,7 @@
     <div id="gameBoard" style="width: 400px"><img src="./img/Loading_icon.gif" style="width: 400px"></div>
 	<p id="Color"></p>
 	<p>Status: <span id="status"></span></p>
+	<p>History : <span id="history"></span></p>
 	<p>Your adversary : </p><p id="adversary">Waiting</p>
 	<form class="well">
 		<legend style="color:white">Chat</legend>
@@ -87,6 +88,7 @@
 						fen = "rnbqkbnr/1ppp1Qpp/8/p3p3/2B1P3/8/PPPP1PPP/RNB1K1NR b KQkq - 0 4";
 					}
 					board.position(fen);
+					game.load(fen);
 					updateStatus();
 			}else{
 				if(message.data != "<%=u.getLogin()%>"){
@@ -172,6 +174,15 @@
 			  status += ', ' + moveColor + ' is in check';
 			}
 		  }
+		  historyArray = game.history();
+		  console.log(historyArray);
+		  history="";
+		  for(i = 0; i < historyArray.length; i++){
+			  console.log(historyArray[i])
+			  history = historyArray[i] + " ,";
+		  }
+		  console.log(history);
+		  $("#history").html(history);
 		  $("#status").html(status);
 		};
 		wschat.onopen = function(){
@@ -180,7 +191,7 @@
 			document.getElementById("chatlog").textContent += message.data + "\n";
 			scrollToBottom();
 		};
-		$("#sendButton").on("click", function postToServer(event){
+		$("#sendButton").click(function postToServer(event){
 			name = "<%=u.getName()%>";
 			if(document.getElementById("msg").value != ""){
 				wschat.send(name +": "+ document.getElementById("msg").value);
@@ -197,6 +208,16 @@
 		$("#resign").on('click', function(){
 			ws.send("r"+"<%=u.getColor()%>");
 		})
+		$("#msg").keydown(function(event){
+			if(event.keyCode == 13) {
+			  name = "<%=u.getName()%>";
+				if(document.getElementById("msg").value != ""){
+					wschat.send(name +": "+ document.getElementById("msg").value);
+					document.getElementById("msg").value = "";
+				}
+			event.preventDefault();
+			}
+		});
 	});
 	</script>
 </html>
