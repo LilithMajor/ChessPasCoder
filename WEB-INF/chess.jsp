@@ -49,11 +49,11 @@
 		<div class="col-sm-1"></div>
 		<button type="submit" id="resign" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Resign</button></br>
 		<p id="return"></p>
-		<div class="center" style="width:200px">
-			<table style="color:black; border:2px solid black;" class="table table-bordered table-striped table-condensed">
+		<div class="center" style="width:250px; overflow:auto; height:200px;  border:2px solid black;"">
+			<table style="color:black" class="table table-bordered table-striped table-condensed">
 				<tr>
 					<th>Your color</th>
-					<td id="color"></td>
+					<td><p class="center" id="Color"></p></td>
 				</tr>
 				
 				<tr>
@@ -68,14 +68,10 @@
 				
 				<tr>
 					<th>Your adversary</th>
-					<td id="adversary"></td>
+					<td><p id="adversary"></p></td>
 				</tr>
 			</table>
 		</div>
-		<p class="center" id="Color"></p></br>
-		<p class="center">Status: <span id="status"></span></p>
-		<p class="center">History: <span id="history"></span></p>
-		<p class="center">Your adversary : </p><p id="adversary">Waiting</p>
 		</div>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
 		<script src="./js/chessboard-0.3.0.min.js"></script>
@@ -193,7 +189,7 @@
 		  // draw?
 		  else if (game.in_draw() === true) {
 			status = 'Game over, drawn position';
-			$("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
+			$("#return").html("<form action='index' method='get'><input class='btn btn-primary btn-primary' type='submit' value='Back'></form>")
 			if("<%=u.getColor()%>" == "b"){
 				clearInterval(statusupdateblack);
 			}else{
@@ -201,17 +197,17 @@
 			}
 			if(game.insufficient_material()){
 			  status = 'Game over, insufficient material';
-			  $("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
+			  $("#return").html("<form action='index' method='get'><input class='btn btn-primary btn-primary' type='submit' value='Back'></form>")
 			}
 			if(game.in_threefold_repetition()){
 			  status = 'Game over, in threefold position';
-			  $("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
+			  $("#return").html("<form action='index' method='get'><input class='btn btn-primary btn-primary' type='submit' value='Back'></form>")
 			}
 		  }
 		  //stalemate ?
 		  else if(game.in_stalemate() === true){
 			  status = 'Game over, stalemate position';
-			  $("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
+			  $("#return").html("<form action='index' method='get'><input class='btn btn-primary btn-primary' type='submit' value='Back'></form>")
 			  if("<%=u.getColor()%>" == "b"){
 					clearInterval(statusupdateblack);
 			  }else{
