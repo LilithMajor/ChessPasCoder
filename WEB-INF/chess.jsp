@@ -29,16 +29,14 @@
 	<div class="container">
 		<h1 style="text-align:center; color:black">Game</h1>
 		<div class="row">
-			<div class="col-sm-offset-3 col-sm-6" style="background-image:url(./img/blanc.png)">
+			<div class="col-sm-offset-2 col-sm-8" style="background-image:url(./img/blanc.png)">
 			</div>
 		</div>
-
-		<div class="center" id="gameBoard" style="width: 400px"><img src="./img/Loading_icon.gif" style="width: 400px"></div></br>
-		<p class="center" id="Color"></p></br>
-		<p class="center">Status: <span id="status"></span></p>
-		<p class="center">History: <span id="history"></span></p>
-		<p class="center">Your adversary : </p><p id="adversary">Waiting</p>
-		<form class="well">
+		<div class="row">
+		
+		<div class="col-sm-offset-1 col-sm-5" id="gameBoard" style="width: 400px"><img src="./img/Loading_icon.gif" style="width: 100%"></div>
+		<div class="col-sm-offset-1 col-sm-4">
+			<form class="well">
 			<legend style="color:white">Chat</legend>
 			<textarea class="form-control" id="chatlog" style="width: 100%; height: 200px; resize: none" readonly></textarea><br/>
 			<input class="form-control" id="msg" type="text" />
@@ -46,8 +44,15 @@
 			<input class="btn btn-primary btn-info" type="button" id="sendButton" value="Send !">
 			</br>
 		</form>
+		</div>
+		</div>
+		<div class="col-sm-1"></div>
 		<button type="submit" id="resign" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Resign</button></br>
 		<p id="return"></p>
+		<p class="center" id="Color"></p></br>
+		<p class="center">Status: <span id="status"></span></p>
+		<p class="center">History: <span id="history"></span></p>
+		<p class="center">Your adversary : </p><p id="adversary">Waiting</p>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
 		<script src="./js/chessboard-0.3.0.min.js"></script>
 		<script
