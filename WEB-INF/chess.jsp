@@ -82,16 +82,11 @@
 				board.position(game.fen());
 			}else if(message.data == "rw" || message.data == "rb"){
 					if(message.data == "rw"){
-						//white
+						fen = "rnb1kbnr/pppp1ppp/8/4p3/5PPq/8/PPPPP2P/RNBQKBNR w KQkq - 1 3";
 					}else{
-						//black
+						fen = "rnbqkbnr/1ppp1Qpp/8/p3p3/2B1P3/8/PPPP1PPP/RNB1K1NR b KQkq - 0 4";
 					}
-					board.position('rnb1kbnr/pppp1ppp/8/4p3/5PPq/8/PPPPP2P/RNBQKBNR w KQkq - 1 3');
-					if(game.load('rnb1kbnr/pppp1ppp/8/4p3/5PPq/8/PPPPP2P/RNBQKBNR w KQkq - 1 3')){
-						console.log("ok");
-					}else{
-						console.log("nok");
-					}
+					board.position(fen);
 					updateStatus();
 			}else{
 				if(message.data != "<%=u.getLogin()%>"){
@@ -121,8 +116,6 @@
 			if (game.turn() === 'b') {
 				moveColor = 'b';
 			}
-			console.log(game.fen());
-			console.log(game.ascii());
 		  // checkmate?
 		  if (game.in_checkmate() === true) {
 			status = 'Game over, ' + moveColor + ' is in checkmate.';
@@ -132,7 +125,11 @@
 					'Winner' : $("#adversary").text(),
 					'Loser' : "<%=u.getLogin()%>",
 				}));
-				clearInterval(statusupdateblack);
+				if("<%=u.getColor()%>" == "b"){
+					clearInterval(statusupdateblack);
+				}else{
+					clearInterval(statusupdate);
+				}
 			}else{}
 			$("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
 			clearInterval(statusupdate);
@@ -141,7 +138,11 @@
 		  else if (game.in_draw() === true) {
 			status = 'Game over, drawn position';
 			$("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
-			clearInterval(statusupdate);
+			if("<%=u.getColor()%>" == "b"){
+				clearInterval(statusupdateblack);
+			}else{
+				clearInterval(statusupdate);
+			}
 			if(game.insufficient_material()){
 			  status = 'Game over, insufficient material';
 			  $("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
@@ -149,13 +150,17 @@
 			if(game.in_threefold_repetition()){
 			  status = 'Game over, in threefold position';
 			  $("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
-		  }
+			}
 		  }
 		  //stalemate ?
 		  else if(game.in_stalemate() === true){
 			  status = 'Game over, stalemate position';
 			  $("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
-			  clearInterval(statusupdate);
+			  if("<%=u.getColor()%>" == "b"){
+					clearInterval(statusupdateblack);
+			  }else{
+					clearInterval(statusupdate);
+			  }
 		  }		  
 		  
 		  // game still on

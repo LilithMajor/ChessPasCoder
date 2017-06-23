@@ -117,7 +117,7 @@
 
 						<input class="form-control" id="msg" type="text" />
 						</br>
-						<button class="btn btn-primary btn-info" type="submit" id="sendButton" onClick="postToServer()"><span class="glyphicon glyphicon-share-alt"></span> Send !</button>
+						<input class="btn btn-primary btn-info" type="button" id="sendButton" value="Send !" onClick="postToServer()"><span class="glyphicon glyphicon-share-alt"></span>
 						<button class="pull-right btn btn-primary btn-danger" type="submit" id="sendButton" onClick="closeConnect()"><span class="glyphicon glyphicon-remove"></span> End</button>
 						</br>
 					</form>

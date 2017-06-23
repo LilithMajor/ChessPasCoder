@@ -27,8 +27,7 @@
 				color: black;
 			}
 			td {
-				
-				
+		
 				justify-content:center;
 			}
 		</style>
@@ -51,7 +50,6 @@
 			</div>
 			<div class="row">
 				<div class="col-sm-offset-3 col-sm-6">
-					<form method="post" action="forum">
 					   <table class="table table-bordered table-condensed" id="forum">
 							<tr>
 								<th>Name</th>
@@ -65,11 +63,10 @@
 										<td> <%=t.getCreator()%> </td>
 										<td> <%=t.getDateCreation()%> </td>
 										<td> <%=t.getNumberOfResponse()%> </td>
-										<td><input type="hidden" name="idTopic" value="<%=t.getId()%>"><button style="margin:3px" type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-eye-open"></span> See the topic</button></td>
+										<form method="post" action="forum"><td><input type="hidden" name="idTopic" value="<%=t.getId()%>"><button style="margin:3px" type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-eye-open"></span> See the topic</button></td></form>
 									</tr>		
 							<%}%>
 						</table>
-					</form>
 					
 					</br></br>
 					<form class="well" action="addtopic" method="post">
