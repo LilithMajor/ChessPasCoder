@@ -5,7 +5,6 @@
     <head>
         <meta charset="utf-8" />
         <title>Forum</title>
-        <link type="text/css" rel="stylesheet" href="form.css" />
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 		<style type="text/css">
 			body { background-color:#DDD; color: white; }
@@ -54,8 +53,8 @@
 							<tr>
 								<th>Name</th>
 								<th>Creator</th>
-								<th>DateCreation</th>
-								<th>NbResp</th>
+								<th>Created on</th>
+								<th>Number of responses</th>
 							</tr>
 							<% for(Topic t : (ArrayList<Topic>) request.getAttribute("forum")){%>
 									<tr class="line">
