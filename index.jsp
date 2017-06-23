@@ -130,13 +130,13 @@
 					<blockquote>Chess helps you to concentrate, improve your logic.
 					It teaches you to play by the rules and take responsibility for your actions, 
 					how to problem solve in an uncertain environment.</br>
-					<small class="pull-right">Garri Kasparov</small></br>
+					<small class="pull-right">Garry Kasparov</small></br>
 					</blockquote>
 				</section>
 			</div><%}%>
 			<script type="text/javascript">
 			//Connect to the websocket
-			  var ws = new WebSocket("ws://172.19.35.150:8080/ChessPasCoder/wschat");
+			  var ws = new WebSocket("ws://172.19.33.109:8080/ChessPasCoder/wschat");
 				ws.onopen = function(){
 				};
 				//When we receive a message we show it in the chat log

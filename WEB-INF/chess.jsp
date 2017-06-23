@@ -90,8 +90,8 @@
 		//we initialise the number of moves
 		nbMove = 0;
 		//We connect to the websockets
-		var ws = new WebSocket("ws://172.19.35.150:8080/ChessPasCoder/wsgame/"+<%=g.getId()%>);
-		var wschat = new WebSocket("ws://172.19.35.150:8080/ChessPasCoder/wschatgame/"+<%=g.getId()%>);
+		var ws = new WebSocket("ws://172.19.33.109:8080/ChessPasCoder/wsgame/"+<%=g.getId()%>);
+		var wschat = new WebSocket("ws://172.19.33.109:8080/ChessPasCoder/wschatgame/"+<%=g.getId()%>);
 		//We set the interval of 2s for the function "isOnGoing"
 		interval = setInterval(isOnGoing, 2000);
 		//We create the function init game
