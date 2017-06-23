@@ -27,6 +27,14 @@
 				text-align: center;
 				
 			}
+			.line2 {
+				background-color: silver;
+				border: 2px solid black;
+				border-radius: 6px;
+				line-height: 40px;
+				text-align: center;
+				color:black
+			}
 		</style>
     </head>
     <body>
@@ -43,9 +51,11 @@
 							<%for(Response r : t.getL_Rep()){%>
 								<tr class="line">
 									<td><%=r.getText()%></td>
-									<td><%=r.getCreator()%></td>
-									<td><%=r.getDatePost()%></td>
-								<tr>		
+								<tr>	
+								<tr class="line2">
+										<td>Posted by : <%=r.getCreator()%>  the : <%=r.getDatePost()%></td>
+								</tr>
+								<td></td>
 						<%}%>
 					</table>
 						
