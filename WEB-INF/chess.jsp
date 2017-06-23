@@ -6,28 +6,52 @@
 	<meta charset="utf-8" />
         <title>Chess</title>
         <link type="text/css" rel="stylesheet" href="./css/chessboard-0.3.0.min.css" />
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+		<style>
+			body { background-color:#DDD; color: white; }
+			[class*="col"] { margin-bottom: 20px; }
+			.well {
+				background-color:#556563;
+				padding: 20px;
+			}
+			.center {
+				margin-left: auto;
+				margin-right: auto;
+				width: 100%;
+			}
+			p {
+				color:black;
+			}
+		</style>
     </head>
 	<body>
-    <div id="gameBoard" style="width: 400px"><img src="./img/Loading_icon.gif" style="width: 400px"></div>
-	<p id="Color"></p>
-	<p>Status: <span id="status"></span></p>
-	<p>Your adversary : </p><p id="adversary">Waiting</p>
-	<form class="well">
-		<legend style="color:white">Chat</legend>
-		<textarea class="form-control" id="chatlog" style="width: 100%; height: 200px; resize: none" readonly></textarea><br/>
-		<input class="form-control" id="msg" type="text" />
-		</br>
-		<input class="btn btn-primary btn-info" type="button" id="sendButton" value="Send !"><span class="glyphicon glyphicon-share-alt"></span>
-		</br>
-	</form>
-	<input type="button" id="resign" value="Resign">
-	<p id="return"></p>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
-    <script src="./js/chessboard-0.3.0.min.js"></script>
-	<script
-  src="https://code.jquery.com/jquery-3.2.1.js"
-  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
-  crossorigin="anonymous"></script>
+	<div class="container">
+		<h1 style="text-align:center; color:black">Game</h1>
+		<div class="row">
+			<div class="col-sm-offset-3 col-sm-6" style="background-image:url(./img/blanc.png)">
+			</div>
+		</div>
+
+		<div class="center" id="gameBoard" style="width: 400px"><img src="./img/Loading_icon.gif" style="width: 400px"></div>
+		<p class="center" id="Color"></p></br>
+		<p class="center">Status: <span id="status"></span></p>
+		<p class="center">Your adversary : </p><p id="adversary">Waiting</p>
+		<form class="well">
+			<legend style="color:white">Chat</legend>
+			<textarea class="form-control" id="chatlog" style="width: 100%; height: 200px; resize: none" readonly></textarea><br/>
+			<input class="form-control" id="msg" type="text" />
+			</br>
+			<input class="btn btn-primary btn-info" type="button" id="sendButton" value="Send !"><span class="glyphicon glyphicon-share-alt"></span>
+			</br>
+		</form>
+		<button type="submit" id="resign" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Resign</button>
+		<p id="return"></p>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
+		<script src="./js/chessboard-0.3.0.min.js"></script>
+		<script
+	  src="https://code.jquery.com/jquery-3.2.1.js"
+	  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+	  crossorigin="anonymous"></script>
 	</body>
 	<script>
 	$(document).ready(function(){
