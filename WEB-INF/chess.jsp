@@ -77,20 +77,22 @@
 					clearInterval(interval);
 				}
 			}else if(message.data.charAt(0) == "{".charAt(0)){
-				if(message.data.charAt(2) != "s".charAt(0)){
-					board.position(JSON.parse(message.data));
-					console.log(board.fen());
-					if(game.load('rnb1kbnr/pppp1ppp/8/4p3/5PPq/8/PPPPP2P/RNBQKBNR w KQkq - 1 3')){
+				nbMove++;
+				game.move(JSON.parse(message.data));
+				board.position(game.fen());
+			}else if(message.data == "rw" || message.data == "rb"){
+					if(message.data == "rw"){
+						fen = "rnb1kbnr/pppp1ppp/8/4p3/5PPq/8/PPPPP2P/RNBQKBNR w KQkq - 1 3";
+					}else{
+						fen = "rnbqkbnr/1ppp1Qpp/8/p3p3/2B1P3/8/PPPP1PPP/RNB1K1NR b KQkq - 0 4";
+					}
+					board.position(fen);
+					if(game.load(fen)){
 						console.log("ok");
 					}else{
 						console.log("nok");
 					}
 					updateStatus();
-				}else{
-					nbMove++;
-					game.move(JSON.parse(message.data));
-					board.position(game.fen());
-				}
 			}else{
 				if(message.data != "<%=u.getLogin()%>"){
 					$("#adversary").html(message.data);
@@ -130,7 +132,11 @@
 					'Winner' : $("#adversary").text(),
 					'Loser' : "<%=u.getLogin()%>",
 				}));
-				clearInterval(statusupdateblack);
+				if("<%=u.getColor()%>" == "b"){
+					clearInterval(statusupdateblack);
+				}else{
+					clearInterval(statusupdate);
+				}
 			}else{}
 			$("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
 			clearInterval(statusupdate);
@@ -187,7 +193,7 @@
 		  $('#chatlog').scrollTop($('#chatlog')[0].scrollHeight);
 		}
 		$("#resign").on('click', function(){
-			ws.send("{r"+"<%=u.getColor()%>}");
+			ws.send("r"+"<%=u.getColor()%>");
 		})
 	});
 	</script>
