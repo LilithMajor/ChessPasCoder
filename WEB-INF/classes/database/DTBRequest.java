@@ -257,7 +257,6 @@ public final class DTBRequest {
 		ResultSet res = statement.executeQuery("SELECT * FROM TOPICS ORDER BY TOPICS.Id_Topic");
 		while (res.next()) {
 			int i = res.getInt(1);
-			System.out.println(i);
 			top.add(new Topic(i, res.getString(2), res.getString(3), res.getDate(4), 
 					getAllResponsesByTopic(i)));
 		}
