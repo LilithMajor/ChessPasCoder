@@ -117,7 +117,7 @@
 
 						<input class="form-control" id="msg" type="text" />
 						</br>
-						<input class="btn btn-primary btn-info" type="button" id="sendButton" value="Send !" onClick="postToServer()"><span class="glyphicon glyphicon-share-alt"></span>
+						<input class="btn btn-primary btn-info" type="button" id="sendButton" value="Send !" onClick="postToServer()">
 						</br>
 					</form>
 				<%}%>
