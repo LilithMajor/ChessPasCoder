@@ -49,10 +49,13 @@
 		<div class="col-sm-1"></div>
 		<button type="submit" id="resign" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Resign</button></br>
 		<p id="return"></p>
+		<div class="center" style="background-color: #B7965D;
+				border: 2px solid black;width:200px">
 		<p class="center" id="Color"></p></br>
 		<p class="center">Status: <span id="status"></span></p>
 		<p class="center">History: <span id="history"></span></p>
 		<p class="center">Your adversary : </p><p id="adversary">Waiting</p>
+		</div>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.min.js"></script>
 		<script src="./js/chessboard-0.3.0.min.js"></script>
 		<script
