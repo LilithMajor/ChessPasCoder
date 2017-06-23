@@ -87,11 +87,6 @@
 						fen = "rnbqkbnr/1ppp1Qpp/8/p3p3/2B1P3/8/PPPP1PPP/RNB1K1NR b KQkq - 0 4";
 					}
 					board.position(fen);
-					if(game.load(fen)){
-						console.log("ok");
-					}else{
-						console.log("nok");
-					}
 					updateStatus();
 			}else{
 				if(message.data != "<%=u.getLogin()%>"){
@@ -121,8 +116,6 @@
 			if (game.turn() === 'b') {
 				moveColor = 'b';
 			}
-			console.log(game.fen());
-			console.log(game.ascii());
 		  // checkmate?
 		  if (game.in_checkmate() === true) {
 			status = 'Game over, ' + moveColor + ' is in checkmate.';
@@ -145,7 +138,11 @@
 		  else if (game.in_draw() === true) {
 			status = 'Game over, drawn position';
 			$("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
-			clearInterval(statusupdate);
+			if("<%=u.getColor()%>" == "b"){
+				clearInterval(statusupdateblack);
+			}else{
+				clearInterval(statusupdate);
+			}
 			if(game.insufficient_material()){
 			  status = 'Game over, insufficient material';
 			  $("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
@@ -153,13 +150,17 @@
 			if(game.in_threefold_repetition()){
 			  status = 'Game over, in threefold position';
 			  $("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
-		  }
+			}
 		  }
 		  //stalemate ?
 		  else if(game.in_stalemate() === true){
 			  status = 'Game over, stalemate position';
 			  $("#return").html("<form action='index' method='get'><input type='submit' value='Return'></form>")
-			  clearInterval(statusupdate);
+			  if("<%=u.getColor()%>" == "b"){
+					clearInterval(statusupdateblack);
+			  }else{
+					clearInterval(statusupdate);
+			  }
 		  }		  
 		  
 		  // game still on
