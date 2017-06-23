@@ -118,9 +118,9 @@
 				}
 			}
 		};
-		function closeConnect(){
+		$(window).bind("beforeunload", function closeConnect(){
 			ws.close();
-		}
+		});
 		function isOnGoing(){
 			ws.send("getOnGoing");
 		}
@@ -204,12 +204,13 @@
 			document.getElementById("chatlog").textContent += message.data + "\n";
 			scrollToBottom();
 		};
-		$("#sendButton").on("click", function postToServer(){
+		$("#sendButton").on("click", function postToServer(event){
 			name = "<%=u.getName()%>";
 			if(document.getElementById("msg").value != ""){
 				wschat.send(name +": "+ document.getElementById("msg").value);
 				document.getElementById("msg").value = "";
 			}
+			event.preventDefault();
 		});
 		function closeConnect(){
 			wschat.close();

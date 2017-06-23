@@ -118,7 +118,6 @@
 						<input class="form-control" id="msg" type="text" />
 						</br>
 						<input class="btn btn-primary btn-info" type="button" id="sendButton" value="Send !" onClick="postToServer()"><span class="glyphicon glyphicon-share-alt"></span>
-						<button class="pull-right btn btn-primary btn-danger" type="submit" id="sendButton" onClick="closeConnect()"><span class="glyphicon glyphicon-remove"></span> End</button>
 						</br>
 					</form>
 				<%}%>
@@ -143,13 +142,13 @@
 					document.getElementById("chatlog").textContent += message.data + "\n";
 					scrollToBottom();
 				};
-				function postToServer(){
-					event.preventDefault();
+				function postToServer(event){
 					name = $("#name").val();	
 					if(document.getElementById("msg").value != ""){
 						ws.send(name +": "+ document.getElementById("msg").value);
 						document.getElementById("msg").value = "";
 					}
+					event.preventDefault();
 				}
 				function closeConnect(){
 					ws.close();
@@ -158,6 +157,12 @@
 				function scrollToBottom() {
 				  $('#chatlog').scrollTop($('#chatlog')[0].scrollHeight);
 				}
+				
+				$("#msg").keydown(function(event){
+					if(event.keyCode == 13) {
+					  postToServer(event);
+					}
+				});
 			</script>
 		</div>
 	</body>
