@@ -158,6 +158,12 @@
 				function scrollToBottom() {
 				  $('#chatlog').scrollTop($('#chatlog')[0].scrollHeight);
 				}
+				
+				$("#msg").keydown(function(event){
+					if(event.keyCode == 13) {
+					  postToServer();
+					}
+				});
 			</script>
 		</div>
 	</body>
