@@ -158,7 +158,7 @@
 					clearInterval(statusupdate);
 				}
 			}else{}
-			$("#return").html("<form action='index' method='get'><input class="btn btn-primary btn-primary" type='submit' value='Back'></form>")
+			$("#return").html("<form action='index' method='get'><input class='btn btn-primary btn-primary' type='submit' value='Back'></form>")
 			clearInterval(statusupdate);
 		  }
 		  // draw?
