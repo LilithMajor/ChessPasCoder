@@ -1,5 +1,9 @@
 package database;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -22,6 +26,7 @@ public final class DTBRequest {
 	private static final String CHAMP_CREATOR = "creator";
 	private static final String CHAMP_TEXT = "text";
 	private static final String CHAMP_IDTOPIC = "idTopic";
+	private static byte[] salt;
 
 	private Connection connect;
 
@@ -30,10 +35,17 @@ public final class DTBRequest {
 			Class.forName("oracle.jdbc.OracleDriver");
 			this.connect = DriverManager.getConnection("jdbc:oracle:thin:@vs-oracle2:1521:ORCL", "GRAMMONTG",
 					"GRAMMONTG");
+			this.salt = getSalt();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchProviderException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -73,12 +85,13 @@ public final class DTBRequest {
 	public User connectUser(HttpServletRequest request) throws SQLException {
 		String login = getValeurChamp(request, "login");
 		String password = getValeurChamp(request, "password");
+		String securePassword = getSecurePassword(password, salt);
 		ArrayList<Game> games = new ArrayList<Game>();
 		User u = new User();
 		Statement statement = connect.createStatement();
 		Statement stategames = connect.createStatement();
 		ResultSet result = statement
-				.executeQuery("SELECT * FROM USERS WHERE login='" + login + "' AND password='" + password + "'");
+				.executeQuery("SELECT * FROM USERS WHERE login='" + login + "' AND password='" + securePassword + "'");
 		if (!result.next()) {
 			throw new NullPointerException();
 		} else {
@@ -104,13 +117,14 @@ public final class DTBRequest {
 		String name = getValeurChamp(request, CHAMP_NAME);
 		String email = getValeurChamp(request, CHAMP_EMAIL);
 		ResultSet result = statement.executeQuery("SELECT login FROM USERS");
+		String securePassword = getSecurePassword(password, salt);
 		while (result.next()) {
 			if (result.getString(1).equals(login)) {
 				throw new NullPointerException();
 			}
 		}
-		String sql = "INSERT INTO USERS VALUES ('" + name + "'," + "'" + login + "'," + "'" + password + "'," + "'"
-				+ email + "','1200')";
+		String sql = "INSERT INTO USERS VALUES ('" + name + "'," + "'" + login + "'," + "'" + securePassword + "',"
+				+ "'" + email + "','1200')";
 		statement.executeUpdate(sql);
 		User u = new User();
 		u.setLogin(login);
@@ -257,8 +271,7 @@ public final class DTBRequest {
 		ResultSet res = statement.executeQuery("SELECT * FROM TOPICS ORDER BY TOPICS.Id_Topic");
 		while (res.next()) {
 			int i = res.getInt(1);
-			top.add(new Topic(i, res.getString(2), res.getString(3), res.getDate(4), 
-					getAllResponsesByTopic(i)));
+			top.add(new Topic(i, res.getString(2), res.getString(3), res.getDate(4), getAllResponsesByTopic(i)));
 
 		}
 		return top;
@@ -367,5 +380,40 @@ public final class DTBRequest {
 	private double prob(int elo1, int elo2) {
 		int foo = (elo1 - elo2) / 400;
 		return 1 / (1 + Math.pow(10, foo));
+	}
+
+	private static String getSecurePassword(String passwordToHash, byte[] salt) {
+		String generatedPassword = null;
+		try {
+			// Create MessageDigest instance for MD5
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			// Add password bytes to digest
+			md.update(salt);
+			// Get the hash's bytes
+			byte[] bytes = md.digest(passwordToHash.getBytes());
+			// This bytes[] has bytes in decimal format;
+			// Convert it to hexadecimal format
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < bytes.length; i++) {
+				sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+			}
+			// Get complete hashed password in hex format
+			generatedPassword = sb.toString();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return generatedPassword;
+	}
+
+	// Add salt
+	private static byte[] getSalt() throws NoSuchAlgorithmException, NoSuchProviderException {
+		// Always use a SecureRandom generator
+		SecureRandom sr = SecureRandom.getInstance("SHA1PRNG", "SUN");
+		// Create array for salt
+		byte[] salt = new byte[16];
+		// Get a random salt
+		sr.nextBytes(salt);
+		// return salt
+		return salt;
 	}
 }
