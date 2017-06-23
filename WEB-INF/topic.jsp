@@ -35,6 +35,17 @@
 				text-align: center;
 				color:black
 			}
+			#topic {
+				overflow-wrap:break-word;
+				width : 100%;
+			}
+			#topic tr td {
+				overflow-wrap:break-word;
+			}
+			#topic tr {
+				overflow-wrap:break-word;
+				width : 100%;
+			}
 		</style>
     </head>
     <body>
@@ -73,6 +84,9 @@
 					<form action="forum" method="get">
 						<button type="submit" class="btn btn-primary btn-primary"><span class="glyphicon glyphicon-arrow-left"></span> Back</button>
 					</form>
+				</div>
+				<div class="col-sm-3"></div>
+			</div>
 		</div>
     </body>
 </html>
