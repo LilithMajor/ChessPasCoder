@@ -110,7 +110,7 @@ public final class DTBRequest {
 			}
 		}
 		String sql = "INSERT INTO USERS VALUES ('" + name + "'," + "'" + login + "'," + "'" + password + "'," + "'"
-				+ email + "','0')";
+				+ email + "','1200')";
 		statement.executeUpdate(sql);
 		User u = new User();
 		u.setLogin(login);
@@ -245,7 +245,7 @@ public final class DTBRequest {
 		ResultSet res = statement.executeQuery(sql);
 		Topic top = null;
 		while (res.next()) {
-			top = new Topic(res.getInt(1), res.getString(2), res.getString(3), res.getDate(4), 
+			top = new Topic(res.getInt(1), res.getString(2), res.getString(3), res.getDate(4),
 					getAllResponsesByTopic(Integer.parseInt(idTop)));
 		}
 		return top;
@@ -258,14 +258,13 @@ public final class DTBRequest {
 		while (res.next()) {
 			int i = res.getInt(1);
 			System.out.println(i);
-			top.add(new Topic(i, res.getString(2), res.getString(3), res.getDate(4), 
-					getAllResponsesByTopic(i)));
+			top.add(new Topic(i, res.getString(2), res.getString(3), res.getDate(4), getAllResponsesByTopic(i)));
 		}
 		return top;
 	}
 
 	public ArrayList<Response> getAllResponsesByTopic(int i) throws SQLException {
-		String sql2 = "SELECT * FROM RESPONSES WHERE R_Id_Topic =" + i +" ORDER BY RESPONSES.Id_Response";
+		String sql2 = "SELECT * FROM RESPONSES WHERE R_Id_Topic =" + i + " ORDER BY RESPONSES.Id_Response";
 		Statement statement2 = connect.createStatement();
 		ResultSet res2 = statement2.executeQuery(sql2);
 		ArrayList<Response> rep = new ArrayList<Response>();
