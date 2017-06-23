@@ -1,7 +1,6 @@
 package user;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -34,8 +33,6 @@ public class Register extends HttpServlet {
 		Database db = Database.getDatabase();
 		HttpSession session = request.getSession(true);
 		Boolean erreur = false;
-		// Proprietaire prop = new Proprietaire();
-		/* Traitement de la requête et récupération du bean en résultant */
 		User user = new User();
 		try {
 			user = db.registerUser(request);
@@ -47,12 +44,6 @@ public class Register extends HttpServlet {
 			this.getServletContext().getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
 		}
 
-		/* Récupération de la session depuis la requête */
-
-		/**
-		 * Si aucune erreur de validation n'a eu lieu, alors ajout du bean
-		 * Utilisateur à la session, sinon suppression du bean de la session.
-		 */
 		if (!erreur) {
 			session.setAttribute(ATT_SESSION_USER, user);
 			response.sendRedirect(request.getContextPath() + "/index");
