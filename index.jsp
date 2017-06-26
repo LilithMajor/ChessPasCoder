@@ -136,7 +136,7 @@
 			</div><%}%>
 			<script type="text/javascript">
 			//Connect to the websocket
-			  var ws = new WebSocket("ws://172.19.33.109:8080/ChessPasCoder/wschat");
+			  var ws = new WebSocket("ws://172.19.33.5:8080/ChessPasCoder/wschat");
 				ws.onopen = function(){
 				};
 				//When we receive a message we show it in the chat log

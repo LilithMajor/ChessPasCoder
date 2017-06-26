@@ -42,7 +42,16 @@ public class WsGameServlet {
 		Database db = Database.getDatabase();
 		Game game = db.getGameById(idGame);
 		// If there is only one player in the game we remove it in the database
-		if (game.getNbPlayer() == 1) {
+		if (game.getOnGoing() == 1) {
+			try {
+				for (Session sessionL : sessionList) {
+					// asynchronous communication
+					// We send it to all players
+					sessionL.getBasicRemote().sendText("Left");
+				}
+			} catch (IOException e) {
+			}
+		} else {
 			db.removePlayerGame(Integer.toString(game.getId()));
 		}
 		sessionList.remove(session);

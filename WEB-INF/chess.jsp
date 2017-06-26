@@ -90,8 +90,8 @@
 		//we initialise the number of moves
 		nbMove = 0;
 		//We connect to the websockets
-		var ws = new WebSocket("ws://172.19.33.109:8080/ChessPasCoder/wsgame/"+<%=g.getId()%>);
-		var wschat = new WebSocket("ws://172.19.33.109:8080/ChessPasCoder/wschatgame/"+<%=g.getId()%>);
+		var ws = new WebSocket("ws://172.19.33.5:8080/ChessPasCoder/wsgame/"+<%=g.getId()%>);
+		var wschat = new WebSocket("ws://172.19.33.5:8080/ChessPasCoder/wschatgame/"+<%=g.getId()%>);
 		//We set the interval of 2s for the function "isOnGoing"
 		interval = setInterval(isOnGoing, 2000);
 		//We create the function init game
@@ -111,7 +111,7 @@
 			//We show the resign button
 			$("#resign").show();
 			//We send our login so the adversary can see it on his screen
-			ws.send("<%=u.getLogin()%>");
+			ws.send("<%=u.getName()%>");
 		}
 		//Function that is fire when a piece is dropped
 		var handleMove = function(source, target) {
@@ -127,7 +127,7 @@
 		//When the socket is open
 		ws.onopen = function(){
 			//If there is nobody in the game the player is white
-			<%if(g.getNbPlayer()==0){
+			<%if(g.getNbPlayer()==1){
 				%>$("#Color").html("You are playing white");
 				<%u.setColor("w");
 			}else{
@@ -177,9 +177,31 @@
 					game.load(fen);
 					//We update the status
 					updateStatus();
+			}else if(message.data == "Left"){
+				if("<%=u.getColor()%>" == "w"){
+					fen = "rnbqkbnr/1ppp1Qpp/8/p3p3/2B1P3/8/PPPP1PPP/RNB1K1NR b KQkq - 0 4";
+					clearInterval(statusupdate);
+				}else{
+					fen = "rnb1kbnr/pppp1ppp/8/4p3/5PPq/8/PPPPP2P/RNBQKBNR w KQkq - 1 3";
+					clearInterval(statusupdateblack);
+				}
+				board.position(fen);
+					//We set the game so .checkmate() will return true
+				game.load(fen);
+				//We update the status
+				status = 'Game over, Your adversary left !';
+					/*We send to the server a json object with the number of moves, the winner login and the loser login, only the loser send this request to the server
+					 so that the game is finished only once*/
+				ws.send(JSON.stringify({
+					'nbMove' : nbMove,
+					'Winner' : "<%=u.getLogin()%>",
+					'Loser' : $("#adversary").text(),
+				}));
+					//We show the return button
+					$("#return").html("<form action='index' method='get'><input class='btn btn-primary btn-primary' type='submit' value='Back'></form>")
 			}else{
 				//Else the message is the login of the adversary and if it is not the same as our login then we display it in the html
-				if(message.data != "<%=u.getLogin()%>"){
+				if(message.data != "<%=u.getName()%>"){
 					$("#adversary").html(message.data);
 				}
 			}

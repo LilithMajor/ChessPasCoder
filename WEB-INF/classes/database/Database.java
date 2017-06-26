@@ -30,6 +30,18 @@ public class Database {
 		return db.getAllUsers();
 	}
 
+	public void setOnGoingGame(String idGame) {
+		db.setOnGoingGame(idGame);
+	}
+
+	public void setPlayer1Game(String idGame, String login) {
+		db.setPlayer1Game(idGame, login);
+	}
+
+	public void setPlayer2Game(String idGame, String login) {
+		db.setPlayer2Game(idGame, login);
+	}
+
 	public User connectUser(HttpServletRequest request) throws DataBaseException {
 		try {
 			return db.connectUser(request);
@@ -99,7 +111,7 @@ public class Database {
 		try {
 			db.createGame();
 		} catch (SQLException e) {
-			throw new DataBaseException();
+			throw new DataBaseException(e.getMessage());
 		}
 	}
 

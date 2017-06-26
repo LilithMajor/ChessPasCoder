@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.Game;
 import com.Response;
 import com.Topic;
@@ -67,8 +69,8 @@ public final class DTBRequest {
 				ResultSet res = stategames.executeQuery("SELECT * FROM GAMES WHERE LoginWin='"
 						+ result.getString("Login") + "' OR LoginLoss='" + result.getString("Login") + "'");
 				while (res.next()) {
-					games.add(
-							new Game(res.getInt(1), res.getInt(2), res.getString(3), res.getString(4), res.getInt(5)));
+					games.add(new Game(res.getInt(1), res.getInt(2), res.getString(3), res.getString(4), res.getInt(5),
+							res.getInt(6), res.getString(7), res.getString(8)));
 				}
 				// Set the user
 				User u = new User();
@@ -113,7 +115,8 @@ public final class DTBRequest {
 		ResultSet res = stategames.executeQuery("SELECT * FROM GAMES WHERE LoginWin='" + result.getString("Login")
 				+ "' OR LoginLoss='" + result.getString("Login") + "'");
 		while (res.next()) {
-			games.add(new Game(res.getInt(1), res.getInt(2), res.getString(3), res.getString(4), res.getInt(5)));
+			games.add(new Game(res.getInt(1), res.getInt(2), res.getString(3), res.getString(4), res.getInt(5),
+					res.getInt(6), res.getString(7), res.getString(8)));
 		}
 		// Set the game list
 		u.setGames(games);
@@ -236,7 +239,8 @@ public final class DTBRequest {
 		Statement statement = connect.createStatement();
 		ResultSet res = statement.executeQuery("SELECT * FROM GAMES WHERE nbPlayer < 2 ORDER BY GAMES.Id");
 		while (res.next()) {
-			games.add(new Game(res.getInt(1), res.getInt(2), res.getString(3), res.getString(4), res.getInt(5)));
+			games.add(new Game(res.getInt(1), res.getInt(2), res.getString(3), res.getString(4), res.getInt(5),
+					res.getInt(6), res.getString(7), res.getString(8)));
 		}
 		return games;
 	}
@@ -250,7 +254,7 @@ public final class DTBRequest {
 	// Create a game
 	public void createGame() throws SQLException {
 		Statement statement = connect.createStatement();
-		String sql = "INSERT INTO GAMES(Id, nbPlayer) VALUES (GAME_NUMBER.NEXTVAL, '0')";
+		String sql = "INSERT INTO GAMES(Id, nbPlayer, onGoing) VALUES (GAME_NUMBER.NEXTVAL, '0', '0')";
 		statement.executeUpdate(sql);
 	}
 
@@ -275,7 +279,8 @@ public final class DTBRequest {
 		ResultSet res = statement.executeQuery(sql);
 		Game game = null;
 		while (res.next()) {
-			game = new Game(res.getInt(1), res.getInt(2), res.getString(3), res.getString(4), res.getInt(5));
+			game = new Game(res.getInt(1), res.getInt(2), res.getString(3), res.getString(4), res.getInt(5),
+					res.getInt(6), res.getString(7), res.getString(8));
 		}
 		return game;
 	}
@@ -338,11 +343,46 @@ public final class DTBRequest {
 	// Set a finished game
 	public void setGame(String idGame, int nbMove, String winner, String loser) {
 		Statement statement;
-		System.out.println(nbMove);
 		try {
 			statement = connect.createStatement();
 			String sql = "UPDATE GAMES SET nbRound =" + nbMove + ", LoginWin='" + winner + "', LoginLoss='" + loser
 					+ "' WHERE Id =" + idGame;
+			statement.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void setOnGoingGame(String idGame) {
+		Statement statement;
+		try {
+			statement = connect.createStatement();
+			String sql = "UPDATE GAMES SET onGoing = 1 WHERE Id =" + idGame;
+			statement.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void setPlayer1Game(String idGame, String login) {
+		Statement statement;
+		try {
+			statement = connect.createStatement();
+			String sql = "UPDATE GAMES SET player1 ='" + login + "' WHERE Id =" + idGame;
+			statement.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void setPlayer2Game(String idGame, String login) {
+		Statement statement;
+		try {
+			statement = connect.createStatement();
+			String sql = "UPDATE GAMES SET player2 ='" + login + "' WHERE Id =" + idGame;
 			statement.executeUpdate(sql);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
